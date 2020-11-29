@@ -1,0 +1,134 @@
+Pikeman Pikeman	Town portrait Castle small.gif	1	4	5	1	3	10	4	14	80	60 Gold	 	Immune to jousting
+Halberdier Halberdier	Town portrait Castle small.gif	1+	6	5	2	3	10	5	14	115	75 Gold	 	Immune to jousting
+Archer Archer	Town portrait Castle small.gif	2	6	3	2	3	10	4	9	126	100 Gold	 	Ranged (12 shots)
+Marksman Marksman	Town portrait Castle small.gif	2+	6	3	2	3	10	6	9	184	150 Gold	 	Ranged (24 shots), Double attack
+Griffin Griffin	Town portrait Castle small.gif	3	8	8	3	6	25	6	7	351	200 Gold	 	Flying, Two retaliations
+Royal_Griffin Royal_Griffin	Town portrait Castle small.gif	3+	9	9	3	6	25	9	7	448	240 Gold	 	Flying, Unlimited retaliations
+Swordsman Swordsman	Town portrait Castle small.gif	4	10	12	6	9	35	5	4	445	300 Gold
+Crusader Crusader	Town portrait Castle small.gif	4+	12	12	7	10	35	6	4	588	400 Gold	 	Double attack
+Monk Monk	Town portrait Castle small.gif	5	12	7	10	12	30	5	3	485	400 Gold	 	Ranged (12 shots)
+Zealot Zealot	Town portrait Castle small.gif	5+	12	10	10	12	30	7	3	750	450 Gold	 	Ranged (24 shots), No melee penalty
+Cavalier Cavalier	Town portrait Castle small.gif	6	15	15	15	25	100	7	2	1946	1000 Gold	 	Jousting
+Champion Champion	Town portrait Castle small.gif	6+	16	16	20	25	100	9	2	2100	1200 Gold	 	Jousting
+Angel Angel	Town portrait Castle small.gif	7	20	20	50	50	200	12	1	5019	3000 Gold	, 1 Gem 	Flying, Hates Devils, Morale +1
+Archangel Archangel	Town portrait Castle small.gif	7+	30	30	50	50	250	18	1	8776	5000 Gold	, 3 Gem 	Flying, Hates Devils, Resurrection, Morale +1
+
+Centaur Centaur	Town portrait Rampart small.gif	1	5	3	2	3	8	6	14	100	70 Gold
+Centaur_Captain Centaur_Captain	Town portrait Rampart small.gif	1+	6	3	2	3	10	8	14	138	90 Gold
+Dwarf Dwarf	Town portrait Rampart small.gif	2	6	7	2	4	20	3	8	138	120 Gold	 	Resistance +20%
+Battle_Dwarf Battle_Dwarf	Town portrait Rampart small.gif	2+	7	7	2	4	20	5	8	209	150 Gold	 	Resistance +40%
+Wood_Elf Wood_Elf	Town portrait Rampart small.gif	3	9	5	3	5	15	6	7	234	200 Gold	 	Ranged (24 shots)
+Grand_Elf Grand_Elf	Town portrait Rampart small.gif	3+	9	5	3	5	15	7	7	331	225 Gold	 	Ranged (24 shots), Double attack
+Pegasus Pegasus	Town portrait Rampart small.gif	4	9	8	5	9	30	8	5	518	250 Gold	 	Flying, Magic damper
+Silver_Pegasus Silver_Pegasus	Town portrait Rampart small.gif	4+	9	10	5	9	30	12	5	532	275 Gold	 	Flying, Magic damper
+Dendroid_Guard Dendroid_Guard	Town portrait Rampart small.gif	5	9	12	10	14	55	3	3	517	350 Gold	 	Binding
+Dendroid_Soldier Dendroid_Soldier	Town portrait Rampart small.gif	5+	9	12	10	14	65	4	3	803	425 Gold	 	Binding
+Unicorn Unicorn	Town portrait Rampart small.gif	6	15	14	18	22	90	7	2	1806	850 Gold	 	Blind, Aura of Resistance +20%
+War_Unicorn War_Unicorn	Town portrait Rampart small.gif	6+	15	14	18	22	110	9	2	2030	950 Gold	 	Blind, Aura of Resistance +20%
+Green_Dragon Green_Dragon	Town portrait Rampart small.gif	7	18	18	40	50	180	10	1	4872	2400 Gold	, 1 Crystal 	Dragon, Flying, Breath attack, 1-3 lvl spells immunity
+Gold_Dragon Gold_Dragon	Town portrait Rampart small.gif	7+	27	27	40	50	250	16	1	8613	4000 Gold	, 2 Crystal 	Dragon, Flying, Breath attack, 1-4 lvl spells immunity
+
+Gremlin Gremlin	Town portrait Tower small.gif	1	3	3	1	2	4	4	16	44	30 Gold
+Master_Gremlin Master_Gremlin	Town portrait Tower small.gif	1+	4	4	1	2	4	5	16	66	40 Gold	 	Ranged (8 shots)
+Stone_Gargoyle Stone_Gargoyle	Town portrait Tower small.gif	2	6	6	2	3	16	6	9	165	130 Gold	 	Unliving, Flying
+Obsidian_Gargoyle Obsidian_Gargoyle	Town portrait Tower small.gif	2+	7	7	2	3	16	9	9	201	160 Gold	 	Unliving, Flying
+Stone_Golem Stone_Golem	Town portrait Tower small.gif	3	7	10	4	5	30	3	6	250	150 Gold	 	Unliving, Spell Damage Resistance +50%
+Iron_Golem Iron_Golem	Town portrait Tower small.gif	3+	9	10	4	5	35	5	6	412	200 Gold	 	Unliving, Spell Damage Resistance +75%
+Mage Mage	Town portrait Tower small.gif	4	11	8	7	9	25	5	4	570	350 Gold	 	Ranged (24 shots), No melee penalty, Spells cost -2 sp
+Arch_Mage Arch_Mage	Town portrait Tower small.gif	4+	12	9	7	9	30	7	4	680	450 Gold	 	Ranged (24 shots), No melee penalty, No obstacle penalty, Spells cost -2 sp
+Genie Genie	Town portrait Tower small.gif	5	12	12	13	16	40	7	3	884	550 Gold	 	Flying, Hates Efreets
+Master_Genie Master_Genie	Town portrait Tower small.gif	5+	12	12	13	16	40	11	3	942	600 Gold	 	Flying, Spellcaster, Hates Efreets
+Naga Naga	Town portrait Tower small.gif	6	16	13	20	20	110	5	2	2016	1100 Gold	 	No enemy retaliation
+Naga_Queen Naga_Queen	Town portrait Tower small.gif	6+	16	13	30	30	110	7	2	2840	1600 Gold	 	No enemy retaliation
+Giant Giant	Town portrait Tower small.gif	7	19	16	40	60	150	7	1	3718	2000 Gold	, 1 Gem 	Immunity to Mind
+Titan Titan	Town portrait Tower small.gif	7+	24	24	40	60	300	11	1	7500	5000 Gold	, 2 Gem 	Ranged (24 shots), No melee penalty, Immunity to Mind, Hates Black Dragons
+
+Imp Imp	Town portrait Inferno small.gif	1	2	3	1	2	4	5	15	50	50 Gold
+Familiar Familiar	Town portrait Inferno small.gif	1+	4	4	1	2	4	7	15	60	60 Gold	 	Magic channel
+Gog Gog	Town portrait Inferno small.gif	2	6	4	2	4	13	4	8	159	125 Gold	 	Ranged (12 shots)
+Magog Magog	Town portrait Inferno small.gif	2+	7	4	2	4	13	6	8	240	175 Gold	 	Ranged (24 shots), Fireball attack
+Hell_Hound Hell_Hound	Town portrait Inferno small.gif	3	10	6	2	7	25	7	5	357	200 Gold
+Cerberus Cerberus	Town portrait Inferno small.gif	3+	10	8	2	7	25	8	5	392	250 Gold	 	No enemy retaliation, 3-headed attack
+Demon Demon	Town portrait Inferno small.gif	4	10	10	7	9	35	5	4	445	250 Gold
+Horned_Demon Horned_Demon	Town portrait Inferno small.gif	4+	10	10	7	9	40	6	4	480	270 Gold
+Pit_Fiend Pit_Fiend	Town portrait Inferno small.gif	5	13	13	13	17	45	6	3	765	500 Gold
+Pit_Lord Pit_Lord	Town portrait Inferno small.gif	5+	13	13	13	17	45	7	3	1224	700 Gold	 	Summon demons
+Efreet Efreet	Town portrait Inferno small.gif	6	16	12	16	24	90	9	2	1670	900 Gold	 	Flying, Fire immunity
+Efreet_Sultan Efreet_Sultan	Town portrait Inferno small.gif	6+	16	14	16	24	90	13	2	2343	1100 Gold	 	Flying, Fire shield, Fire immunity, Hates Genies
+Devil Devil	Town portrait Inferno small.gif	7	19	21	30	40	160	11	1	5101	2700 Gold	, 1 Mercury 	Teleporting, No enemy retaliation, Luck -1, Hates Angels
+Arch_Devil Arch_Devil	Town portrait Inferno small.gif	7+	26	28	30	40	200	17	1	7115	4500 Gold	, 2 Mercury 	Teleporting, No enemy retaliation, Luck -2, Hates Angels
+
+Skeleton Skeleton	Town portrait Necropolis small.gif	1	5	4	1	3	6	4	12	60	60 Gold	 	Undead
+Skeleton_Warrior Skeleton_Warrior	Town portrait Necropolis small.gif	1+	6	6	1	3	6	5	12	85	70 Gold	 	Undead
+Walking_Dead Walking_Dead	Town portrait Necropolis small.gif	2	5	5	2	3	15	3	8	98	100 Gold	 	Undead
+Zombie Zombie	Town portrait Necropolis small.gif	2+	5	5	2	3	20	4	8	128	125 Gold	 	Undead, Disease
+Wight Wight	Town portrait Necropolis small.gif	3	7	7	3	5	18	5	7	252	200 Gold	 	Undead, Flying, Regeneration
+Wraith Wraith	Town portrait Necropolis small.gif	3+	7	7	3	5	18	7	7	315	230 Gold	 	Undead, Flying, Regeneration, Mana drain
+Vampire Vampire	Town portrait Necropolis small.gif	4	10	9	5	8	30	6	4	555	360 Gold	 	Undead, Flying, No retaliation
+Vampire_Lord Vampire_Lord	Town portrait Necropolis small.gif	4+	10	10	5	8	40	9	4	783	500 Gold	 	Undead, Flying, No retaliation, Life drain
+Lich Lich	Town portrait Necropolis small.gif	5	13	10	11	13	30	6	3	848	550 Gold	 	Ranged (12 shots), Undead, Death cloud
+Power_Lich Power_Lich	Town portrait Necropolis small.gif	5+	13	10	11	15	40	7	3	1079	600 Gold	 	Ranged (24 shots), Undead, Death cloud
+Black_Knight Black_Knight	Town portrait Necropolis small.gif	6	16	16	15	30	120	7	2	2087	1200 Gold	 	Undead, Curse
+Dread_Knight Dread_Knight	Town portrait Necropolis small.gif	6+	18	18	15	30	120	9	2	2382	1500 Gold	 	Undead, Curse, Death blow
+Bone_Dragon Bone_Dragon	Town portrait Necropolis small.gif	7	17	15	25	50	150	9	1	3388	1800 Gold	 	Dragon, Undead, Flying, Morale -1
+Ghost_Dragon Ghost_Dragon	Town portrait Necropolis small.gif	7+	19	17	25	50	200	14	1	4696	3000 Gold	, 1 Mercury 	Dragon, Undead, Flying, Morale -1, Aging
+
+Troglodyte Troglodyte	Town portrait Dungeon small.gif	1	4	3	1	3	5	4	14	59	50 Gold	 	Immune to Blinding
+Infernal_Troglodyte Infernal_Troglodyte	Town portrait Dungeon small.gif	1+	5	4	1	3	6	5	14	84	65 Gold	 	Immune to Blinding
+Harpy Harpy	Town portrait Dungeon small.gif	2	6	5	1	4	14	6	8	154	130 Gold	 	Flying, Strike and return
+Harpy_Hag Harpy_Hag	Town portrait Dungeon small.gif	2+	6	6	1	4	14	9	8	238	170 Gold	 	Flying, Strike and return, No enemy retaliation
+Beholder Beholder	Town portrait Dungeon small.gif	3	9	7	3	5	22	5	7	336	250 Gold	 	Ranged (12 shots), No melee penalty
+Evil_Eye Evil_Eye	Town portrait Dungeon small.gif	3+	10	8	3	5	22	7	7	367	280 Gold	 	Ranged (24 shots), No melee penalty
+Medusa Medusa	Town portrait Dungeon small.gif	4	9	9	6	8	25	5	4	517	300 Gold	 	Ranged (4 shots), No melee penalty, Petrify
+Medusa_Queen Medusa_Queen	Town portrait Dungeon small.gif	4+	10	10	6	8	30	6	4	577	330 Gold	 	Ranged (8 shots), No melee penalty, Petrify
+Minotaur Minotaur	Town portrait Dungeon small.gif	5	14	12	12	20	50	6	3	835	500 Gold	 	Positive Morale
+Minotaur_King Minotaur_King	Town portrait Dungeon small.gif	5+	15	15	12	20	50	8	3	1068	575 Gold	 	Positive Morale
+Manticore Manticore	Town portrait Dungeon small.gif	6	15	13	14	20	80	7	2	1547	850 Gold	 	Flying
+Scorpicore Scorpicore	Town portrait Dungeon small.gif	6+	16	14	14	20	80	11	2	1589	1050 Gold	 	Flying, Paralyze
+Red_Dragon Red_Dragon	Town portrait Dungeon small.gif	7	19	19	40	50	180	11	1	4702	2500 Gold	, 1 Sulfur 	Dragon, Flying, Breath attack, 1-3 lvl spells immunity
+Black_Dragon Black_Dragon	Town portrait Dungeon small.gif	7+	25	25	40	50	300	15	1	8721	4000 Gold	, 2 Sulfur 	Dragon, Flying, Breath attack, Magic immunity, Hates Titans
+
+Goblin Goblin	Town portrait Stronghold small.gif	1	4	2	1	2	5	5	15	60	40 Gold
+Hobgoblin Hobgoblin	Town portrait Stronghold small.gif	1+	5	3	1	2	5	7	15	78	50 Gold
+Wolf_Rider Wolf_Rider	Town portrait Stronghold small.gif	2	7	5	2	4	10	6	9	130	100 Gold
+Wolf_Raider Wolf_Raider	Town portrait Stronghold small.gif	2+	8	5	3	4	10	8	9	203	140 Gold	 	Double attack
+Orc Orc	Town portrait Stronghold small.gif	3	8	4	2	5	15	4	7	192	150 Gold	 	Ranged (12 shots)
+Orc_Chieftain Orc_Chieftain	Town portrait Stronghold small.gif	3+	8	4	2	5	20	5	7	240	165 Gold	 	Ranged (24 shots)
+Ogre Ogre	Town portrait Stronghold small.gif	4	13	7	6	12	40	4	4	416	300 Gold
+Ogre_Mage Ogre_Mage	Town portrait Stronghold small.gif	4+	13	7	6	12	60	5	4	672	400 Gold	 	Cast Bloodlust x3
+Roc Roc	Town portrait Stronghold small.gif	5	13	11	11	15	60	7	3	1027	600 Gold	 	Flying
+Thunderbird Thunderbird	Town portrait Stronghold small.gif	5+	13	11	11	15	60	11	3	1106	700 Gold	 	Flying, Lightning strike
+Cyclops Cyclops	Town portrait Stronghold small.gif	6	15	12	16	20	70	6	2	1266	750 Gold	 	Ranged (16 shots), Can attack siege walls
+Cyclops_King Cyclops_King	Town portrait Stronghold small.gif	6+	17	13	16	20	70	8	2	1443	1100 Gold	 	Ranged (24 shots), Can attack siege walls
+Behemoth Behemoth	Town portrait Stronghold small.gif	7	17	17	30	50	160	6	1	3162	1500 Gold	 	Defense -40% to enemy target
+Ancient_Behemoth Ancient_Behemoth	Town portrait Stronghold small.gif	7+	19	19	30	50	300	9	1	6168	3000 Gold	, 1 Crystal 	Defense -80% to enemy target
+
+Gnoll Gnoll	Town portrait Fortress small.gif	1	3	5	2	3	6	4	12	56	50 Gold
+Gnoll_Marauder Gnoll_Marauder	Town portrait Fortress small.gif	1+	4	6	2	3	6	5	12	90	70 Gold
+Lizardman Lizardman	Town portrait Fortress small.gif	2	5	6	2	3	14	4	9	126	110 Gold	 	Ranged (12 shots)
+Lizard_Warrior Lizard_Warrior	Town portrait Fortress small.gif	2+	6	8	2	5	15	5	9	156	140 Gold	 	Ranged (24 shots)
+Serpent_Fly Serpent_Fly	Town portrait Fortress small.gif	3	7	9	2	5	20	9	8	268	220 Gold	 	Flying, Dispel
+Dragon_Fly Dragon_Fly	Town portrait Fortress small.gif	3+	8	10	2	5	20	13	8	312	240 Gold	 	Flying, Dispel, Weakness
+Basilisk Basilisk	Town portrait Fortress small.gif	4	11	11	6	10	35	5	4	552	325 Gold	 	Petrify
+Greater_Basilisk Greater_Basilisk	Town portrait Fortress small.gif	4+	12	12	6	10	40	7	4	714	400 Gold	 	Petrify
+Gorgon Gorgon	Town portrait Fortress small.gif	5	10	14	12	16	70	5	3	890	525 Gold
+Mighty_Gorgon Mighty_Gorgon	Town portrait Fortress small.gif	5+	11	16	12	16	70	6	3	1028	600 Gold	 	Death stare 10% chance/unit
+Wyvern Wyvern	Town portrait Fortress small.gif	6	14	14	14	18	70	7	2	1350	800 Gold	 	Flying
+Wyvern_Monarch Wyvern_Monarch	Town portrait Fortress small.gif	6+	14	14	18	22	70	11	2	1518	1100 Gold	 	Flying, Poison
+Hydra Hydra	Town portrait Fortress small.gif	7	16	18	25	45	175	5	1	4120	2200 Gold	 	No enemy retaliation, Attack all adjacent enemies
+Chaos_Hydra Chaos_Hydra	Town portrait Fortress small.gif	7+	18	20	25	45	250	7	1	5931	3500 Gold	, 1 Sulfur 	No enemy retaliation, Attack all adjacent enemies
+
+Pixie Pixie	Town portrait Conflux small.gif	1	2	2	1	2	3	7	20	55	25 Gold	 	Flying
+Sprite Sprite	Town portrait Conflux small.gif	1+	2	2	1	3	3	9	20	95	30 Gold	 	Flying, No enemy retaliation
+Air_Elemental Air_Elemental	Town portrait Conflux small.gif	2	9	9	2	8	25	7	6	356	250 Gold	 	Elemental, Lightning vulnerability, Immune to Meteor Shower
+Storm_Elemental Storm_Elemental	Town portrait Conflux small.gif	2+	9	9	2	8	25	8	6	486	275 Gold	 	Ranged (24 shots), Elemental, Lightning vulnerability, Immune to Meteor Shower, Casts Protection from Air
+Water_Elemental Water_Elemental	Town portrait Conflux small.gif	3	8	10	3	7	30	5	6	315	300 Gold	 	Elemental, Ice immunity, Vulnerable to Fireball, Inferno and Armageddon
+Ice_Elemental Ice_Elemental	Town portrait Conflux small.gif	3+	8	10	3	7	30	6	6	380	375 Gold	 	Ranged (24 shots), Elemental, Ice immunity, Vulnerable to Fireball, Inferno and Armageddon, Casts Protection from Water
+Fire_Elemental Fire_Elemental	Town portrait Conflux small.gif	4	10	8	4	6	35	6	5	345	350 Gold	 	Elemental, Ice vulnerability, Fire immunity
+Energy_Elemental Energy_Elemental	Town portrait Conflux small.gif	4+	12	8	4	6	35	8	5	470	400 Gold	 	Elemental, Flying, Ice vulnerability, Fire immunity, Casts Protection from Fire
+Earth_Elemental Earth_Elemental	Town portrait Conflux small.gif	5	10	10	4	8	40	4	4	330	400 Gold	 	Elemental, Meteor Shower vulnerability, Lightning and Armageddon immunity
+Magma_Elemental Magma_Elemental	Town portrait Conflux small.gif	5+	11	11	6	10	40	6	4	490	500 Gold	 	Elemental, Meteor Shower vulnerability, Lightning and Armageddon immunity, Casts Protection from Earth
+Psychic_Elemental Psychic_Elemental	Town portrait Conflux small.gif	6	15	13	10	20	75	7	2	1669	950 Gold	 	Elemental, No enemy retaliation, Attacks adjacent hexes
+Magic_Elemental Magic_Elemental	Town portrait Conflux small.gif	6+	15	13	15	25	80	9	2	2012	1200 Gold	 	Elemental, No enemy retaliation, Attacks adjacent hexes, Spell immunity
+Firebird Firebird	Town portrait Conflux small.gif	7	18	18	30	40	150	15	1	4336	2000 Gold	 	Flying, Breath attack, 50% fire resistance
+Phoenix Phoenix	Town portrait Conflux small.gif	7+	21	18	30	40	200	21	1	6721	3000 Gold	, 1 Mercury 	Flying, Breath attack, Immune to fire spells, Rebirth

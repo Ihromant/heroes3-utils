@@ -1,0 +1,5 @@
+package ua.ihromant.sod;
+
+public enum SpecialityType {
+    SECONDARY_SKILL, DEFAULT_CREATURE, SPECIFIC_CREATURE, SPELL, GOLD, CRYSTAL, MERCURY, SULFUR, GEMS, SPEED, BALLISTA,
+}

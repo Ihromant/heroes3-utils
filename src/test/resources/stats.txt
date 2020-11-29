@@ -1,0 +1,36 @@
+Skills	1	2–9	>10
+ Attack:	 0	 15%	 25%
+ Defense:	 0	 15%	 25%
+ Power:	 3	 35%	 25%
+ Knowledge:	 3	 35%	 25%
+Chances of secondary skills
+Combat	Magic	Adventure
+Basic Archery small.gif	 Archery	 2
+Basic Armorer small.gif	 Armorer	 1
+Basic Artillery small.gif	 Artillery	 1
+Basic Ballistics small.gif	 Ballistics	 4
+Basic First Aid small.gif	 First Aid	 4
+Basic Leadership small.gif	 Leadership	 3
+Basic Luck small.gif	 Luck	 2
+Basic Offense small.gif	 Offense	 1
+Basic Resistance small.gif	 Resistance	 0
+Basic Tactics small.gif	 Tactics	 1
+Basic Interference small.gif	 Interference Horn of the Abyss	 0
+Basic Intelligence small.gif	 Intelligence	 8
+Basic Mysticism small.gif	 Mysticism	 8
+Basic Scholar small.gif	 Scholar	 8
+Basic Sorcery small.gif	 Sorcery	 8
+Basic Wisdom small.gif	 Wisdom	 8
+Basic Air Magic small.gif	 Air Magic	 6
+Basic Earth Magic small.gif	 Earth Magic	 6
+Basic Fire Magic small.gif	 Fire Magic	 6
+Basic Water Magic small.gif	 Water Magic	 6
+Basic Diplomacy small.gif	 Diplomacy	 4
+Basic Eagle Eye small.gif	 Eagle Eye	 8
+Basic Estates small.gif	 Estates	 3
+Basic Learning small.gif	 Learning	 4
+Basic Logistics small.gif	 Logistics	 2
+Basic Navigation small.gif	 Navigation	 4
+Basic Necromancy small.gif	 Necromancy	 0
+Basic Pathfinding small.gif	 Pathfinding	 2
+Basic Scouting small.gif	 Scouting	 2

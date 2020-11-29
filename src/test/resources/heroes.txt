@@ -1,0 +1,156 @@
+Christian Christian	 Knight 	Specialty Ballista small.gif	 Ballista	Basic Leadership	 Basic Leadership 	Basic Artillery	 Basic Artillery
+Edric Edric	 Knight 	Specialty Griffins small.gif	 Griffins	Basic Leadership	 Basic Leadership 	Basic Armorer	 Basic Armorer
+Orrin Orrin	 Knight 	Specialty Archery small.gif	 Archery	Basic Leadership	 Basic Leadership 	Basic Archery	 Basic Archery
+Sylvia Sylvia	 Knight 	Specialty Navigation small.gif	 Navigation	Basic Leadership	 Basic Leadership 	Basic Navigation	 Basic Navigation
+Valeska Valeska	 Knight 	Specialty Archers small.gif	 Archers	Basic Leadership	 Basic Leadership 	Basic Archery	 Basic Archery
+Sorsha Sorsha	 Knight 	Specialty Swordsman small.gif	 Swordsmen	Basic Leadership	 Basic Leadership 	Basic Offense	 Basic Offense
+Tyris Tyris	 Knight 	Specialty Cavaliers small.gif	 Cavaliers	Basic Leadership	 Basic Leadership 	Basic Tactics	 Basic Tactics
+Lord_Haart Lord_Haart Restoration of Erathia	 Knight 	Specialty Estates small.gif	 Estates	Basic Leadership	 Basic Leadership 	Basic Estates	 Basic Estates
+Catherine Catherine Armageddon's Blade	 Knight 	Specialty Swordsman small.gif	 Swordsmen	Basic Leadership	 Basic Leadership 	Basic Offense	 Basic Offense
+Roland Roland Armageddon's Blade	 Knight 	Specialty Swordsman small.gif	 Swordsmen	Basic Leadership	 Basic Leadership 	Basic Armorer	 Basic Armorer
+Sir_Mullich Sir_Mullich Armageddon's Blade	 Knight 	Specialty Speed small.gif	 Speed	Advanced Leadership	 Advanced Leadership
+Adela Adela	 Cleric 	Specialty Bless small.gif	 Bless	Basic Wisdom	 Basic Wisdom 	Basic Diplomacy	 Basic Diplomacy 		Bless small.png Bless
+Adelaide Adelaide	 Cleric 	Specialty Frost Ring small.gif	 Frost Ring	Advanced Wisdom	 Advanced Wisdom 		 		Frost Ring small.png Frost Ring
+Caitlin Caitlin	 Cleric 	Specialty Gold small.gif	 Gold	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		Cure small.png Cure
+Cuthbert Cuthbert	 Cleric 	Specialty Weakness small.gif	 Weakness	Basic Wisdom	 Basic Wisdom 	Basic Estates	 Basic Estates 		Weakness small.png Weakness
+Ingham Ingham	 Cleric 	Specialty Monks small.gif	 Monks	Basic Wisdom	 Basic Wisdom 	Basic Mysticism	 Basic Mysticism 		Curse small.png Curse
+Loynis Loynis	 Cleric 	Specialty Prayer small.gif	 Prayer	Basic Wisdom	 Basic Wisdom 	Basic Learning	 Basic Learning 		Prayer small.png Prayer
+Rion Rion	 Cleric 	Specialty First Aid small.gif	 First Aid	Basic Wisdom	 Basic Wisdom 	Basic First Aid	 Basic First Aid 		Stone Skin small.png Stone Skin
+Sanya Sanya	 Cleric 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Dispel small.png Dispel
+Jenova Jenova	 Ranger 	Specialty Gold small.gif	 Gold	Advanced Archery	 Advanced Archery
+Kyrre Kyrre	 Ranger 	Specialty Logistics small.gif	 Logistics	Basic Archery	 Basic Archery 	Basic Logistics	 Basic Logistics
+Ivor Ivor	 Ranger 	Specialty Wood Elf small.gif	 Elves	Basic Archery	 Basic Archery 	Basic Offense	 Basic Offense
+Ufretin Ufretin	 Ranger 	Specialty Dwarfs small.gif	 Dwarves	Basic Resistance	 Basic Resistance 	Basic Luck	 Basic Luck
+Clancy Clancy	 Ranger 	Specialty Unicorns small.gif	 Unicorns	Basic Resistance	 Basic Resistance 	Basic Pathfinding	 Basic Pathfinding
+Thorgrim Thorgrim	 Ranger 	Specialty Resistance small.gif	 Resistance	Advanced Resistance	 Advanced Resistance
+Ryland Ryland	 Ranger 	Specialty Dendroid Guards small.gif	 Dendroids	Basic Leadership	 Basic Leadership 	Basic Diplomacy	 Basic Diplomacy
+Mephala Mephala	 Ranger 	Specialty Armorer small.gif	 Armorer	Basic Leadership	 Basic Leadership 	Basic Armorer	 Basic Armorer
+Gelu Gelu Armageddon's Blade	 Ranger 	Specialty Sharpshooters small.gif	 Sharpshooters	Basic Archery	 Basic Archery 	Basic Leadership	 Basic Leadership
+Aeris Aeris	 Druid 	Specialty Pegasuss small.gif	 Pegasi	Basic Wisdom	 Basic Wisdom 	Basic Scouting	 Basic Scouting 		Protection from Air small.png Protection from Air
+Alagar Alagar	 Druid 	Specialty Ice Bolt small.gif	 Ice Bolt	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Ice Bolt small.png Ice Bolt
+Coronius Coronius	 Druid 	Specialty Slayer small.gif	 Slayer	Basic Wisdom	 Basic Wisdom 	Basic Scholar	 Basic Scholar 		Slayer small.png Slayer
+Elleshar Elleshar	 Druid 	Specialty Intelligence small.gif	 Intelligence	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		Curse small.png Curse
+Malcom Malcom	 Druid 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Magic Arrow small.png Magic Arrow
+Melodia Melodia	 Druid 	Specialty Fortune small.gif	 Fortune	Basic Wisdom	 Basic Wisdom 	Basic Luck	 Basic Luck 		Fortune small.png Fortune
+Gem Gem	 Druid 	Specialty First Aid small.gif	 First Aid	Basic Wisdom	 Basic Wisdom 	Basic First Aid	 Basic First Aid 		Summon Boat small.png Summon Boat
+Uland Uland	 Druid 	Specialty Cure small.gif	 Cure	Advanced Wisdom	 Advanced Wisdom 	Basic Ballistics	 Basic Ballistics 		Cure small.png Cure
+Fafner Fafner	 Alchemist 	Specialty Nagas small.gif	 Nagas	Basic Scholar	 Basic Scholar 	Basic Resistance	 Basic Resistance 		Haste small.png Haste
+Iona Iona	 Alchemist 	Specialty Genies small.gif	 Genies	Basic Scholar	 Basic Scholar 	Basic Intelligence	 Basic Intelligence 		Magic Arrow small.png Magic Arrow
+Josephine Josephine	 Alchemist 	Specialty Stone Golems small.gif	 Golems	Basic Mysticism	 Basic Mysticism 	Basic Sorcery	 Basic Sorcery 		Haste small.png Haste
+Neela Neela	 Alchemist 	Specialty Armorer small.gif	 Armorer	Basic Armorer	 Basic Armorer 	Basic Scholar	 Basic Scholar 		Shield small.png Shield
+Piquedram Piquedram	 Alchemist 	Specialty Stone Gargoyles small.gif	 Gargoyles	Basic Mysticism	 Basic Mysticism 	Basic Scouting	 Basic Scouting 		Shield small.png Shield
+Rissa Rissa	 Alchemist 	Specialty Mercury small.gif	 Mercury	Basic Mysticism	 Basic Mysticism 	Basic Offense	 Basic Offense 		Magic Arrow small.png Magic Arrow
+Thane Thane	 Alchemist 	Specialty Genies small.gif	 Genies	Advanced Scholar	 Advanced Scholar 		 		Magic Arrow small.png Magic Arrow
+Torosar Torosar	 Alchemist 	Specialty Ballista small.gif	 Ballista	Basic Mysticism	 Basic Mysticism 	Basic Tactics	 Basic Tactics 		Magic Arrow small.png Magic Arrow
+Aine Aine	 Wizard 	Specialty Gold small.gif	 Gold	Basic Wisdom	 Basic Wisdom 	Basic Scholar	 Basic Scholar 		Curse small.png Curse
+Astral Astral	 Wizard 	Specialty Hypnotize small.gif	 Hypnotize	Advanced Wisdom	 Advanced Wisdom 		 		Hypnotize small.png Hypnotize
+Cyra Cyra	 Wizard 	Specialty Haste small.gif	 Haste	Basic Wisdom	 Basic Wisdom 	Basic Diplomacy	 Basic Diplomacy 		Haste small.png Haste
+Daremyth Daremyth	 Wizard 	Specialty Fortune small.gif	 Fortune	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		Fortune small.png Fortune
+Halon Halon	 Wizard 	Specialty Mysticism small.gif	 Mysticism	Basic Wisdom	 Basic Wisdom 	Basic Mysticism	 Basic Mysticism 		Stone Skin small.png Stone Skin
+Serena Serena	 Wizard 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Dispel small.png Dispel
+Solmyr Solmyr	 Wizard 	Specialty Chain Lightning small.gif	 Chain Lightning	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Chain Lightning small.png Chain Lightning
+Theodorus Theodorus	 Wizard 	Specialty Mage small.gif	 Magi	Basic Wisdom	 Basic Wisdom 	Basic Ballistics	 Basic Ballistics 		Shield small.png Shield
+Dracon Dracon Armageddon's Blade	 Wizard 	Specialty Enchanters small.gif	 Enchanters	Advanced Wisdom	 Advanced Wisdom 		 		Haste small.png Haste
+Calh Calh	 Demoniac 	Specialty Gogs small.gif	 Gogs	Basic Archery	 Basic Archery 	Basic Scouting	 Basic Scouting
+Fiona Fiona	 Demoniac 	Specialty Hell Hounds small.gif	 Hell Hounds	Advanced Scouting	 Advanced Scouting
+Ignatius Ignatius	 Demoniac 	Specialty Imps small.gif	 Imps	Basic Tactics	 Basic Tactics 	Basic Resistance	 Basic Resistance
+Marius Marius	 Demoniac 	Specialty Demons small.gif	 Demons	Advanced Armorer	 Advanced Armorer
+Nymus Nymus	 Demoniac 	Specialty Pit Fiends small.gif	 Pit Fiends	Advanced Offense	 Advanced Offense
+Octavia Octavia	 Demoniac 	Specialty Gold small.gif	 Gold	Basic Scholar	 Basic Scholar 	Basic Offense	 Basic Offense
+Pyre Pyre	 Demoniac 	Specialty Ballista small.gif	 Ballista	Basic Logistics	 Basic Logistics  	Basic Artillery	 Basic Artillery
+Rashka Rashka	 Demoniac 	Specialty Efreet small.gif	 Efreeti	Basic Wisdom	 Basic Wisdom  	Basic Scholar	 Basic Scholar
+Xeron Xeron Armageddon's Blade	 Demoniac 	Specialty Devils small.gif	 Devils	Basic Leadership	 Basic Leadership 	Basic Tactics	 Basic Tactics
+Ash Ash	 Heretic 	Specialty Bloodlust small.gif	 Bloodlust	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Bloodlust small.png Bloodlust
+Axsis Axsis	 Heretic 	Specialty Mysticism small.gif	 Mysticism	Basic Wisdom	 Basic Wisdom 	Basic Mysticism	 Basic Mysticism 		Protection from Air small.png Protection from Air
+Ayden Ayden	 Heretic 	Specialty Intelligence small.gif	 Intelligence	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		View Earth small.png View Earth
+Calid Calid	 Heretic 	Specialty Sulfur small.gif	 Sulfur	Basic Wisdom	 Basic Wisdom 	Basic Learning	 Basic Learning 		Haste small.png Haste
+Olema Olema	 Heretic 	Specialty Weakness small.gif	 Weakness	Basic Wisdom	 Basic Wisdom 	Basic Ballistics	 Basic Ballistics 		Weakness small.png Weakness
+Xyron Xyron	 Heretic 	Specialty Inferno small.gif	 Inferno (spell)	Basic Wisdom	 Basic Wisdom 	Basic Scholar	 Basic Scholar 		Inferno small.png Inferno
+Xarfax Xarfax	 Heretic 	Specialty Fireball small.gif	 Fireball	Basic Wisdom	 Basic Wisdom 	Basic Leadership	 Basic Leadership 		Fireball small.png Fireball
+Zydar Zydar	 Heretic 	Specialty Sorcery small.gif	 Sorcery	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Stone Skin small.png Stone Skin
+Charna Charna	 Death_Knight 	Specialty Wights small.gif	 Wights	Basic Necromancy	 Basic Necromancy 	Basic Tactics	 Basic Tactics 		Magic Arrow small.png Magic Arrow
+Clavius Clavius	 Death_Knight 	Specialty Gold small.gif	 Gold	Basic Necromancy	 Basic Necromancy 	Basic Offense	 Basic Offense 		Magic Arrow small.png Magic Arrow
+Galthran Galthran	 Death_Knight 	Specialty Skeletons small.gif	 Skeletons	Basic Necromancy	 Basic Necromancy 	Basic Armorer	 Basic Armorer 		Shield small.png Shield
+Isra Isra	 Death_Knight 	Specialty Necromancy small.gif	 Necromancy	Advanced Necromancy	 Advanced Necromancy 		 		Magic Arrow small.png Magic Arrow
+Moandor Moandor	 Death_Knight 	Specialty Lichs small.gif	 Liches	Basic Necromancy	 Basic Necromancy 	Basic Learning	 Basic Learning 		Slow small.png Slow
+Straker Straker	 Death_Knight 	Specialty Walking Dead small.gif	 Walking Dead	Basic Necromancy	 Basic Necromancy 	Basic Resistance	 Basic Resistance 		Haste small.png Haste
+Tamika Tamika	 Death_Knight 	Specialty Black Knights small.gif	 Black Knights	Basic Necromancy	 Basic Necromancy 	Basic Offense	 Basic Offense 		Magic Arrow small.png Magic Arrow
+Vokial Vokial	 Death_Knight 	Specialty Vampires small.gif	 Vampires	Basic Necromancy	 Basic Necromancy 	Basic Artillery	 Basic Artillery 		Stone Skin small.png Stone Skin
+Lord_Haart Lord_Haart Shadow of Death	 Death_Knight 	Specialty Black Knights small.gif	 Black Knights	Advanced Necromancy	 Advanced Necromancy 		 		Slow small.png Slow
+Aislinn Aislinn	 Necromancer 	Specialty Meteor Shower small.gif	 Meteor Shower	Basic Necromancy	 Basic Necromancy 	Basic Wisdom	 Basic Wisdom 		Meteor Shower small.png Meteor Shower
+Nagash Nagash	 Necromancer 	Specialty Gold small.gif	 Gold	Basic Necromancy	 Basic Necromancy 	Basic Intelligence	 Basic Intelligence 		Protection from Air small.png Protection from Air
+Nimbus Nimbus	 Necromancer 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Necromancy	 Basic Necromancy 	Basic Eagle Eye	 Basic Eagle Eye 		Shield small.png Shield
+Sandro Sandro	 Necromancer 	Specialty Sorcery small.gif	 Sorcery	Basic Necromancy	 Basic Necromancy 	Basic Sorcery	 Basic Sorcery 		Slow small.png Slow
+Septienna Septienna	 Necromancer 	Specialty Death Ripple small.gif	 Death Ripple	Basic Necromancy	 Basic Necromancy 	Basic Scholar	 Basic Scholar 		Death Ripple small.png Death Ripple
+Thant Thant	 Necromancer 	Specialty Animate Dead small.gif	 Animate Dead	Basic Necromancy	 Basic Necromancy  	Basic Mysticism	 Basic Mysticism 		Animate Dead small.png Animate Dead
+Vidomina Vidomina	 Necromancer 	Specialty Necromancy small.gif	 Necromancy	Advanced Necromancy	 Advanced Necromancy 		 		Curse small.png Curse
+Xsi Xsi	 Necromancer 	Specialty Stone Skin small.gif	 Stone Skin	Basic Necromancy	 Basic Necromancy 	Basic Learning	 Basic Learning 		Stone Skin small.png Stone Skin
+Ajit Ajit	 Overlord 	Specialty Beholders small.gif	 Beholders	Basic Leadership	 Basic Leadership 	Basic Resistance	 Basic Resistance
+Arlach Arlach	 Overlord 	Specialty Ballista small.gif	 Ballista	Basic Offense	 Basic Offense 	Basic Artillery	 Basic Artillery
+Dace Dace	 Overlord 	Specialty Minotaurs small.gif	 Minotaurs	Basic Offense	 Basic Offense 	Basic Tactics	 Basic Tactics
+Damacon Damacon	 Overlord 	Specialty Gold small.gif	 Gold	Advanced Offense	 Advanced Offense
+Gunnar Gunnar	 Overlord 	Specialty Logistics small.gif	 Logistics	Basic Tactics	 Basic Tactics 	Basic Logistics	 Basic Logistics
+Lorelei Lorelei	 Overlord 	Specialty Harpy small.gif	 Harpy	Basic Leadership	 Basic Leadership 	Basic Scouting	 Basic Scouting
+Shakti Shakti	 Overlord 	Specialty Troglodytes small.gif	 Troglodytes	Basic Offense	 Basic Offense 	Basic Tactics	 Basic Tactics
+Synca Synca	 Overlord 	Specialty Manticores small.gif	 Manticores	Basic Leadership	 Basic Leadership 	Basic Scholar	 Basic Scholar
+Mutare Mutare Armageddon's Blade	 Overlord 	Specialty Dragons small.gif	 Dragons	Basic Estates	 Basic Estates 	Basic Tactics	 Basic Tactics 		Magic Arrow small.png Magic Arrow
+Mutare_Drake Mutare_Drake Armageddon's Blade	 Overlord 	Specialty Dragons small.gif	 Dragons	Basic Estates	 Basic Estates 	Basic Tactics	 Basic Tactics 		Magic Arrow small.png Magic Arrow
+Alamar Alamar	 Warlock 	Specialty Resurrection small.gif	 Resurrection	Basic Wisdom	 Basic Wisdom 	Basic Scholar	 Basic Scholar 		Resurrection small.png Resurrection
+Darkstorn Darkstorn	 Warlock 	Specialty Stone Skin small.gif	 Stone Skin	Basic Wisdom	 Basic Wisdom 	Basic Learning	 Basic Learning 		Stone Skin small.png Stone Skin
+Deemer Deemer	 Warlock 	Specialty Meteor Shower small.gif	 Meteor Shower	Basic Wisdom	 Basic Wisdom 	Advanced Scouting	 Advanced Scouting 		Meteor Shower small.png Meteor Shower
+Geon Geon	 Warlock 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Slow small.png Slow
+Jaegar Jaegar	 Warlock 	Specialty Mysticism small.gif	 Mysticism	Basic Wisdom	 Basic Wisdom 	Basic Mysticism	 Basic Mysticism 		Shield small.png Shield
+Jeddite Jeddite	 Warlock 	Specialty Resurrection small.gif	 Resurrection	Advanced Wisdom	 Advanced Wisdom 		 		Resurrection small.png Resurrection
+Malekith Malekith	 Warlock 	Specialty Sorcery small.gif	 Sorcery	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Bloodlust small.png Bloodlust
+Sephinroth Sephinroth	 Warlock 	Specialty Crystal small.gif	 Crystal	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		Protection from Air small.png Protection from Air
+Crag_Hack Crag_Hack	 Barbarian 	Specialty Offense small.gif	 Offense	Advanced Offense	 Advanced Offense
+Gretchin Gretchin	 Barbarian 	Specialty Goblins small.gif	 Goblins	Basic Offense	 Basic Offense 	Basic Pathfinding	 Basic Pathfinding
+Gurnisson Gurnisson	 Barbarian 	Specialty Ballista small.gif	 Ballista	Basic Offense	 Basic Offense 	Basic Artillery	 Basic Artillery
+Jabarkas Jabarkas	 Barbarian 	Specialty Orcs small.gif	 Orcs	Basic Offense	 Basic Offense 	Basic Archery	 Basic Archery
+Krellion Krellion	 Barbarian 	Specialty Ogres small.gif	 Ogres	Basic Offense	 Basic Offense 	Basic Resistance	 Basic Resistance
+Shiva Shiva	 Barbarian 	Specialty Rocs small.gif	 Rocs	Basic Offense	 Basic Offense 	Basic Scouting	 Basic Scouting
+Tyraxor Tyraxor	 Barbarian 	Specialty Wolf Riders small.gif	 Wolf Riders	Basic Offense	 Basic Offense 	Basic Tactics	 Basic Tactics
+Yog Yog	 Barbarian 	Specialty Cyclopss small.gif	 Cyclops	Basic Offense	 Basic Offense 	Basic Ballistics	 Basic Ballistics
+Boragus Boragus Armageddon's Blade	 Barbarian 	Specialty Ogres small.gif	 Ogres	Basic Offense	 Basic Offense 	Basic Tactics	 Basic Tactics
+Kilgor Kilgor Armageddon's Blade	 Barbarian 	Specialty Behemoths small.gif	 Behemoths	Advanced Offense	 Advanced Offense
+Dessa Dessa	 Battle_Mage 	Specialty Logistics small.gif	 Logistics	Basic Wisdom	 Basic Wisdom 	Basic Logistics	 Basic Logistics 		Stone Skin small.png Stone Skin
+Gird Gird	 Battle_Mage 	Specialty Sorcery small.gif	 Sorcery	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Bloodlust small.png Bloodlust
+Gundula Gundula	 Battle_Mage 	Specialty Offense small.gif	 Offense	Basic Wisdom	 Basic Wisdom 	Basic Offense	 Basic Offense 		Slow small.png Slow
+Oris Oris	 Battle_Mage 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Protection from Air small.png Protection from Air
+Saurug Saurug	 Battle_Mage 	Specialty Gems small.gif	 Gems	Basic Wisdom	 Basic Wisdom 	Basic Resistance	 Basic Resistance 		Bloodlust small.png Bloodlust
+Terek Terek	 Battle_Mage 	Specialty Haste small.gif	 Haste	Basic Wisdom	 Basic Wisdom 	Basic Tactics	 Basic Tactics 		Haste small.png Haste
+Vey Vey	 Battle_Mage 	Specialty Ogres small.gif	 Ogres	Basic Wisdom	 Basic Wisdom 	Basic Leadership	 Basic Leadership 		Magic Arrow small.png Magic Arrow
+Zubin Zubin	 Battle_Mage 	Specialty Precision small.gif	 Precision	Basic Wisdom	 Basic Wisdom 	Basic Artillery	 Basic Artillery 		Precision small.png Precision
+Alkin Alkin	 Beastmaster 	Specialty Gorgons small.gif	 Gorgons	Basic Armorer	 Basic Armorer 	Basic Offense	 Basic Offense
+Broghild Broghild	 Beastmaster 	Specialty Wyverns small.gif	 Wyverns	Basic Armorer	 Basic Armorer 	Basic Scouting	 Basic Scouting
+Bron Bron	 Beastmaster 	Specialty Basilisks small.gif	 Basilisks	Basic Armorer	 Basic Armorer 	Basic Resistance	 Basic Resistance
+Drakon Drakon	 Beastmaster 	Specialty Gnolls small.gif	 Gnolls	Basic Armorer	 Basic Armorer 	Basic Leadership	 Basic Leadership
+Gerwulf Gerwulf	 Beastmaster 	Specialty Ballista small.gif	 Ballista	Basic Armorer	 Basic Armorer 	Basic Artillery	 Basic Artillery
+Korbac Korbac	 Beastmaster 	Specialty Serpent Flys small.gif	 Serpent Flies	Basic Armorer	 Basic Armorer 	Basic Pathfinding	 Basic Pathfinding
+Tazar Tazar	 Beastmaster 	Specialty Armorer small.gif	 Armorer	Advanced Armorer	 Advanced Armorer
+Wystan Wystan	 Beastmaster 	Specialty Lizardman small.gif	 Lizardmen	Basic Armorer	 Basic Armorer 	Basic Archery	 Basic Archery
+Andra Andra	 Witch 	Specialty Intelligence small.gif	 Intelligence	Basic Wisdom	 Basic Wisdom 	Basic Intelligence	 Basic Intelligence 		Dispel small.png Dispel
+Merist Merist	 Witch 	Specialty Stone Skin small.gif	 Stone Skin	Basic Wisdom	 Basic Wisdom 	Basic Learning	 Basic Learning 		Stone Skin small.png Stone Skin
+Mirlanda Mirlanda	 Witch 	Specialty Weakness small.gif	 Weakness	Advanced Wisdom	 Advanced Wisdom 		 		Weakness small.png Weakness
+Rosic Rosic	 Witch 	Specialty Mysticism small.gif	 Mysticism	Basic Wisdom	 Basic Wisdom 	Basic Mysticism	 Basic Mysticism 		Magic Arrow small.png Magic Arrow
+Styg Styg	 Witch 	Specialty Sorcery small.gif	 Sorcery	Basic Wisdom	 Basic Wisdom 	Basic Sorcery	 Basic Sorcery 		Shield small.png Shield
+Tiva Tiva	 Witch 	Specialty Eagle Eye small.gif	 Eagle Eye	Basic Wisdom	 Basic Wisdom 	Basic Eagle Eye	 Basic Eagle Eye 		Stone Skin small.png Stone Skin
+Verdish Verdish	 Witch 	Specialty First Aid small.gif	 First Aid	Basic Wisdom	 Basic Wisdom 	Basic First Aid	 Basic First Aid 		Protection from Fire small.png Protection from Fire
+Voy Voy	 Witch 	Specialty Navigation small.gif	 Navigation	Basic Wisdom	 Basic Wisdom 	Basic Navigation	 Basic Navigation 		Slow small.png Slow
+Adrienne Adrienne Armageddon's Blade	 Witch 	Specialty Fire Magic small.gif	 Fire Magic	Basic Wisdom	 Basic Wisdom 	Expert Fire Magic	 Expert Fire Magic 		Inferno small.png Inferno
+Erdamon Erdamon	 Planeswalker 	Specialty Earth Elementals small.gif	 Earth Elementals	Basic Tactics	 Basic Tactics 	Basic Estates	 Basic Estates
+Fiur Fiur	 Planeswalker 	Specialty Fire Elementals small.gif	 Fire Elementals	Advanced Offense	 Advanced Offense
+Ignissa Ignissa	 Planeswalker 	Specialty Fire Elementals small.gif	 Fire Elementals	Basic Offense	 Basic Offense 	Basic Artillery	 Basic Artillery
+Kalt Kalt	 Planeswalker 	Specialty Water Elementals small.gif	 Water Elementals	Basic Tactics	 Basic Tactics 	Basic Learning	 Basic Learning
+Lacus Lacus	 Planeswalker 	Specialty Water Elementals small.gif	 Water Elementals	Advanced Tactics	 Advanced Tactics
+Monere Monere	 Planeswalker 	Specialty Psychic Elementals small.gif	 Psychic Elementals	Basic Offense	 Basic Offense 	Basic Logistics	 Basic Logistics
+Pasis Pasis	 Planeswalker 	Specialty Psychic Elementals small.gif	 Psychic Elementals	Basic Offense	 Basic Offense 	Basic Artillery	 Basic Artillery
+Thunar Thunar	 Planeswalker 	Specialty Earth Elementals small.gif	 Earth Elementals	Basic Tactics	 Basic Tactics 	Basic Estates	 Basic Estates
+Aenain Aenain	 Elementalist 	Specialty Disrupting Ray small.gif	 Disrupting Ray	Basic Wisdom	 Basic Wisdom 	Basic Air Magic	 Basic Air Magic 		Disrupting Ray small.png Disrupting Ray
+Brissa Brissa	 Elementalist 	Specialty Haste small.gif	 Haste	Basic Wisdom	 Basic Wisdom 	Basic Air Magic	 Basic Air Magic 		Haste small.png Haste
+Ciele Ciele	 Elementalist 	Specialty Magic Arrow small.gif	 Magic Arrow	Basic Wisdom	 Basic Wisdom 	Basic Water Magic	 Basic Water Magic 		Magic Arrow small.png Magic Arrow
+Gelare Gelare	 Elementalist 	Specialty Gold small.gif	 Gold	Basic Wisdom	 Basic Wisdom 	Basic Water Magic	 Basic Water Magic 		Dispel small.png Dispel
+Grindan Grindan	 Elementalist 	Specialty Gold small.gif	 Gold	Basic Wisdom	 Basic Wisdom 	Basic Earth Magic	 Basic Earth Magic 		Slow small.png Slow
+Inteus Inteus	 Elementalist 	Specialty Bloodlust small.gif	 Bloodlust	Basic Wisdom	 Basic Wisdom 	Basic Fire Magic	 Basic Fire Magic 		Bloodlust small.png Bloodlust
+Labetha Labetha	 Elementalist 	Specialty Stone Skin small.gif	 Stone Skin	Basic Wisdom	 Basic Wisdom 	Basic Earth Magic	 Basic Earth Magic 		Stone Skin small.png Stone Skin
+Luna Luna	 Elementalist 	Specialty Fire Wall small.gif	 Fire Wall	Basic Wisdom	 Basic Wisdom 	Basic Fire Magic	 Basic Fire Magic 		Fire Wall small.png Fire Wall
