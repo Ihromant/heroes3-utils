@@ -1,0 +1,6 @@
+package ua.ihromant.sod;
+
+public enum SlotType {
+    HELM, CAPE, NECKLACE, WEAPON, SHIELD, TORSO, RING, FEET, MISC,
+    BALLISTA, AMMO_CART, FIRST_AID_TENT, CATAPULT, SPELL_BOOK, UNUSED
+}
