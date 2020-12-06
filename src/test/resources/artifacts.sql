@@ -23,7 +23,11 @@ full_name, slot, artifact_type, gold_cost, combo_id
 ('ANGELIC_ALLIANCE',3,4,84000,null),
 ('RING_OF_THE_MAGI',6,4,3000,null),
 ('ARMOR_OF_THE_DAMNED',5,4,12000,null),
-('POWER_OF_THE_DRAGON_FATHER',5,4,42000,null),
+('POWER_OF_THE_DRAGON_FATHER',5,4,42000,null);
+
+insert into artifact (
+full_name, slot, artifact_type, gold_cost, combo_id
+) values
 ('CAPE_OF_CONJURING',1,0,1500,(SELECT id FROM artifact WHERE full_name = 'RING_OF_THE_MAGI')),
 ('DRAGON_WING_TABARD',1,1,4000,(SELECT id FROM artifact WHERE full_name = 'POWER_OF_THE_DRAGON_FATHER')),
 ('VAMPIRES_COWL',1,1,4000,(SELECT id FROM artifact WHERE full_name = 'CLOAK_OF_THE_UNDEAD_KING')),
