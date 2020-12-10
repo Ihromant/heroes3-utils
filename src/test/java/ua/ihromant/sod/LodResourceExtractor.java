@@ -107,6 +107,8 @@ public class LodResourceExtractor {
                 list.add(str.readInt());
             }
         }
+        int firstfw = -1;
+        int firstfh = -1;
         for (Map.Entry<Integer, List<Integer>> e : offsets.entrySet()) {
             for (int j = 0; j < e.getValue().size(); j++) {
                 int offs = e.getValue().get(j);
@@ -119,6 +121,18 @@ public class LodResourceExtractor {
                 int h = str.readInt();
                 int lm = str.readInt();
                 int tm = str.readInt();
+                if (firstfw == -1 && firstfh == -1) {
+                    firstfw = fw;
+                    firstfh = fh;
+                } else {
+                    if (firstfw > fw) {
+                        fw = firstfw;
+                    }
+                    if (firstfh > fh) {
+                        fh = firstfh;
+                    }
+                }
+                File result = new File(dir, String.format("%02d_%02d.png", e.getKey(), j));
                 if (w != 0 && h != 0) {
                     ByteArrayOutputStream pixelData = new ByteArrayOutputStream();
                     switch (fmt) {
@@ -159,7 +173,7 @@ public class LodResourceExtractor {
                                 while (totalRowLength < w) {
                                     int segment = str.readUnsignedByte();
                                     int code = segment >> 5;
-                                    int length = (segment&0x1f) + 1;
+                                    int length = (segment & 0x1f) + 1;
                                     if (code == 7) {
                                         pixelData.write(str.readBytes(length));
                                     } else {
@@ -185,7 +199,7 @@ public class LodResourceExtractor {
                                     while (totalBlockLength < 32) {
                                         int segment = str.readUnsignedByte();
                                         int code = segment >> 5;
-                                        int length = (segment&0x1f) + 1;
+                                        int length = (segment & 0x1f) + 1;
                                         if (code == 7) {
                                             pixelData.write(str.readBytes(length));
                                         } else {
@@ -201,8 +215,14 @@ public class LodResourceExtractor {
                         default:
                             throw new IllegalStateException();
                     }
-                    BufferedImage img = readPalettedImage(w, h, palette, new ByteWrapper(pixelData.toByteArray()));
-                    File result = new File(dir, e.getKey() + "_" + j + ".png");
+                    BufferedImage img = readPalettedImageWithSpecial(w, h, palette, new ByteWrapper(pixelData.toByteArray()));
+                    //ImageIO.write(img, "png", result);
+                    BufferedImage im = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
+                    im.getGraphics().drawImage(img, lm, tm, null);
+                    im.getGraphics().dispose();
+                    ImageIO.write(im, "png", result);
+                } else {
+                    BufferedImage img = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
                     ImageIO.write(img, "png", result);
                 }
             }
@@ -231,6 +251,39 @@ public class LodResourceExtractor {
             img = readRGBImage(width, height, stream);
         }
         ImageIO.write(img, "bmp", new File(fileName.replace("pcx", "bmp")));
+    }
+
+    private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream) throws IOException {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int idx = stream.readUnsignedByte();
+                switch (idx) {
+                    case 0:
+                        //img.setRGB(j, i, 0);
+                        break; // full transparency
+                    case 1:
+                        //img.setRGB(j, i, palette[idx]);
+                        break; // shadow border
+                    case 4:
+                        //img.setRGB(j, i, palette[idx]);
+                        break; // shadow body
+                    case 5:
+                        //img.setRGB(j, i, palette[idx]);
+                        break; // selection highlight
+                    case 6:
+                        //img.setRGB(j, i, palette[idx]);
+                        break; // shadow body below selection
+                    case 7:
+                        //img.setRGB(j, i, palette[idx]);
+                        break; // shadow border below selection
+                    default:
+                        img.setRGB(j, i, (0xff << 24) | palette[idx]);
+                        break;
+                }
+            }
+        }
+        return img;
     }
 
     private BufferedImage readPalettedImage(int width, int height, int[] palette, ByteWrapper stream) throws IOException {
