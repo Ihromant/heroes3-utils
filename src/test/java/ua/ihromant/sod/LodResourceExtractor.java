@@ -25,9 +25,10 @@ import java.util.zip.Inflater;
 
 public class LodResourceExtractor {
     private static final String baseFolder = "/tmp/images/";
-    private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3sprite.lod";
+    private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3bitmap.lod";
     @Test
     public void extractFromLod() throws IOException, DataFormatException {
+        new File(baseFolder).mkdir();
         RandomAccessFile file = new RandomAccessFile(new File(lodPosition), "r");
         byte[] header = new byte[4];
         file.read(header);
@@ -246,11 +247,11 @@ public class LodResourceExtractor {
             for (int i = 12 + size; i < 12 + size + 3 * 256; i = i + 3) {
                 palette[(i - 12 - size) / 3] = (Byte.toUnsignedInt(bytes[i]) << 16) | (Byte.toUnsignedInt(bytes[i + 1]) << 8) | (Byte.toUnsignedInt(bytes[i + 2]));
             }
-            img = readPalettedImage(width, height, palette, stream);
+            img = readPalettedImageWithSpecial(width, height, palette, stream);
         } else {
             img = readRGBImage(width, height, stream);
         }
-        ImageIO.write(img, "bmp", new File(fileName.replace("pcx", "bmp")));
+        ImageIO.write(img, "png", new File(fileName.replace("pcx", "png")));
     }
 
     private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream) throws IOException {
@@ -298,10 +299,10 @@ public class LodResourceExtractor {
     }
 
     private BufferedImage readRGBImage(int width, int height, ByteWrapper stream) throws IOException {
-        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                img.setRGB(j, i, stream.readRGB());
+                img.setRGB(j, i, stream.readBGR());
             }
         }
         return img;
@@ -361,6 +362,10 @@ public class LodResourceExtractor {
 
         public int readRGB() throws IOException {
             return (str.readUnsignedByte() << 16) | (str.readUnsignedByte() << 8) | str.readUnsignedByte();
+        }
+
+        public int readBGR() throws IOException {
+            return str.readUnsignedByte() | (str.readUnsignedByte() << 8) | (str.readUnsignedByte() << 16);
         }
 
         public byte[] readBytes(int size) throws IOException {
