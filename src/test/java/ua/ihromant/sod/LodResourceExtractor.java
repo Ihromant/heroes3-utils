@@ -25,7 +25,7 @@ import java.util.zip.Inflater;
 
 public class LodResourceExtractor {
     private static final String baseFolder = "/tmp/images/";
-    private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3bitmap.lod";
+    private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3sprite.lod";
     @Test
     public void extractFromLod() throws IOException, DataFormatException {
         new File(baseFolder).mkdir();

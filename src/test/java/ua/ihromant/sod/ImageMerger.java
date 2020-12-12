@@ -47,21 +47,25 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        for (Spell sp : Arrays.asList(Spell.ICE_BOLT, Spell.MAGIC_ARROW)) {
-            for (int number : IntStream.range(0, 5).boxed().collect(Collectors.toList())) {
-                mergeImage(sp.name().toLowerCase() + "_" + number);
-            }
+//        for (Spell sp : Arrays.asList(Spell.ICE_BOLT, Spell.MAGIC_ARROW)) {
+//            for (int number : IntStream.range(0, 5).boxed().collect(Collectors.toList())) {
+//                mergeImage(sp.name().toLowerCase() + "_" + number);
+//            }
+//        }
+//        mergeImage("fire_wall_init");
+//        mergeImage("fire_wall_anim");
+//        mergeImage("fire_wall_fade");
+//        mergeImage("land_mines_anim");
+//        mergeImage("land_mines_explode");
+//        mergeImage("land_mines_fade");
+//        mergeImage("land_mines_init");
+//        mergeImage("quicksand_anim");
+//        mergeImage("quicksand_fade");
+//        mergeImage("quicksand_init");
+        for (int i = 0; i < 14; i++) {
+           String name = String.format("sp%02d_", i);
+           mergeImage(name);
         }
-        mergeImage("fire_wall_init");
-        mergeImage("fire_wall_anim");
-        mergeImage("fire_wall_fade");
-        mergeImage("land_mines_anim");
-        mergeImage("land_mines_explode");
-        mergeImage("land_mines_fade");
-        mergeImage("land_mines_init");
-        mergeImage("quicksand_anim");
-        mergeImage("quicksand_fade");
-        mergeImage("quicksand_init");
     }
 
     private void mergeImage(String animName) throws IOException {
