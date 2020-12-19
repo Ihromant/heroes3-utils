@@ -167,3 +167,10 @@ INSERT INTO public.creature (
 (138,'RUST_DRAGON',NULL,7,false,30,30,50,50,750,17,1,26433,15000),
 (139,'CRYSTAL_DRAGON',NULL,7,false,40,40,60,75,800,16,1,39338,20000),
 (140,'AZURE_DRAGON',NULL,7,false,50,50,70,80,1000,19,1,78845,30000);
+
+alter table creature
+add column upgraded int4;
+
+update creature
+set upgraded = (id + 1)
+where (id % 2 = 0) and id < 126;
