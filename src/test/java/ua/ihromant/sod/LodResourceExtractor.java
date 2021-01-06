@@ -20,10 +20,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
 public class LodResourceExtractor {
+    private static final int MIN_HOR_OFFSET = 42;
+    private static final int HOR_WIDTH = 350;
+    private static final int MIN_VER_OFFSET = 80;
+    private static final int HOR_HEIGHT = 280;
+    private static final int CANVAS_FRAMES = 6;
     private static final String baseFolder = "/tmp/images/";
     private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3sprite.lod";
     @Test
@@ -58,7 +64,7 @@ public class LodResourceExtractor {
         }
         for (FileMetadata meta : files) {
             String fileName = baseFolder + meta.getName();
-            System.out.println(fileName);
+            //System.out.println(fileName);
             file.seek(meta.getOffset());
             int size = meta.getCSize() != 0 ? meta.getCSize() : meta.getSize();
             byte[] bytes = meta.getCSize() != 0 ? readCompressed(file, size, meta.getSize()) : readUncompressed(file, size);
@@ -76,11 +82,15 @@ public class LodResourceExtractor {
                 }
             }
         }
-        files.forEach(f -> System.out.println(f.getName() + " " + f.getOffset() + " " + f.getSize() + " " + f.getCSize()));
+        //files.forEach(f -> System.out.println(f.getName() + " " + f.getOffset() + " " + f.getSize() + " " + f.getCSize()));
     }
 
     private void readDef(byte[] bytes, String fileName) throws IOException {
         String folderName = fileName.substring(0, fileName.indexOf("."));
+        // if (!fileName.startsWith("c") && !fileName.startsWith("sm")) { // creatures
+        if (!fileName.startsWith("ch0") && !fileName.startsWith("ch1")) { // heroes
+            return;
+        }
         File dir = new File(baseFolder, folderName);
         dir.mkdir();
         ByteWrapper str = new ByteWrapper(bytes);
@@ -102,7 +112,7 @@ public class LodResourceExtractor {
             str.readInt();
             for (int j = 0; j < entries; j++) {
                 String name = str.readString(13);
-                System.out.println(name);
+                //System.out.println(name);
             }
             for (int j = 0; j < entries; j++) {
                 list.add(str.readInt());
@@ -111,6 +121,11 @@ public class LodResourceExtractor {
         int firstfw = -1;
         int firstfh = -1;
         for (Map.Entry<Integer, List<Integer>> e : offsets.entrySet()) {
+            BufferedImage im = new BufferedImage(150, 175 * e.getValue().size(), BufferedImage.TYPE_INT_ARGB);
+            // BufferedImage im = new BufferedImage(HOR_WIDTH, HOR_HEIGHT * e.getValue().size(), BufferedImage.TYPE_INT_ARGB);
+            File result = new File(dir, String.format("%02d.png", e.getKey()));
+            BufferedImage imSelection = e.getKey() == 2 ? new BufferedImage(HOR_WIDTH, HOR_HEIGHT * e.getValue().size(), BufferedImage.TYPE_INT_ARGB) : null;
+            File imResult = new File(dir, "22.png");
             for (int j = 0; j < e.getValue().size(); j++) {
                 int offs = e.getValue().get(j);
                 str.seek(offs);
@@ -133,7 +148,6 @@ public class LodResourceExtractor {
                         fh = firstfh;
                     }
                 }
-                File result = new File(dir, String.format("%02d_%02d.png", e.getKey(), j));
                 if (w != 0 && h != 0) {
                     ByteArrayOutputStream pixelData = new ByteArrayOutputStream();
                     switch (fmt) {
@@ -216,17 +230,38 @@ public class LodResourceExtractor {
                         default:
                             throw new IllegalStateException();
                     }
-                    BufferedImage img = readPalettedImageWithSpecial(w, h, palette, new ByteWrapper(pixelData.toByteArray()));
-                    //ImageIO.write(img, "png", result);
-                    BufferedImage im = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
-                    im.getGraphics().drawImage(img, lm, tm, null);
-                    im.getGraphics().dispose();
-                    ImageIO.write(im, "png", result);
+                    BufferedImage img = readPalettedImageWithSpecial(w, h, palette, new ByteWrapper(pixelData.toByteArray()), GraphMode.NONE, 0);
+//                    BufferedImage imgSel = e.getKey() == 2 ? readPalettedImageWithSpecial(w, h, palette, new ByteWrapper(pixelData.toByteArray()), GraphMode.SELECTION, 0) : null;
+//                    if (e.getKey() == 2 && j == 0) {
+//                        for (GraphMode mode : Arrays.asList(GraphMode.BLOODLUST, GraphMode.FADE, GraphMode.PETRIFY)) {
+//                            BufferedImage im1 = new BufferedImage(HOR_WIDTH, HOR_HEIGHT * CANVAS_FRAMES, BufferedImage.TYPE_INT_ARGB);
+//                            File result1 = new File(dir, String.format("%02d.png", mode.ordinal() + 21));
+//                            for (int i = 0; i < CANVAS_FRAMES; i++) {
+//                                try {
+//                                    BufferedImage img1 = readPalettedImageWithSpecial(w, h, palette, new ByteWrapper(pixelData.toByteArray()), mode, i);
+//                                    im1.getGraphics().drawImage(img1, lm - MIN_HOR_OFFSET, i * HOR_HEIGHT + tm - MIN_VER_OFFSET, null);
+//                                } catch (Exception ex) {
+//                                    ex.printStackTrace();
+//                                }
+//                            }
+//                            im1.getGraphics().dispose();
+//                            ImageIO.write(im1, "png", result1);
+//                        }
+//                    }
+//                    if (imgSel != null) imSelection.getGraphics().drawImage(imgSel, lm - MIN_HOR_OFFSET, j * HOR_HEIGHT + tm - MIN_VER_OFFSET, null);
+//                    im.getGraphics().drawImage(img, lm - MIN_HOR_OFFSET, j * HOR_HEIGHT + tm - MIN_VER_OFFSET, null);
+                    im.getGraphics().drawImage(img, lm, j * fh + tm, null);
                 } else {
                     BufferedImage img = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
                     ImageIO.write(img, "png", result);
                 }
             }
+            im.getGraphics().dispose();
+            if (imSelection != null) {
+                imSelection.getGraphics().dispose();
+                ImageIO.write(imSelection, "png", imResult);
+            }
+            ImageIO.write(im, "png", result);
         }
     }
 
@@ -247,39 +282,63 @@ public class LodResourceExtractor {
             for (int i = 12 + size; i < 12 + size + 3 * 256; i = i + 3) {
                 palette[(i - 12 - size) / 3] = (Byte.toUnsignedInt(bytes[i]) << 16) | (Byte.toUnsignedInt(bytes[i + 1]) << 8) | (Byte.toUnsignedInt(bytes[i + 2]));
             }
-            img = readPalettedImageWithSpecial(width, height, palette, stream);
+            img = readPalettedImageWithSpecial(width, height, palette, stream, GraphMode.NONE, 0);
         } else {
             img = readRGBImage(width, height, stream);
         }
         ImageIO.write(img, "png", new File(fileName.replace("pcx", "png")));
     }
 
-    private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream) throws IOException {
+    private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream, GraphMode mode, int frame) throws IOException {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 int idx = stream.readUnsignedByte();
                 switch (idx) {
+                    // replace special colors
+                    // 0 -> (0,0,0,0)    = full transparency
+                    // 1 -> (0,0,0,0x40) = shadow border
+                    // 2 -> ???
+                    // 3 -> ???
+                    // 4 -> (0,0,0,0x80) = shadow body
+                    // 5 -> (0,0,0,0)    = selection highlight, treat as full transparency
+                    // 6 -> (0,0,0,0x80) = shadow body below selection, treat as shadow body
+                    // 7 -> (0,0,0,0x40) = shadow border below selection, treat as shadow border
                     case 0:
                         //img.setRGB(j, i, 0);
                         break; // full transparency
                     case 1:
-                        //img.setRGB(j, i, palette[idx]);
+                        img.setRGB(j, i, 0x40 << 24);
                         break; // shadow border
                     case 4:
-                        //img.setRGB(j, i, palette[idx]);
+                        img.setRGB(j, i, 0x80 << 24);
                         break; // shadow body
                     case 5:
+                        if (mode == GraphMode.SELECTION) {
+                            img.setRGB(j, i, ARGBColor.YELLOW);
+                        }
                         //img.setRGB(j, i, palette[idx]);
                         break; // selection highlight
                     case 6:
-                        //img.setRGB(j, i, palette[idx]);
+                        img.setRGB(j, i, 0x80 << 24);
                         break; // shadow body below selection
                     case 7:
-                        //img.setRGB(j, i, palette[idx]);
+                        img.setRGB(j, i, 0x40 << 24);
                         break; // shadow border below selection
                     default:
-                        img.setRGB(j, i, (0xff << 24) | palette[idx]);
+                        switch (mode) {
+                            case FADE:
+                                img.setRGB(j, i, ARGBColor.transparent((0xff << 24) | palette[idx], 1 - 0.2 * frame));
+                                break;
+                            case PETRIFY:
+                                img.setRGB(j, i, ARGBColor.interpolate((0xff << 24) | palette[idx], ARGBColor.WHITE, 0.14 * (5 - frame)));
+                                break;
+                            case BLOODLUST:
+                                img.setRGB(j, i, ARGBColor.interpolate((0xff << 24) | palette[idx], ARGBColor.RED, 0.16 * (5 - frame)));
+                                break;
+                            default:
+                                img.setRGB(j, i, (0xff << 24) | palette[idx]);
+                        }
                         break;
                 }
             }
@@ -381,6 +440,10 @@ public class LodResourceExtractor {
         public int readUnsignedShort() throws IOException {
             return str.readUnsignedShort();
         }
+    }
+
+    private enum GraphMode {
+        NONE, SELECTION, BLOODLUST, PETRIFY, FADE
     }
 
     @Setter
