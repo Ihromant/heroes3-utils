@@ -362,6 +362,7 @@ insert into creature_feature (
 ((select id from creature where full_name = 'FAERIE_DRAGON'), 'FLYING', null),
 ((select id from creature where full_name = 'FAERIE_DRAGON'), 'DRAGON', null),
 ((select id from creature where full_name = 'FAERIE_DRAGON'), 'MAGIC_MIRROR', 20),
+((select id from creature where full_name = 'FAERIE_DRAGON'), 'ROLL_SPELL', null),
 ((select id from creature where full_name = 'FAERIE_DRAGON'), 'SPELLCASTER', 5),
 ((select id from creature where full_name = 'RUST_DRAGON'), 'TWO_HEX', null),
 ((select id from creature where full_name = 'RUST_DRAGON'), 'FLYING', null),
