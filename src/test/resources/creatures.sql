@@ -2,21 +2,21 @@ CREATE TABLE public.creature (
 	id int4 NOT null primary key,
 	full_name varchar not NULL,
 	castle_id int4,
-	lvl int2 not null,
+	lvl int4,
 	upgrade boolean not null,
-	attack int2 not null,
-	defense int2 not null,
-	damage_low int4 not null,
-	damage_high int4 not null,
+	attack int4 not null,
+	defense int4 not null,
+	damage_low int4,
+	damage_high int4,
 	hit_points int4 not null,
-	speed int2 not null,
-	growth int4 not null,
+	speed int4,
+	growth int4,
 	ai_value int4 not null,
 	gold_cost int4 not null,
-	mercury_cost int2,
-	crystal_cost int2,
-	sulfur_cost int2,
-	gem_cost int2
+	mercury_cost int4,
+	crystal_cost int4,
+	sulfur_cost int4,
+	gem_cost int4
 );
 
 -- drop table public.creature;
@@ -166,7 +166,12 @@ INSERT INTO public.creature (
 (137,'FAERIE_DRAGON',NULL,7,false,20,20,20,30,500,15,1,19580,10000),
 (138,'RUST_DRAGON',NULL,7,false,30,30,50,50,750,17,1,26433,15000),
 (139,'CRYSTAL_DRAGON',NULL,7,false,40,40,60,75,800,16,1,39338,20000),
-(140,'AZURE_DRAGON',NULL,7,false,50,50,70,80,1000,19,1,78845,30000);
+(140,'AZURE_DRAGON',NULL,7,false,50,50,70,80,1000,19,1,78845,30000),
+---------------------------------------------------------------------------------
+(141,'AMMO_CART',NULL,NULL,false,0,5,null,null,100,null,null,400,1000),
+(142,'BALLISTA',NULL,NULL,false,10,10,2,3,250,null,null,600,2500),
+(143,'CATAPULT',NULL,NULL,false,10,10,null,null,1000,null,null,500,0),
+(144,'FIRST_AID_TENT',NULL,NULL,false,0,0,null,null,75,null,null,300,750);
 
 alter table creature
 add column upgraded int4;

@@ -32,7 +32,7 @@ public class CreaturesResourceExtractor {
     private static final int CANVAS_FRAMES = 6;
     private static Map<Object, Object> mapping;
     private static final String baseFolder = "/tmp/images/";
-    private static final String lodPosition = "/home/ihromant/Downloads/H3sprite.lod";
+    private static final String lodPosition = "/home/ihromant/Games/Heroes of Might and Magic III Complete/Data/H3sprite.lod";
     @Test
     public void extractFromLod() throws IOException, DataFormatException {
         new File(baseFolder).mkdir();

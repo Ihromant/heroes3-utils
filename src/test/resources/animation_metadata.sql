@@ -171,4 +171,9 @@ attack_down, shoot_up, shoot_straight, shoot_down, sk1, sk2, sk3, start_moving, 
 ((SELECT id FROM creature WHERE full_name = 'AZURE_DRAGON'),6,8,12,7,7,9,null,2,2,2,2,11,10,10,null,null,null,11,10,8,4,4),
 ((SELECT id FROM creature WHERE full_name = 'GOLD_GOLEM'),9,9,8,7,8,8,8,3,3,3,3,7,7,7,null,null,null,null,null,null,1,1),
 ((SELECT id FROM creature WHERE full_name = 'NOMAD'),7,7,12,9,8,10,null,3,3,3,3,9,9,9,null,null,null,null,null,null,1,1),
-((SELECT id FROM creature WHERE full_name = 'PEASANT'),8,16,8,6,9,6,null,2,2,2,2,8,8,8,null,null,null,null,null,null,2,2);
+((SELECT id FROM creature WHERE full_name = 'PEASANT'),8,16,8,6,9,6,null,2,2,2,2,8,8,8,null,null,null,null,null,null,2,2),
+------------------------------------------------------------------------------------------------------------------------------------------
+((SELECT id FROM creature WHERE full_name = 'AMMO_CART'),null,null,1,10,10,10,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null),
+((SELECT id FROM creature WHERE full_name = 'BALLISTA'),null,null,1,10,10,9,null,null,null,null,null,null,null,null,9,9,9,null,null,null,null,null),
+((SELECT id FROM creature WHERE full_name = 'CATAPULT'),null,null,1,8,8,9,null,null,null,null,null,null,null,null,13,13,13,null,null,null,null,null),
+((SELECT id FROM creature WHERE full_name = 'FIRST_AID_TENT'),null,null,6,9,9,6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
