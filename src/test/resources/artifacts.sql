@@ -149,7 +149,11 @@ full_name, slot, artifact_type, gold_cost, combo_id
 ('BREASTPLATE_OF_BRIMSTONE',5,2,6000,(SELECT id FROM artifact WHERE full_name = 'ARMAGEDDONS_BLADE_(CAMPAIGN_ONLY)')),
 ('ARMOR_OF_WONDER',5,1,4000,(SELECT id FROM artifact WHERE full_name = 'ANGELIC_ALLIANCE')),
 ('DRAGON_SCALE_ARMOR',5,3,8000,(SELECT id FROM artifact WHERE full_name = 'POWER_OF_THE_DRAGON_FATHER')),
-('TITANS_CUIRASS',5,3,10000,(SELECT id FROM artifact WHERE full_name = 'TITANS_THUNDER'));
+('TITANS_CUIRASS',5,3,10000,(SELECT id FROM artifact WHERE full_name = 'TITANS_THUNDER')),
+('AMMO_CART',10,5,1000,null),
+('BALLISTA',9,5,2500,null),
+('CATAPULT',12,5,0,null),
+('FIRST_AID_TENT',11,5,750,null);
 
 create table bonus_type (
 	id int4 not null primary key,
