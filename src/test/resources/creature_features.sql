@@ -384,9 +384,12 @@ insert into creature_feature (
 ((select id from creature where full_name = 'AMMO_CART'), 'WAR_MACHINE', 1),
 ((select id from creature where full_name = 'AMMO_CART'), 'INFINITE_SHOTS', null),
 ((select id from creature where full_name = 'BALLISTA'), 'WAR_MACHINE', 2),
+((select id from creature where full_name = 'BALLISTA'), 'TWO_HEX', null),
 ((select id from creature where full_name = 'BALLISTA'), 'ARTILLERY', null),
 ((select id from creature where full_name = 'BALLISTA'), 'RANGED', 9999),
 ((select id from creature where full_name = 'CATAPULT'), 'WAR_MACHINE', 3),
+((select id from creature where full_name = 'CATAPULT'), 'TWO_HEX', null),
 ((select id from creature where full_name = 'CATAPULT'), 'BALLISTICS', null),
 ((select id from creature where full_name = 'FIRST_AID_TENT'), 'WAR_MACHINE', 4),
+((select id from creature where full_name = 'FIRST_AID_TENT'), 'TWO_HEX', null),
 ((select id from creature where full_name = 'FIRST_AID_TENT'), 'FIRST_AID', null);
