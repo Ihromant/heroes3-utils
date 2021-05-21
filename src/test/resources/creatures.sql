@@ -171,7 +171,9 @@ INSERT INTO public.creature (
 (141,'AMMO_CART',NULL,NULL,false,0,5,null,null,100,null,null,400,1000),
 (142,'BALLISTA',NULL,NULL,false,10,10,2,3,250,null,null,600,2500),
 (143,'CATAPULT',NULL,NULL,false,10,10,null,null,1000,null,null,500,0),
-(144,'FIRST_AID_TENT',NULL,NULL,false,0,0,null,null,75,null,null,300,750);
+(144,'FIRST_AID_TENT',NULL,NULL,false,0,0,null,null,75,null,null,300,750),
+(145,'PRIMARY_ARROW_TOWER',NULL,NULL,false,10,0,10,15,2,null,null,400,0),
+(146,'SECONDARY_ARROW_TOWER',NULL,NULL,false,10,0,6,9,2,null,null,400,0);
 
 alter table creature
 add column upgraded int4;
