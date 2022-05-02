@@ -62,13 +62,13 @@ public class ImageMerger {
 //        mergeImage("quicksand_anim");
 //        mergeImage("quicksand_fade");
 //        mergeImage("quicksand_init");
-        mergeImage("c11spa1");
+        mergeImage("smbalx");
     }
 
     private void mergeImage(String animName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File("/home/ihromant/images/aaeffects/" + animName);
+        File root = new File("/home/ihromant/Games/units/images/aaprojectile/" + animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
@@ -91,7 +91,11 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/animations", root.getName() + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/projectiles", root.getName() + ".png"));
+    }
+
+    public enum HeroAnimStage {
+        BASE, STANDING, UNHAPPY, HAPPY, CAST;
     }
 
     @Test
@@ -106,15 +110,29 @@ public class ImageMerger {
                     max = yIdx;
                 }
             }
-            BufferedImage result = new BufferedImage(HERO_WIDTH * 5, HERO_HEIGHT * max + HERO_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+            File[][] files = new File[5][max + 1];
+            //BufferedImage result = new BufferedImage(HERO_WIDTH * 5, HERO_HEIGHT * max + HERO_HEIGHT, BufferedImage.TYPE_INT_ARGB);
             for (File img : Objects.requireNonNull(dir.listFiles())) {
                 String name = img.getName();
                 int xIdx = Integer.parseInt(name.substring(0, 2), 10);
                 int yIdx = Integer.parseInt(name.substring(3, 5), 10);
-                BufferedImage toDraw = ImageIO.read(img);
-                result.getGraphics().drawImage(toDraw, xIdx * HERO_WIDTH, yIdx * HERO_HEIGHT, null);
+                files[xIdx][yIdx] = img;
             }
-            ImageIO.write(result, "PNG", new File(new File("/home/ihromant/workspace/github.io/img/animations/heroes"), dir.getName() + ".png"));
+            for (int i = 0; i < files.length; i++) {
+                File[] layer = files[i];
+                int colMax = IntStream.range(0, max).filter(j -> layer[j] == null).findFirst().orElse(max + 1);
+                BufferedImage result = new BufferedImage(HERO_WIDTH, HERO_HEIGHT * colMax, BufferedImage.TYPE_INT_ARGB);
+                for (int j = 0; j < colMax; j++) {
+                    File img = layer[j];
+                    if (img != null) {
+                        BufferedImage toDraw = ImageIO.read(img);
+                        result.getGraphics().drawImage(toDraw, 0, j * HERO_HEIGHT, null);
+                    }
+                }
+                File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/animations/heroes/" + dir.getName());
+                newDir.mkdir();
+                ImageIO.write(result, "PNG", new File(newDir, dir.getName() + "_" + HeroAnimStage.values()[i].toString().toLowerCase() + ".png"));
+            }
         }
     }
 }
