@@ -178,6 +178,19 @@ public class H3MParser {
                 }
             }
         }
+        map.setObjectAttributes(new ObjectAttribute[wrap.readInt()]);
+        for (int i = 0; i < map.getObjectAttributes().length; i++) {
+            map.getObjectAttributes()[i] = new ObjectAttribute().setDef(wrap.readString(wrap.readInt()))
+                    .setPassable(wrap.readUnsigned(6))
+                    .setActive(wrap.readUnsigned(6))
+                    .setAllowedLandsapes(wrap.readUnsignedShort())
+                    .setLandscapeGroup(wrap.readUnsignedShort())
+                    .setObjectClass(wrap.readInt())
+                    .setObjectNumber(wrap.readInt())
+                    .setObjectGroup(wrap.readUnsigned())
+                    .setAbove(wrap.readUnsigned())
+                    .setUnknown(wrap.readUnsigned(16));
+        }
         byte[] bytez = wrap.readBytes(100);
         System.out.println();
         if (format != H3M_FORMAT_SOD) {
