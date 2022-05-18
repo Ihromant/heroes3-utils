@@ -1,5 +1,4 @@
 package ua.ihromant.sod;
-import com.google.common.io.LittleEndianDataInputStream;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
@@ -7,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.stream.Stream;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -32,7 +29,7 @@ public class CreaturesResourceExtractor {
     private static final int CANVAS_FRAMES = 6;
     private static Map<Object, Object> mapping;
     private static final String baseFolder = "/tmp/images/";
-    private static final String lodPosition = "/home/ihromant/Games/Heroes of Might and Magic III Complete/Data/H3sprite.lod";
+    private static final String lodPosition = "/home/ihromant/Games/Heroes III Complete/Data/H3sprite.lod";
     @Test
     public void extractFromLod() throws IOException, DataFormatException {
         new File(baseFolder).mkdir();
@@ -167,8 +164,8 @@ public class CreaturesResourceExtractor {
                                 str.seek(offs + 32 + lineOff);
                                 int totalRowLength = 0;
                                 while (totalRowLength < w) {
-                                    int code = str.readUnsignedByte();
-                                    int length = str.readUnsignedByte() + 1;
+                                    int code = str.readUnsigned();
+                                    int length = str.readUnsigned() + 1;
                                     if (code == 0xff) {
                                         pixelData.write(str.readBytes(length));
                                     } else {
@@ -190,7 +187,7 @@ public class CreaturesResourceExtractor {
                                 str.seek(offs + 32 + lineOff);
                                 int totalRowLength = 0;
                                 while (totalRowLength < w) {
-                                    int segment = str.readUnsignedByte();
+                                    int segment = str.readUnsigned();
                                     int code = segment >> 5;
                                     int length = (segment & 0x1f) + 1;
                                     if (code == 7) {
@@ -216,7 +213,7 @@ public class CreaturesResourceExtractor {
                                     str.seek(offs + 32 + i);
                                     int totalBlockLength = 0;
                                     while (totalBlockLength < 32) {
-                                        int segment = str.readUnsignedByte();
+                                        int segment = str.readUnsigned();
                                         int code = segment >> 5;
                                         int length = (segment & 0x1f) + 1;
                                         if (code == 7) {
@@ -296,7 +293,7 @@ public class CreaturesResourceExtractor {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int idx = stream.readUnsignedByte();
+                int idx = stream.readUnsigned();
                 switch (idx) {
                     // replace special colors
                     // 0 -> (0,0,0,0)    = full transparency
@@ -353,7 +350,7 @@ public class CreaturesResourceExtractor {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int idx = stream.readUnsignedByte();
+                int idx = stream.readUnsigned();
                 img.setRGB(j, i, palette[idx]);
             }
         }
@@ -392,57 +389,6 @@ public class CreaturesResourceExtractor {
         byte[] result = new byte[size];
         file.read(result);
         return result;
-    }
-
-    public static class ByteWrapper {
-        private final LittleEndianDataInputStream str;
-
-        public ByteWrapper(byte[] bytes) {
-            this.str = new LittleEndianDataInputStream(new ByteArrayInputStream(bytes));
-        }
-
-        public void seek(int position) throws IOException {
-            str.reset();
-            str.skipBytes(position);
-        }
-
-        public int readInt() throws IOException {
-            return str.readInt();
-        }
-
-        public String readString(int characters) throws IOException {
-            char[] nm = new char[characters];
-            for (int k = 0; k < characters; k++) {
-                nm[k] = (char) str.readByte();
-            }
-            return new String(nm);
-        }
-
-        public int readUnsignedByte() throws IOException {
-            return str.readUnsignedByte();
-        }
-
-        public int readRGB() throws IOException {
-            return (str.readUnsignedByte() << 16) | (str.readUnsignedByte() << 8) | str.readUnsignedByte();
-        }
-
-        public int readBGR() throws IOException {
-            return str.readUnsignedByte() | (str.readUnsignedByte() << 8) | (str.readUnsignedByte() << 16);
-        }
-
-        public byte[] readBytes(int size) throws IOException {
-            byte[] bytes = new byte[size];
-            str.read(bytes);
-            return bytes;
-        }
-
-        public byte readByte() throws IOException {
-            return str.readByte();
-        }
-
-        public int readUnsignedShort() throws IOException {
-            return str.readUnsignedShort();
-        }
     }
 
     private enum GraphMode {
