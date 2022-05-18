@@ -2,6 +2,7 @@ package ua.ihromant.sod.h3m;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import ua.ihromant.sod.BackgroundType;
 import ua.ihromant.sod.ByteWrapper;
 
 import java.io.IOException;
@@ -161,8 +162,24 @@ public class H3MParser {
                         .setKnowledge(wrap.readUnsigned()));
             }
         }
-//        byte[] bytez = wrap.readBytes(100);
-//        System.out.println();
+        map.setTiles(new MapTile[map.getBasic().isTwoLevel() ? 2 : 1][map.getBasic().getMapSize()][map.getBasic().getMapSize()]);
+        for (int z = 0; z < map.getTiles().length; z++) {
+            MapTile[][] level = map.getTiles()[z];
+            for (int y = 0; y < map.getBasic().getMapSize(); y++) {
+                MapTile[] column = level[y];
+                for (int x = 0; x < map.getBasic().getMapSize(); x++) {
+                    column[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
+                            .setTerrainSprite(wrap.readUnsigned())
+                            .setRiverType(wrap.readUnsigned())
+                            .setRiverSprite(wrap.readUnsigned())
+                            .setRoadType(wrap.readUnsigned())
+                            .setRoadSprite(wrap.readUnsigned())
+                            .setMirroring(wrap.readUnsigned());
+                }
+            }
+        }
+        byte[] bytez = wrap.readBytes(100);
+        System.out.println();
         if (format != H3M_FORMAT_SOD) {
             throw new IllegalArgumentException("Not supported because not SoD"); // TODO for now
         }

@@ -1,5 +1,5 @@
 package ua.ihromant.sod;
 
 public enum BackgroundType {
-    GRASS, DIRT, LAVA, SUBTERRANEAN, ROUGH, SAND, SNOW, SWAMP
+    DIRT, SAND, GRASS, SNOW, SWAMP, ROUGH, SUBTERRANEAN, LAVA, WATER, ROCK
 }
