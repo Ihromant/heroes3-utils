@@ -12,4 +12,5 @@ public class MapMetadata {
     private BasicInformation basic;
     private MapTile[][][] tiles;
     private ObjectAttribute[] objectAttributes;
+    private ObjectData[] objectData;
 }

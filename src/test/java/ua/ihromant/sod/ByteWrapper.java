@@ -33,6 +33,10 @@ public class ByteWrapper {
         return new String(nm);
     }
 
+    public String readString() throws IOException {
+        return readString(readInt());
+    }
+
     public int readUnsigned() throws IOException {
         position = position + 1;
         return str.readUnsignedByte();
@@ -76,6 +80,24 @@ public class ByteWrapper {
     public int readUnsignedShort() throws IOException {
         position = position + 2;
         return str.readUnsignedShort();
+    }
+
+    public int[] readUnsignedShort(int size) throws IOException {
+        position = position + 2 * size;
+        int[] shorts = new int[size];
+        for (int i = 0; i < size; i++) {
+            shorts[i] = str.readUnsignedShort();
+        }
+        return shorts;
+    }
+
+    public int[] readInt(int size) throws IOException {
+        position = position + 4 * size;
+        int[] ints = new int[size];
+        for (int i = 0; i < size; i++) {
+            ints[i] = str.readInt();
+        }
+        return ints;
     }
 
     public int getPosition() {

@@ -7,12 +7,16 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AiHeroSettings {
-    private int gender;
+public class CommonReward {
     private int experience;
+    private int spellPoints;
+    private int morale;
+    private int luck;
+    private int[] resources;
+    private PrimarySkills skills;
     private CommonSecondarySkill[] secondarySkills;
-    private HeroArtifacts artConf;
-    private String biography;
+    private int[] artifacts;
     private int[] spells;
-    private PrimarySkills primary;
+    private CreatureSlot[] creatures;
+    private int[] unknown;
 }

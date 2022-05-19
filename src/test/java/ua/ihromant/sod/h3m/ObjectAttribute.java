@@ -18,4 +18,5 @@ public class ObjectAttribute {
     private int objectGroup;
     private int above;
     private int[] unknown;
+    private ObjectType type;
 }
