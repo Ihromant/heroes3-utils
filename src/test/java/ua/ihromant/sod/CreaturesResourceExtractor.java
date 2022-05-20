@@ -3,6 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
+import ua.ihromant.sod.utils.bytes.ByteWrapper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
