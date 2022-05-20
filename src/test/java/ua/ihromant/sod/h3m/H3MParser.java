@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.BackgroundType;
 import ua.ihromant.sod.ByteWrapper;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
@@ -22,7 +23,7 @@ public class H3MParser {
     @Test
     public void parse() throws IOException {
         MapMetadata map = new MapMetadata();
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Metataxer.h3m"))));
+        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Paragon.h3m"))));
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
@@ -307,11 +308,32 @@ public class H3MParser {
                     throw new IllegalArgumentException();
             }
         }
-        byte[] bytez = wrap.readBytes(100);
-        System.out.println();
-        if (format != H3M_FORMAT_SOD) {
-            throw new IllegalArgumentException("Not supported because not SoD"); // TODO for now
+        int eventCount = wrap.readInt();
+        for (int i = 0; i < eventCount; i++) {
+            wrap.readString(); // event name;
+            wrap.readString(); // event message
+            wrap.readInt(7); // resources
+            wrap.readUnsigned(); // applies to players
+            Integer appliesToHuman = isSoD ? wrap.readUnsigned() : null;
+            wrap.readUnsigned(); // applies to computer
+            wrap.readUnsignedShort(); // first occurence
+            wrap.readUnsigned(); // subsequent occurences
+            wrap.readUnsigned(17); // unknown1
         }
+        wrap.readInt();
+        wrap.readInt();
+        try {
+            wrap.readUnsigned(); // HD
+        } catch (EOFException e) {
+            return; // normal
+        }
+        wrap.readUnsigned(115);
+        try {
+            wrap.readUnsigned();
+        } catch (EOFException e) {
+            return; // normal
+        }
+        throw new EOFException();
     }
 
     private Coordinates readCoordinates(ByteWrapper wrap) throws IOException {
