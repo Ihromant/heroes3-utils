@@ -22,7 +22,7 @@ public class H3MParser {
     @Test
     public void parse() throws IOException {
         MapMetadata map = new MapMetadata();
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/generated.h3m"))));
+        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Viking.h3m"))));
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
@@ -75,18 +75,9 @@ public class H3MParser {
             }
             map.getPlayersMetadata()[i] = player;
         }
-        int winCond = wrap.readUnsigned();
-        if (winCond != 0xFF) {
-            throw new IllegalArgumentException(); // TODO lots of cases
-        }
-        int loseCond = wrap.readUnsigned();
-        if (loseCond != 0xFF) {
-            throw new IllegalArgumentException(); // TODO lots of cases
-        }
-        int teamsSize = wrap.readUnsigned();
-        if (teamsSize != 0) {
-            throw new IllegalArgumentException(); // TODO parse teams
-        }
+        parseWinCondition(wrap, isROE);
+        parseLoseCondition(wrap);
+        parseAiTeams(wrap);
         int[] availableHeroes = wrap.readUnsigned(format == H3M_FORMAT_ROE ? 16 : 20);
         if (!isROE) {
             int empty = wrap.readInt();
@@ -311,6 +302,84 @@ public class H3MParser {
         }
     }
 
+    private Coordinates readCoordinates(ByteWrapper wrap) throws IOException {
+        return new Coordinates().setX(wrap.readUnsigned())
+                .setY(wrap.readUnsigned())
+                .setZ(wrap.readUnsigned());
+    }
+
+    private void parseAiTeams(ByteWrapper wrap) throws IOException {
+        int teamsCount = wrap.readUnsigned(); // teamsCount
+        if (teamsCount != 0) {
+            wrap.readUnsigned(8);
+        }
+    }
+
+    private void parseLoseCondition(ByteWrapper wrap) throws IOException {
+        int loseCond = wrap.readUnsigned();
+        if (loseCond == 0xFF) {
+            return;
+        }
+        switch (loseCond) {
+            case 0: // lose town
+            case 1: // lose hero
+                readCoordinates(wrap);
+                break;
+            case 2: // time
+                wrap.readUnsignedShort(); // days
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private void parseWinCondition(ByteWrapper wrap, boolean isRoE) throws IOException {
+        int winCond = wrap.readUnsigned();
+        if (winCond == 0xFF) {
+            return;
+        }
+        wrap.readUnsigned(); // allow normal win
+        wrap.readUnsigned(); // applies to computer;
+        switch (winCond) {
+            case 0: // acquire artifact
+                readArtifact(wrap, isRoE);
+                return;
+            case 1: // accumulate creatures
+                readCreature(wrap, isRoE);
+                return;
+            case 2: // accumulate resources
+                readResource(wrap);
+                return;
+            case 8: // flag dwellings
+            case 9: // flag mines
+                return;
+        }
+        switch (winCond) {
+            case 3: // upgrade town
+                readCoordinates(wrap);
+                wrap.readUnsigned(); // 0 - town, 1 - city, 2 - capitol
+                wrap.readUnsigned(); // 0 - fort, 1 - citadel, 2 - castle
+                break;
+            case 4: // build grail
+            case 5: // defeat hero
+            case 6: // capture town
+            case 7: // defeat monster
+                readCoordinates(wrap);
+                break;
+            case 10: // transport artifact
+                wrap.readUnsigned(); // type
+                readCoordinates(wrap);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
+    private void readResource(ByteWrapper wrap) throws IOException {
+        wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
+        wrap.readInt(); // amount
+    }
+
     private void parseReward(ByteWrapper wrap, boolean isRoE) throws IOException { // TODO merge with common reward
         int rewardType = wrap.readUnsigned();
         switch (rewardType) {
@@ -329,8 +398,7 @@ public class H3MParser {
                 wrap.readUnsigned();
                 break;
             case 5: // resource
-                wrap.readUnsigned(); // resource index
-                wrap.readInt(); // resource count
+                readResource(wrap);
                 break;
             case 6: // primary skill
                 wrap.readUnsigned();
