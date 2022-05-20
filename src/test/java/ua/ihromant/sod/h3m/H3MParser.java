@@ -22,7 +22,7 @@ public class H3MParser {
     @Test
     public void parse() throws IOException {
         MapMetadata map = new MapMetadata();
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/FBA2018.h3m"))));
+        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/generated.h3m"))));
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
@@ -187,12 +187,6 @@ public class H3MParser {
                 case META_OBJECT_QUEST_GUARD:
                     int questType = wrap.readUnsigned();
                     parseQuestRequest(wrap, isROE, questType);
-                    wrap.readInt(); // deadline
-                    if (questType != 0xFF) {
-                        wrap.readString(); // proposal message
-                        wrap.readString(); // progress message
-                        wrap.readString(); // completion message
-                    }
                     break;
                 case META_OBJECT_PANDORAS_BOX:
                     if (wrap.readBoolean()) {
@@ -328,28 +322,28 @@ public class H3MParser {
             case 2: // spell points
                 wrap.readInt();
                 break;
-            case 3: // artifact
-                readArtifact(wrap, isRoE);
+            case 3: // morale
+                wrap.readUnsigned();
                 break;
             case 4: // luck
                 wrap.readUnsigned();
                 break;
-            case 5: // morale
-                wrap.readUnsigned();
+            case 5: // resource
+                wrap.readUnsigned(); // resource index
+                wrap.readInt(); // resource count
                 break;
-            case 6: // spell
-                wrap.readUnsigned();
-                break;
-            case 7: // resource. Determine order of type and quantity
-                wrap.readUnsigned();
-                wrap.readInt();
-                break;
-            case 8: // primary skill
+            case 6: // primary skill
                 wrap.readUnsigned();
                 wrap.readUnsigned();
                 break;
-            case 9: // secondary skill
+            case 7: // secondary skill
                 wrap.readUnsigned();
+                wrap.readUnsigned();
+                break;
+            case 8: // artifact
+                readArtifact(wrap, isRoE);
+                break;
+            case 9: // spell
                 wrap.readUnsigned();
                 break;
             case 10:
@@ -395,6 +389,12 @@ public class H3MParser {
                 break;
             default:
                 throw new IllegalArgumentException();
+        }
+        wrap.readInt(); // deadline
+        if (questType != 0xFF) {
+            wrap.readString(); // proposal message
+            wrap.readString(); // progress message
+            wrap.readString(); // completion message
         }
     }
 
