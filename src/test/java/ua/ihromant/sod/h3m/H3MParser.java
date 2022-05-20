@@ -22,7 +22,7 @@ public class H3MParser {
     @Test
     public void parse() throws IOException {
         MapMetadata map = new MapMetadata();
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Paragon.h3m"))));
+        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Metataxer.h3m"))));
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
