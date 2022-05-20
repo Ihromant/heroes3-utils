@@ -12,7 +12,8 @@ public class H3MParserTest {
     @Test
     public void testParserCorrectness() throws IOException {
         testFileName("FBA2018");
-        testFileName("generated");
+        testFileName("Generated6lm");
+        testFileName("GeneratedJC");
         testFileName("Metataxer");
         testFileName("Paragon");
         testFileName("Viking");
