@@ -11,9 +11,9 @@ public class PlayerMetadata {
     private boolean canBeHuman;
     private boolean canBeComputer;
     private int behavior;
-    private int allowedAlignments;
+    private Integer allowedAlignments;
     private int townTypes;
-    private int townConflux;
+    private Integer townConflux;
     private boolean ownsRandomTown;
     private boolean hasMainTown;
 

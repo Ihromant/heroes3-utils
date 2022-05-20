@@ -22,7 +22,7 @@ public class H3MParser {
     @Test
     public void parse() throws IOException {
         MapMetadata map = new MapMetadata();
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Viking.h3m"))));
+        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/Paragon.h3m"))));
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
@@ -38,39 +38,51 @@ public class H3MParser {
             map.getBasic().setMasteryLevelCap(wrap.readUnsigned());
         }
         for (int i = 0; i < 8; i++) {
-            PlayerMetadata player = new PlayerMetadata()
-                    .setCanBeHuman(wrap.readBoolean())
+            boolean ai;
+            PlayerMetadata player = new PlayerMetadata().setCanBeHuman(wrap.readBoolean())
                     .setCanBeComputer(wrap.readBoolean())
                     .setBehavior(wrap.readUnsigned())
-                    .setAllowedAlignments(wrap.readUnsigned())
+                    .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
                     .setTownTypes(wrap.readUnsigned())
-                    .setTownConflux(wrap.readUnsigned())
-                    .setOwnsRandomTown(wrap.readBoolean())
-                    .setHasMainTown(wrap.readBoolean());
-            if (player.isHasMainTown()) {
-                player.setStartingTown(new StartingTownMetadata()
-                                .setStartingTownCreateHero(wrap.readBoolean())
-                                .setStartingTownType(wrap.readUnsigned())
-                                .setStartingTownXPos(wrap.readUnsigned())
-                                .setStartingTownYPos(wrap.readUnsigned())
-                                .setStartingTownZPos(wrap.readUnsigned()))
-                        .setStartingHeroIsRandom(wrap.readBoolean())
-                        .setStartingHeroType(wrap.readUnsigned())
-                        .setStartingHeroFace(wrap.readUnsigned())
-                        .setStartingHeroName(wrap.readString());
-            } else {
-                player.setStartingHeroIsRandom(wrap.readBoolean());
-                player.setStartingHeroType(wrap.readUnsigned());
-                player.setStartingHeroFace(wrap.readUnsigned());
-                player.setStartingHeroName(wrap.readString());
-                if (player.getStartingHeroType() == 0xFF) {
+                    .setTownConflux(isROE ? null : wrap.readUnsigned())
+                    .setOwnsRandomTown(wrap.readBoolean());
+            boolean hasMainTown = wrap.readBoolean();
+            player.setStartingTown(hasMainTown ? new StartingTownMetadata().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
+                    .setStartingTownType(isROE ? null : wrap.readUnsigned())
+                    .setCoordinates(readCoordinates(wrap)) : null);
+            boolean startingHeroIsRandom = wrap.readBoolean();
+            int startingHeroType = wrap.readUnsigned();
+            if (!hasMainTown) {
+                if (startingHeroType == 0xFF) {
                     if (player.getTownTypes() != 0) {
-                        player.setHasAi(true);
+                        ai = true;
                     } else {
-
+                        ai = false;
+                        player.setStartingHeroIsRandom(startingHeroIsRandom)
+                                .setStartingHeroType(startingHeroType)
+                                .setStartingHeroFace(wrap.readUnsigned())
+                                .setStartingHeroName(wrap.readString());
                     }
                 } else {
-
+                    ai = true;
+                    player.setStartingHeroIsRandom(startingHeroIsRandom)
+                            .setStartingHeroType(startingHeroType)
+                            .setStartingHeroFace(wrap.readUnsigned())
+                            .setStartingHeroName(wrap.readString());
+                }
+            } else {
+                ai = startingHeroType != 0xFF;
+                player.setStartingHeroIsRandom(startingHeroIsRandom)
+                        .setStartingHeroType(startingHeroType)
+                        .setStartingHeroFace(wrap.readUnsigned())
+                        .setStartingHeroName(wrap.readString());
+            }
+            if (ai) {
+                wrap.readUnsigned(); // unknown1
+                int heroesCount = wrap.readInt();
+                for (int j = 0 ; j < heroesCount; j++) {
+                    wrap.readUnsigned(); // type
+                    wrap.readString(); // name
                 }
             }
             map.getPlayersMetadata()[i] = player;
@@ -442,7 +454,7 @@ public class H3MParser {
                 readArtifacts(wrap, isROE);
                 break;
             case 6: // creatures
-                wrap.readUnsignedShort(wrap.readUnsigned());
+                readArmy(wrap, isROE, wrap.readUnsigned());
                 break;
             case 7: // resources
                 readResources(wrap);
