@@ -42,7 +42,7 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    public void parse(byte[] bytes) throws IOException {
+    public MapMetadata parse(byte[] bytes) throws IOException {
         MapMetadata map = new MapMetadata();
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
@@ -345,15 +345,15 @@ public class H3MParser {
         try {
             wrap.readUnsigned(); // HD
         } catch (EOFException e) {
-            return; // normal
+            return map; // normal
         }
         wrap.readUnsigned(115);
         try {
             wrap.readUnsigned();
         } catch (EOFException e) {
-            return; // normal
+            return map; // normal
         }
-        throw new EOFException();
+        throw new IOException();
     }
 
     private Coordinates readCoordinates(ByteWrapper wrap) throws IOException {
