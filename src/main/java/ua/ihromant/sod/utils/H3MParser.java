@@ -2,7 +2,7 @@ package ua.ihromant.sod.utils;
 
 import ua.ihromant.sod.utils.entities.AiHeroSettings;
 import ua.ihromant.sod.utils.entities.AiRumor;
-import ua.ihromant.sod.utils.entities.BackgroundType;
+import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.BasicInformation;
 import ua.ihromant.sod.utils.entities.CommonGuardian;
@@ -27,6 +27,8 @@ import ua.ihromant.sod.utils.entities.StartingTownMetadata;
 import ua.ihromant.sod.utils.entities.StaticGarrison;
 import ua.ihromant.sod.utils.entities.Town;
 import ua.ihromant.sod.utils.entities.TownEvent;
+import ua.ihromant.sod.utils.map.RiverType;
+import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -168,9 +170,9 @@ public class H3MParser {
                 for (int x = 0; x < map.getBasic().getMapSize(); x++) {
                     column[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
                             .setTerrainSprite(wrap.readUnsigned())
-                            .setRiverType(wrap.readUnsigned())
+                            .setRiverType(RiverType.values()[wrap.readUnsigned()])
                             .setRiverSprite(wrap.readUnsigned())
-                            .setRoadType(wrap.readUnsigned())
+                            .setRoadType(RoadType.values()[wrap.readUnsigned()])
                             .setRoadSprite(wrap.readUnsigned())
                             .setMirroring(wrap.readUnsigned());
                 }
@@ -192,12 +194,13 @@ public class H3MParser {
         }
         map.setObjectData(new ObjectData[wrap.readInt()]);
         for (int i = 0; i < map.getObjectData().length; i++) {
-            map.getObjectData()[i] = new ObjectData().setX(wrap.readUnsigned())
+            ObjectData data = new ObjectData().setX(wrap.readUnsigned())
                     .setY(wrap.readUnsigned())
-                    .setZ(wrap.readUnsigned())
-                    .setOaIndex(wrap.readInt())
-                    .setUnknown1(wrap.readUnsigned(5));
-            ObjectType type = map.getObjectAttributes()[map.getObjectData()[i].getOaIndex()].getType();
+                    .setZ(wrap.readUnsigned());
+            map.getObjectData()[i] = data;
+            data.setOa(map.getObjectAttributes()[wrap.readInt()]);
+            data.setUnknown1(wrap.readUnsigned(5));
+            ObjectType type = data.getOa().getType();
             switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:
                     PlaceholderHero hero = new PlaceholderHero().setOwner(wrap.readUnsigned())

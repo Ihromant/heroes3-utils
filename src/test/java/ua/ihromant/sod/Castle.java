@@ -1,6 +1,6 @@
 package ua.ihromant.sod;
 
-import ua.ihromant.sod.utils.entities.BackgroundType;
+import ua.ihromant.sod.utils.map.BackgroundType;
 
 public enum Castle {
     CASTLE(BackgroundType.GRASS), RAMPART(BackgroundType.GRASS), TOWER(BackgroundType.SNOW),

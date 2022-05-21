@@ -47,28 +47,15 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-//        for (Spell sp : Arrays.asList(Spell.ICE_BOLT, Spell.MAGIC_ARROW)) {
-//            for (int number : IntStream.range(0, 5).boxed().collect(Collectors.toList())) {
-//                mergeImage(sp.name().toLowerCase() + "_" + number);
-//            }
-//        }
-//        mergeImage("fire_wall_init");
-//        mergeImage("fire_wall_anim");
-//        mergeImage("fire_wall_fade");
-//        mergeImage("land_mines_anim");
-//        mergeImage("land_mines_explode");
-//        mergeImage("land_mines_fade");
-//        mergeImage("land_mines_init");
-//        mergeImage("quicksand_anim");
-//        mergeImage("quicksand_fade");
-//        mergeImage("quicksand_init");
-        mergeImage("smbalx");
+        mergeImage("dirtrd");
+        mergeImage("cobbrd");
+        mergeImage("gravrd");
     }
 
     private void mergeImage(String animName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File("/home/ihromant/Games/units/images/aaprojectile/" + animName);
+        File root = new File("/home/ihromant/temp/" + animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
@@ -91,7 +78,7 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/projectiles", root.getName() + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/roads", root.getName() + ".png"));
     }
 
     public enum HeroAnimStage {
