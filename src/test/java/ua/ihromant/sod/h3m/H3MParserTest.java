@@ -89,6 +89,7 @@ public class H3MParserTest {
                 .addAttribute("style", "position:relative;width:" + (32 * size + 64) + "px;height:" + (32 * size + 64) + "px;");
 
         OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setExpandEmptyElements(true);
         HTMLWriter writer = new HTMLWriter(System.out, format);
         writer.write(doc);
         writer.flush();
