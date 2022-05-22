@@ -8,7 +8,7 @@ import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.H3MParser;
-import ua.ihromant.sod.utils.entities.MapMetadata;
+import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;

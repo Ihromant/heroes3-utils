@@ -3,12 +3,11 @@ package ua.ihromant.sod.utils.entities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.entities.CreatureSlot;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Town {
+public class MapTown {
     private Integer abSodId;
     private int owner;
     private String name;

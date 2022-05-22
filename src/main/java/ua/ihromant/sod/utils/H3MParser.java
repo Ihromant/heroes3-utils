@@ -13,7 +13,7 @@ import ua.ihromant.sod.utils.entities.Coordinates;
 import ua.ihromant.sod.utils.entities.CreatureSlot;
 import ua.ihromant.sod.utils.entities.CustomHero;
 import ua.ihromant.sod.utils.entities.HeroArtifacts;
-import ua.ihromant.sod.utils.entities.MapMetadata;
+import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.MessageAndTreasure;
@@ -25,7 +25,7 @@ import ua.ihromant.sod.utils.entities.PlayerMetadata;
 import ua.ihromant.sod.utils.entities.PrimarySkills;
 import ua.ihromant.sod.utils.entities.StartingTownMetadata;
 import ua.ihromant.sod.utils.entities.StaticGarrison;
-import ua.ihromant.sod.utils.entities.Town;
+import ua.ihromant.sod.utils.entities.MapTown;
 import ua.ihromant.sod.utils.entities.TownEvent;
 import ua.ihromant.sod.utils.map.ObjectGroup;
 import ua.ihromant.sod.utils.map.RiverType;
@@ -605,8 +605,8 @@ public class H3MParser {
         return result;
     }
 
-    private Town readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) throws IOException {
-        Town town = new Town().setAbSodId(isRoe ? null : wrap.readInt())
+    private MapTown readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) throws IOException {
+        MapTown town = new MapTown().setAbSodId(isRoe ? null : wrap.readInt())
                 .setOwner(wrap.readUnsigned())
                 .setName(wrap.readBoolean() ? wrap.readString() : null)
                 .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoe) : null)
