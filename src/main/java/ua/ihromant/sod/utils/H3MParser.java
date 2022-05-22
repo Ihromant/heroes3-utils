@@ -27,6 +27,7 @@ import ua.ihromant.sod.utils.entities.StartingTownMetadata;
 import ua.ihromant.sod.utils.entities.StaticGarrison;
 import ua.ihromant.sod.utils.entities.Town;
 import ua.ihromant.sod.utils.entities.TownEvent;
+import ua.ihromant.sod.utils.map.ObjectGroup;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
@@ -166,9 +167,9 @@ public class H3MParser {
         for (int z = 0; z < map.getTiles().length; z++) {
             MapTile[][] level = map.getTiles()[z];
             for (int y = 0; y < map.getBasic().getMapSize(); y++) {
-                MapTile[] column = level[y];
+                MapTile[] row = level[y];
                 for (int x = 0; x < map.getBasic().getMapSize(); x++) {
-                    column[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
+                    row[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
                             .setTerrainSprite(wrap.readUnsigned())
                             .setRiverType(RiverType.values()[wrap.readUnsigned()])
                             .setRiverSprite(wrap.readUnsigned())
@@ -187,7 +188,7 @@ public class H3MParser {
                     .setLandscapeGroup(wrap.readUnsignedShort())
                     .setObjectClass(wrap.readInt())
                     .setObjectNumber(wrap.readInt())
-                    .setObjectGroup(wrap.readUnsigned())
+                    .setObjectGroup(ObjectGroup.values()[wrap.readUnsigned()])
                     .setAbove(wrap.readUnsigned())
                     .setUnknown(wrap.readUnsigned(16));
             map.getObjectAttributes()[i].setType(objectNumberToType(map.getObjectAttributes()[i].getObjectClass()));

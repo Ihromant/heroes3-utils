@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.ObjectType;
+import ua.ihromant.sod.utils.map.ObjectGroup;
 
 @Getter
 @Setter
@@ -16,7 +17,7 @@ public class ObjectAttribute {
     private int landscapeGroup;
     private int objectClass;
     private int objectNumber;
-    private int objectGroup;
+    private ObjectGroup objectGroup;
     private int above;
     private int[] unknown;
     private ObjectType type;
