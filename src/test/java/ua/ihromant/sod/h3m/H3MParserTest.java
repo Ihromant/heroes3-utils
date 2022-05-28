@@ -147,8 +147,7 @@ public class H3MParserTest {
     private Map<Integer, String> constantsMap() throws IllegalAccessException {
         TreeMap<Integer, String> result = new TreeMap<>();
         Field[] fields = ObjectNumberConstants.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            Field field = fields[i];
+        for (Field field : fields) {
             result.put((Integer) field.get(null), field.getName());
         }
         return result;
@@ -159,7 +158,7 @@ public class H3MParserTest {
         Properties prop = new Properties();
         prop.load(getClass().getResourceAsStream("/legacyIds/artifacts.properties"));
         int max = new HashMap<>(prop).values().stream().mapToInt(val -> Integer.parseInt(val.toString())).max().orElseThrow();
-        Map<Integer, Object> reversed = new HashMap<>(prop).entrySet().stream().collect(Collectors.toMap(e -> Integer.parseInt(e.getValue().toString()), Map.Entry::getKey));
-        System.out.println(IntStream.rangeClosed(0, max).mapToObj(i -> Objects.toString(reversed.get(i))).collect(Collectors.joining(", ", "{", "}")));
+        Map<Integer, String> reversed = new HashMap<>(prop).entrySet().stream().collect(Collectors.toMap(e -> Integer.parseInt(e.getValue().toString()), e -> e.getKey().toString()));
+        System.out.println(IntStream.rangeClosed(0, max).mapToObj(i -> reversed.get(i) == null ? "null" : '"' + reversed.get(i) + '"').collect(Collectors.joining(", ", "{", "}")));
     }
 }
