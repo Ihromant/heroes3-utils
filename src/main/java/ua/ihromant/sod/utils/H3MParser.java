@@ -35,7 +35,7 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.util.function.IntConsumer;
+import java.util.function.Consumer;
 
 import static ua.ihromant.sod.utils.ObjectType.*;
 
@@ -48,7 +48,7 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    private IntConsumer typeInterceptor;
+    private Consumer<ObjectData> dataInterceptor;
 
     public MapMetadata parse(byte[] bytes) throws IOException {
         MapMetadata map = new MapMetadata();
@@ -209,8 +209,8 @@ public class H3MParser {
             data.setOa(map.getObjectAttributes()[wrap.readInt()]);
             data.setUnknown1(wrap.readUnsigned(5));
             ObjectType type = data.getOa().getType();
-            if (typeInterceptor != null) {
-                typeInterceptor.accept(data.getOa().getObjectClass());
+            if (dataInterceptor != null) {
+                dataInterceptor.accept(data);
             }
             switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:

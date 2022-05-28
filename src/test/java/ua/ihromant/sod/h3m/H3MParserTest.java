@@ -41,6 +41,7 @@ public class H3MParserTest {
         testFileName("ArmageddonsBlade");
         testFileName("BarbaricCrusade");
         testFileName("BackToTheRoots");
+        testFileName("ArenaKonwentowa24");
     }
 
     private MapMetadata testFileName(String fileName) throws IOException {
@@ -56,7 +57,14 @@ public class H3MParserTest {
     public void checkDataPresent() throws IllegalAccessException, IOException {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
-        new H3MParser().setTypeInterceptor(types::add).parse(getUnzippedBytes("GeneratedJC"));
+        new H3MParser().setDataInterceptor(od -> {
+                    int type = od.getOa().getObjectClass();
+                    types.add(type);
+                    if (type == ObjectNumberConstants.H3M_OA_CLASS_ARTIFACT) {
+                        System.out.println("Artifact: " + od.getOa().getObjectNumber());
+                    }
+                })
+                .parse(getUnzippedBytes("GeneratedJC"));
         System.out.println(types.size());
         types.stream()
                 .sorted(Comparator.comparing(i -> ObjectType.objectNumberToType(i).ordinal()))
