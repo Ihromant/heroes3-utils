@@ -18,12 +18,15 @@ import ua.ihromant.sod.utils.map.RoadType;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
 
 public class H3MParserTest {
@@ -149,5 +152,14 @@ public class H3MParserTest {
             result.put((Integer) field.get(null), field.getName());
         }
         return result;
+    }
+
+    @Test
+    public void generateArtifactsLegacy() throws IOException {
+        Properties prop = new Properties();
+        prop.load(getClass().getResourceAsStream("/legacyIds/artifacts.properties"));
+        int max = new HashMap<>(prop).values().stream().mapToInt(val -> Integer.parseInt(val.toString())).max().orElseThrow();
+        Map<Integer, Object> reversed = new HashMap<>(prop).entrySet().stream().collect(Collectors.toMap(e -> Integer.parseInt(e.getValue().toString()), Map.Entry::getKey));
+        System.out.println(IntStream.rangeClosed(0, max).mapToObj(i -> Objects.toString(reversed.get(i))).collect(Collectors.joining(", ", "{", "}")));
     }
 }
