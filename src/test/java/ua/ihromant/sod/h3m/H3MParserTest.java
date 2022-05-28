@@ -65,7 +65,7 @@ public class H3MParserTest {
 
     @Test
     public void experiments() throws IOException {
-        MapMetadata meta = testFileName("BackToTheRoots");
+        MapMetadata meta = testFileName("ArenaKonwentowa24");
         int size = meta.getTiles()[0].length;
         Document doc = DocumentHelper.createDocument();
         Element wrapper = doc.addElement("div").addAttribute("class", "adv-map-content")
