@@ -47,15 +47,13 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("dirtrd");
-        mergeImage("cobbrd");
-        mergeImage("gravrd");
+        mergeImage("avmwndd0");
     }
 
     private void mergeImage(String animName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File("/home/ihromant/temp/" + animName);
+        File root = new File("/home/ihromant/" + animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);

@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public class ByteWrapper {
     private int position;
+    private byte[] bytes;
     private final LittleEndianDataInputStream str;
 
     public ByteWrapper(byte[] bytes) {
         this.str = new LittleEndianDataInputStream(new ByteArrayInputStream(bytes));
+        this.bytes = bytes;
     }
 
     public void seek(int position) throws IOException {
@@ -102,5 +104,13 @@ public class ByteWrapper {
 
     public int getPosition() {
         return position;
+    }
+
+    public int[] debug() throws IOException {
+        int[] result = new int[500];
+        for (int i = 0; i < 500; i++) {
+            result[i] = bytes[position + i] & 0xFF;
+        }
+        return result;
     }
 }

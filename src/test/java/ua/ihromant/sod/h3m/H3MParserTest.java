@@ -26,6 +26,12 @@ public class H3MParserTest {
         testFileName("Metataxer");
         testFileName("Paragon");
         testFileName("Viking");
+        testFileName("Attestation");
+        testFileName("TheWordOfGod");
+        testFileName("TheRock");
+        testFileName("ArmageddonsBlade");
+        testFileName("BarbaricCrusade");
+        testFileName("BackToTheRoots");
     }
 
     private MapMetadata testFileName(String fileName) throws IOException {
@@ -35,7 +41,7 @@ public class H3MParserTest {
 
     @Test
     public void experiments() throws IOException {
-        MapMetadata meta = testFileName("GeneratedJC");
+        MapMetadata meta = testFileName("BackToTheRoots");
         int size = meta.getTiles()[0].length;
         Document doc = DocumentHelper.createDocument();
         Element wrapper = doc.addElement("div").addAttribute("class", "adv-map-content")

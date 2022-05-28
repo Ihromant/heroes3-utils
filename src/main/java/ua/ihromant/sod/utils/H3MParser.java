@@ -76,7 +76,7 @@ public class H3MParser {
             int startingHeroType = wrap.readUnsigned();
             if (!hasMainTown) {
                 if (startingHeroType == 0xFF) {
-                    if (player.getTownTypes() != 0) {
+                    if (isROE || player.getTownTypes() != 0) {
                         ai = true;
                     } else {
                         ai = false;
@@ -99,7 +99,7 @@ public class H3MParser {
                         .setStartingHeroFace(wrap.readUnsigned())
                         .setStartingHeroName(wrap.readString());
             }
-            if (ai) {
+            if (!isROE && ai) {
                 wrap.readUnsigned(); // unknown1
                 int heroesCount = wrap.readInt();
                 for (int j = 0 ; j < heroesCount; j++) {
@@ -112,7 +112,7 @@ public class H3MParser {
         parseWinCondition(wrap, isROE);
         parseLoseCondition(wrap);
         parseAiTeams(wrap);
-        int[] availableHeroes = wrap.readUnsigned(format == H3M_FORMAT_ROE ? 16 : 20);
+        int[] availableHeroes = wrap.readUnsigned(isROE ? 16 : 20);
         if (!isROE) {
             int empty = wrap.readInt();
         }
@@ -127,7 +127,7 @@ public class H3MParser {
         }
         wrap.readUnsigned(31); // 31 empty bytes
         if (!isROE) {
-            int[] avaliableArtifacts = wrap.readUnsigned(format == H3M_FORMAT_AB ? 17 : 18);
+            int[] avaliableArtifacts = wrap.readUnsigned(isSoD ? 18 : 17);
             if (isSoD) {
                 int[] availableSpells = wrap.readUnsigned(9);
                 int[] availableSkills = wrap.readUnsigned(4);
@@ -138,7 +138,7 @@ public class H3MParser {
             new AiRumor().setName(wrap.readString())
                     .setDesc(wrap.readString());
         }
-        for (int i = 0; i < 156; i++) {
+        for (int i = 0; i < (isSoD ? 156 : 0); i++) {
             if (!wrap.readBoolean()) {
                 continue;
             }
@@ -401,7 +401,8 @@ public class H3MParser {
                 readArtifact(wrap, isRoE);
                 return;
             case 1: // accumulate creatures
-                readCreature(wrap, isRoE);
+                new CreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
+                        .setQuantity(wrap.readInt()); // can't use readCreature
                 return;
             case 2: // accumulate resources
                 readResource(wrap);
@@ -687,9 +688,5 @@ public class H3MParser {
                 .setDefense(wrap.readUnsigned())
                 .setSpellPower(wrap.readUnsigned())
                 .setKnowledge(wrap.readUnsigned());
-    }
-
-    private int[] debug(ByteWrapper wrap) throws IOException {
-        return wrap.readUnsigned(500);
     }
 }
