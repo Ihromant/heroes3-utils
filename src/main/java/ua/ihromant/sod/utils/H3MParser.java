@@ -1,5 +1,7 @@
 package ua.ihromant.sod.utils;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.entities.AiHeroSettings;
 import ua.ihromant.sod.utils.entities.AiRumor;
 import ua.ihromant.sod.utils.map.BackgroundType;
@@ -33,15 +35,20 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.function.IntConsumer;
 
 import static ua.ihromant.sod.utils.ObjectType.*;
 
+@Setter
+@Accessors(chain = true)
 public class H3MParser {
     private static final int H3M_FORMAT_ROE = 0x0000000E;
     private static final int H3M_FORMAT_AB = 0x00000015;
     private static final int H3M_FORMAT_SOD = 0x0000001C;
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
+
+    private IntConsumer typeInterceptor;
 
     public MapMetadata parse(byte[] bytes) throws IOException {
         MapMetadata map = new MapMetadata();
@@ -202,6 +209,9 @@ public class H3MParser {
             data.setOa(map.getObjectAttributes()[wrap.readInt()]);
             data.setUnknown1(wrap.readUnsigned(5));
             ObjectType type = data.getOa().getType();
+            if (typeInterceptor != null) {
+                typeInterceptor.accept(data.getOa().getObjectClass());
+            }
             switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:
                     PlaceholderHero hero = new PlaceholderHero().setOwner(wrap.readUnsigned())

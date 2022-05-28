@@ -8,13 +8,22 @@ import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.H3MParser;
+import ua.ihromant.sod.utils.ObjectNumberConstants;
+import ua.ihromant.sod.utils.ObjectType;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
 
 public class H3MParserTest {
@@ -35,8 +44,23 @@ public class H3MParserTest {
     }
 
     private MapMetadata testFileName(String fileName) throws IOException {
-        byte[] bytes = IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/" + fileName + ".h3m"))));
+        byte[] bytes = getUnzippedBytes(fileName);
         return new H3MParser().parse(bytes);
+    }
+
+    private byte[] getUnzippedBytes(String fileName) throws IOException {
+        return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/" + fileName + ".h3m"))));
+    }
+
+    @Test
+    public void checkDataPresent() throws IllegalAccessException, IOException {
+        Map<Integer, String> constants = constantsMap();
+        Set<Integer> types = new HashSet<>();
+        new H3MParser().setTypeInterceptor(types::add).parse(getUnzippedBytes("GeneratedJC"));
+        System.out.println(types.size());
+        types.stream()
+                .sorted(Comparator.comparing(i -> ObjectType.objectNumberToType(i).ordinal()))
+                .forEach(i -> System.out.println(ObjectType.objectNumberToType(i) + " -> " + constants.get(i)));
     }
 
     @Test
@@ -107,5 +131,15 @@ public class H3MParserTest {
             return "";
         }
         return "transform: scale(" + ((bits & 1) == 1 ? "-1" : "1") + "," + ((bits & 2) == 2 ? "-1" : "1") + ");";
+    }
+
+    private Map<Integer, String> constantsMap() throws IllegalAccessException {
+        TreeMap<Integer, String> result = new TreeMap<>();
+        Field[] fields = ObjectNumberConstants.class.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            result.put((Integer) field.get(null), field.getName());
+        }
+        return result;
     }
 }
