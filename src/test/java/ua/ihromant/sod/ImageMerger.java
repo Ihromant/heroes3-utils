@@ -47,13 +47,13 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("avmwndd0");
+        mergeImage("avgmumy");
     }
 
-    private void mergeImage(String animName) throws IOException {
+    public static void mergeImage(String animName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File("/home/ihromant/" + animName);
+        File root = new File("/home/ihromant/Games/units/images-shadow/" + animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
@@ -76,7 +76,7 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/roads", root.getName() + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/dwellings", root.getName() + ".png"));
     }
 
     public enum HeroAnimStage {
