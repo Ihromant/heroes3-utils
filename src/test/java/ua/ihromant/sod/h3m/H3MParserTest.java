@@ -154,13 +154,4 @@ public class H3MParserTest {
         }
         return result;
     }
-
-    @Test
-    public void generateArtifactsLegacy() throws IOException {
-        Properties prop = new Properties();
-        prop.load(getClass().getResourceAsStream("/legacyIds/artifacts.properties"));
-        int max = new HashMap<>(prop).values().stream().mapToInt(val -> Integer.parseInt(val.toString())).max().orElseThrow();
-        Map<Integer, String> reversed = new HashMap<>(prop).entrySet().stream().collect(Collectors.toMap(e -> Integer.parseInt(e.getValue().toString()), e -> e.getKey().toString()));
-        System.out.println(IntStream.rangeClosed(0, max).mapToObj(i -> reversed.get(i) == null ? "null" : '"' + reversed.get(i) + '"').collect(Collectors.joining(", ", "{", "}")));
-    }
 }
