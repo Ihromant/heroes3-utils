@@ -43,7 +43,7 @@ public class ConstantsGenerator {
                     String[] split = left.split("\\s+");
                     String name = right.substring(0, right.indexOf('"')).replace(' ', '_')
                             .replace("'", "").toUpperCase();
-                    System.out.println(split[1] + ';' + split[4] + ';' + name);
+                    System.out.println(String.valueOf(Integer.parseInt(split[1])) + ';' + split[4] + ';' + name);
                 });
     }
 
