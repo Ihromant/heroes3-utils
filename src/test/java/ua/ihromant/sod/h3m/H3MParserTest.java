@@ -17,6 +17,7 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,8 +64,9 @@ public class H3MParserTest {
         new H3MParser().setDataInterceptor(od -> {
                     int type = od.getOa().getObjectClass();
                     types.add(type);
-                    if (type == ObjectNumberConstants.H3M_OA_CLASS_ARTIFACT) {
-                        System.out.println("Artifact: " + od.getOa().getObjectNumber());
+                    if (type == ObjectNumberConstants.H3M_OA_CLASS_CREATURE_GENERATOR1) {
+                        System.out.println("Dwelling: " + od.getOa().getObjectNumber() + ", x: " + od.getX() + ", y: " + od.getY()
+                                + ", sprite: " + od.getOa().getDef() + ", rest: " + Arrays.toString(od.getOa().getPassable()));
                     }
                 })
                 .parse(getUnzippedBytes("GeneratedJC"));

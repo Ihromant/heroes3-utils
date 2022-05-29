@@ -31,7 +31,7 @@ public class LodResourceExtractor {
     private static final int HOR_HEIGHT = 280;
     private static final int CANVAS_FRAMES = 6;
     private static final String baseFolder = "/tmp/images/";
-    private static final String lodPosition = "/home/ihromant/Games/Heroes III/Heroes III Complete/Data/H3sprite.lod";
+    private static final String lodPosition = "/home/ihromant/Games/Heroes III Complete/Data/H3sprite.lod";
     @Test
     public void extractFromLod() throws IOException, DataFormatException {
         new File(baseFolder).mkdir();
@@ -88,9 +88,9 @@ public class LodResourceExtractor {
     private void readDef(byte[] bytes, String fileName) throws IOException {
         String folderName = fileName.substring(0, fileName.indexOf("."));
         // if (!fileName.startsWith("c") && !fileName.startsWith("sm")) { // creatures
-        if (!fileName.startsWith("ch0") && !fileName.startsWith("ch1")) { // heroes
-            return;
-        }
+//        if (!fileName.startsWith("ch0") && !fileName.startsWith("ch1")) { // heroes
+//            return;
+//        }
         File dir = new File(baseFolder, folderName);
         dir.mkdir();
         ByteWrapper str = new ByteWrapper(bytes);
@@ -121,11 +121,11 @@ public class LodResourceExtractor {
         int firstfw = -1;
         int firstfh = -1;
         for (Map.Entry<Integer, List<Integer>> e : offsets.entrySet()) {
-            BufferedImage im = new BufferedImage(150, 175 * e.getValue().size(), BufferedImage.TYPE_INT_ARGB);
+            //BufferedImage im = new BufferedImage(150, 175 * e.getValue().size(), BufferedImage.TYPE_INT_ARGB);
             // BufferedImage im = new BufferedImage(HOR_WIDTH, HOR_HEIGHT * e.getValue().size(), BufferedImage.TYPE_INT_ARGB);
-            File result = new File(dir, String.format("%02d.png", e.getKey()));
-            BufferedImage imSelection = e.getKey() == 2 ? new BufferedImage(HOR_WIDTH, HOR_HEIGHT * e.getValue().size(), BufferedImage.TYPE_INT_ARGB) : null;
-            File imResult = new File(dir, "22.png");
+            //File result = new File(dir, String.format("%02d.png", e.getKey()));
+            //BufferedImage imSelection = e.getKey() == 2 ? new BufferedImage(HOR_WIDTH, HOR_HEIGHT * e.getValue().size(), BufferedImage.TYPE_INT_ARGB) : null;
+            //File imResult = new File(dir, "22.png");
             for (int j = 0; j < e.getValue().size(); j++) {
                 int offs = e.getValue().get(j);
                 str.seek(offs);
@@ -148,6 +148,7 @@ public class LodResourceExtractor {
                         fh = firstfh;
                     }
                 }
+                File result = new File(dir, String.format("%02d_%02d.png", e.getKey(), j));
                 if (w != 0 && h != 0) {
                     ByteArrayOutputStream pixelData = new ByteArrayOutputStream();
                     switch (fmt) {
@@ -250,18 +251,21 @@ public class LodResourceExtractor {
 //                    }
 //                    if (imgSel != null) imSelection.getGraphics().drawImage(imgSel, lm - MIN_HOR_OFFSET, j * HOR_HEIGHT + tm - MIN_VER_OFFSET, null);
 //                    im.getGraphics().drawImage(img, lm - MIN_HOR_OFFSET, j * HOR_HEIGHT + tm - MIN_VER_OFFSET, null);
-                    im.getGraphics().drawImage(img, lm, j * fh + tm, null);
+                    BufferedImage im = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
+                    im.getGraphics().drawImage(img, lm, tm, null);
+                    im.getGraphics().dispose();
+                    ImageIO.write(im, "png", result);
                 } else {
                     BufferedImage img = new BufferedImage(fw, fh, BufferedImage.TYPE_INT_ARGB);
                     ImageIO.write(img, "png", result);
                 }
             }
-            im.getGraphics().dispose();
-            if (imSelection != null) {
-                imSelection.getGraphics().dispose();
-                ImageIO.write(imSelection, "png", imResult);
-            }
-            ImageIO.write(im, "png", result);
+//            im.getGraphics().dispose();
+//            if (imSelection != null) {
+//                imSelection.getGraphics().dispose();
+//                ImageIO.write(imSelection, "png", imResult);
+//            }
+//            ImageIO.write(im, "png", result);
         }
     }
 
