@@ -47,13 +47,13 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("avgmumy");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "avgmumy");
     }
 
-    public static void mergeImage(String animName) throws IOException {
+    public static ImageMetadata mergeImage(String rootFolder, String animName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File("/home/ihromant/Games/units/images-shadow/" + animName);
+        File root = new File(rootFolder + animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
@@ -65,18 +65,21 @@ public class ImageMerger {
             }
         }
         BufferedImage result = null;
+        ImageMetadata meta = null;
         for (File img : Objects.requireNonNull(root.listFiles())) {
             String name = img.getName();
             int xIdx = Integer.parseInt(name.substring(0, 2), 10);
             int yIdx = Integer.parseInt(name.substring(3, 5), 10);
             BufferedImage toDraw = ImageIO.read(img);
             if (result == null) {
-                System.out.println(root.getName().toUpperCase() + "(" + (yMax + 1) + ", " + toDraw.getWidth() + ", " + toDraw.getHeight() + ", -25),");
+                //System.out.println(root.getName().toUpperCase() + "(" + (yMax + 1) + ", " + toDraw.getWidth() + ", " + toDraw.getHeight() + ", -25),");
+                meta = new ImageMetadata(root.getName().toLowerCase(), yMax + 1, toDraw.getWidth(), toDraw.getHeight());
                 result = new BufferedImage(toDraw.getWidth() * xMax + toDraw.getWidth(), toDraw.getHeight() * yMax + toDraw.getHeight(), BufferedImage.TYPE_INT_ARGB);
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/dwellings", root.getName() + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/mapimpassable", root.getName() + ".png"));
+        return meta;
     }
 
     public enum HeroAnimStage {

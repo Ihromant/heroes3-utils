@@ -1,9 +1,13 @@
 package ua.ihromant.sod.h3m;
 
 import org.junit.jupiter.api.Test;
+import ua.ihromant.sod.ImageMerger;
+import ua.ihromant.sod.ImageMetadata;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectType;
 import ua.ihromant.sod.utils.entities.ObjectAttribute;
+import ua.ihromant.sod.utils.entities.ObjectData;
+import ua.ihromant.sod.utils.map.BackgroundType;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,11 +39,35 @@ public class ObstaclesGenerator {
             }
             System.out.println(i + ": " + current.size());
         }
-        Set<List<ObjectAttribute.Shift>> shifts = obstacles.values().stream().map(od -> od.passableShifts().toList()).collect(Collectors.toSet());
-        System.out.println(shifts.size() + " " + shifts.stream().mapToInt(List::size).max().orElseThrow() + " "
-                + shifts.stream().mapToInt(s -> s.stream().mapToInt(ObjectAttribute.Shift::getDy).min().orElse(0)).min().orElseThrow());
-        shifts.forEach(ObstaclesGenerator::generateShiftsSql);
+//        Set<List<ObjectAttribute.Shift>> shifts = obstacles.values().stream().map(od -> od.passableShifts().toList()).collect(Collectors.toSet());
+//        System.out.println(shifts.size() + " " + shifts.stream().mapToInt(List::size).max().orElseThrow() + " "
+//                + shifts.stream().mapToInt(s -> s.stream().mapToInt(ObjectAttribute.Shift::getDy).min().orElse(0)).min().orElseThrow());
+//        shifts.forEach(ObstaclesGenerator::generateShiftsSql);
         System.out.println(obstacles.size());
+        for (ObjectAttribute oa : obstacles.values()) {
+            generateObstacle(oa);
+        }
+    }
+
+    private static void generateObstacle(ObjectAttribute oa) throws IOException {
+        System.out.println("insert into map_impassable (");
+        System.out.println("id, full_name, obstacle_type_id, pict_width, pict_height, pict_count");
+        System.out.println(") values");
+        String passableName = generateName(oa.passableShifts().toList());
+        String def = oa.def();
+        ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", def);
+        System.out.println("((SELECT MAX(id) + 1 FROM map_impassable),'" + def
+                + "',(select id from map_obstacle_type where full_name = '" + passableName + "'),"
+                + (meta.getImageWidth() / 32) + "," + (meta.getImageHeight() / 32) + "," + meta.getImagesCount() + ");");
+        List<BackgroundType> backgroundTypes = oa.backgrounds().toList();
+        System.out.println("insert into impassable_to_terrain (");
+        System.out.println("id, impassable_id, terrain_id");
+        System.out.println(") values");
+        System.out.println(IntStream.range(0, backgroundTypes.size()).mapToObj(i -> {
+            return "((SELECT MAX(id) + " + (i + 1) + " FROM impassable_to_terrain),"
+                    + "(SELECT id FROM map_impassable WHERE full_name = '" + def + "'),"
+                    + "(SELECT id FROM terrain WHERE full_name = '" + backgroundTypes.get(i) + "'))";
+        }).collect(Collectors.joining(",\n", "", ";\n")));
     }
 
     private static void generateShiftsSql(List<ObjectAttribute.Shift> passable) {
