@@ -19,15 +19,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.zip.GZIPInputStream;
 
 public class H3MParserTest {
@@ -53,8 +49,8 @@ public class H3MParserTest {
         return new H3MParser().parse(bytes);
     }
 
-    private byte[] getUnzippedBytes(String fileName) throws IOException {
-        return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(getClass().getResourceAsStream("/h3m/" + fileName + ".h3m"))));
+    public static byte[] getUnzippedBytes(String fileName) throws IOException {
+        return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(H3MParserTest.class.getResourceAsStream("/h3m/" + fileName + ".h3m"))));
     }
 
     @Test
@@ -62,11 +58,11 @@ public class H3MParserTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         new H3MParser().setDataInterceptor(od -> {
-                    int type = od.getOa().getObjectClass();
-                    types.add(type);
-                    if (type == ObjectNumberConstants.H3M_OA_CLASS_CREATURE_GENERATOR1) {
-                        System.out.println("Dwelling: " + od.getOa().getObjectNumber() + ", x: " + od.getX() + ", y: " + od.getY()
-                                + ", sprite: " + od.getOa().getDef() + ", rest: " + Arrays.toString(od.getOa().getPassable()));
+                    ObjectType type = od.getOa().getType();
+                    types.add(od.getOa().getObjectClass());
+                    if (type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD) {
+                        System.out.println("x: " + od.getX() + ", y: " + od.getY() + ", sprite: " + od.getOa().getDef()
+                                + ", landscape: " + od.getOa().getLandscapeGroup() + ", rest: " + Arrays.toString(od.getOa().getPassable()));
                     }
                 })
                 .parse(getUnzippedBytes("GeneratedJC"));
