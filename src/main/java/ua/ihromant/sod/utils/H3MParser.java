@@ -140,7 +140,7 @@ public class H3MParser {
             int[] avaliableArtifacts = wrap.readUnsigned(isSoD ? 18 : 17);
             if (isSoD) {
                 int[] availableSpells = wrap.readUnsigned(9);
-                int[] availableSkills = wrap.readUnsigned(4);
+                SecondarySkill[] availableSkills = readSkills(wrap.readUnsigned(4));
             }
         }
         int rumorsCount = wrap.readInt();
