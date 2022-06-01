@@ -179,4 +179,23 @@ public class ObstaclesGenerator {
         Arrays.stream(ResourceType.values()).forEach(res -> System.out.println("(COALESCE((SELECT MAX(id) FROM resource), 0) + "
                 + (res.ordinal() + 1) + ",'" + res.name() + "'," + res.getDayDelta() + "),"));
     }
+
+    @Test
+    public void generateMonsters() throws IOException {
+        Map<Integer, ObjectAttribute> defs = new TreeMap<>();
+        for (int i = 0; i < 74; i++) {
+            new H3MParser().setDataInterceptor(od -> {
+                        if (od.getOa().getType() == ObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
+                            defs.put(od.getOa().getObjectNumber(), od.getOa());
+                        }
+                    })
+                    .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
+        }
+        defs.put(139, new ObjectAttribute().setDef("avwpeas.def").setObjectNumber(139));
+        for (ObjectAttribute oa : defs.values()) {
+            ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", oa.def(), ConstantsGenerator.CREATURES[oa.getObjectNumber()].toLowerCase());
+            System.out.println((meta.getImageWidth() != 64 || meta.getImageHeight() != 64 ? "!!!" : "")
+                    + ConstantsGenerator.CREATURES[oa.getObjectNumber()] + "=" + meta.getImagesCount());
+        }
+    }
 }

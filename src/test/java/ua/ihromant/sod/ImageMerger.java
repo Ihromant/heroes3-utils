@@ -82,7 +82,7 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/resgen", destName + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/mapmonsters", destName + ".png"));
         return meta;
     }
 

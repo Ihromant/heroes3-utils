@@ -61,9 +61,8 @@ public class H3MParserTest {
         new H3MParser().setDataInterceptor(od -> {
                     ObjectType type = od.getOa().getType();
                     types.add(od.getOa().getObjectClass());
-                    if (type == ObjectType.META_OBJECT_RESOURCE_GENERATOR && defs.add(od.getOa().getDef())) {
-                        System.out.println("x: " + od.getX() + ", y: " + od.getY() + ", sprite: " + od.getOa().getDef()
-                                + ", landscape: " + od.getOa().getLandscapeGroup() + ", rest: " + Arrays.toString(od.getOa().getPassable()));
+                    if (type == ObjectType.META_OBJECT_MONSTER && defs.add(od.getOa().def())) {
+                        System.out.println(od.getOa());
                     }
                 })
                 .parse(getUnzippedBytes("Generated6lm"));

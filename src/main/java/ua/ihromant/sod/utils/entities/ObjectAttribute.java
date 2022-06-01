@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @Accessors(chain = true)
+@ToString
 public class ObjectAttribute {
     private String def;
     private int[] passable;
