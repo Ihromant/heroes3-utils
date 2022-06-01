@@ -17,7 +17,7 @@ public class CommonReward {
     private PrimarySkills skills;
     private CommonSecondarySkill[] secondarySkills;
     private int[] artifacts;
-    private int[] spells;
+    private String[] spells;
     private CreatureSlot[] creatures;
     private int[] unknown;
 }

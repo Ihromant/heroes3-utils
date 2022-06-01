@@ -37,6 +37,7 @@ import ua.ihromant.sod.utils.map.SecondarySkill;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -231,7 +232,7 @@ public class H3MParser {
                     if (wrap.readBoolean()) {
                         readCommonGuardian(wrap, isROE);
                     }
-                    readCommonReward(wrap, isROE);
+                    CommonReward reward = readCommonReward(wrap, isROE);
                     break;
                 case META_OBJECT_SIGN:
                 case META_OBJECT_OCEAN_BOTTLE:
@@ -654,7 +655,7 @@ public class H3MParser {
                 .setSkills(readPrimarySkills(wrap))
                 .setSecondarySkills(readSecondarySkills(wrap, wrap.readUnsigned()))
                 .setArtifacts(readArtifacts(wrap, isRoE))
-                .setSpells(wrap.readUnsigned(wrap.readUnsigned()))
+                .setSpells(Arrays.stream(wrap.readUnsigned(wrap.readUnsigned())).mapToObj(i -> ObjectNumberConstants.SPELLS[i]).toArray(String[]::new))
                 .setCreatures(readArmy(wrap, isRoE, wrap.readUnsigned()))
                 .setUnknown(wrap.readUnsigned(8));
     }
