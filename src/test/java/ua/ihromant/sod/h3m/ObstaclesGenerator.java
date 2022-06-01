@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.ImageMerger;
 import ua.ihromant.sod.ImageMetadata;
 import ua.ihromant.sod.utils.H3MParser;
+import ua.ihromant.sod.utils.ObjectNumberConstants;
 import ua.ihromant.sod.utils.ObjectType;
 import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.entities.ObjectAttribute;
@@ -193,9 +194,9 @@ public class ObstaclesGenerator {
         }
         defs.put(139, new ObjectAttribute().setDef("avwpeas.def").setObjectNumber(139));
         for (ObjectAttribute oa : defs.values()) {
-            ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", oa.def(), ConstantsGenerator.CREATURES[oa.getObjectNumber()].toLowerCase());
+            ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", oa.def(), ObjectNumberConstants.CREATURES[oa.getObjectNumber()].toLowerCase());
             System.out.println((meta.getImageWidth() != 64 || meta.getImageHeight() != 64 ? "!!!" : "")
-                    + ConstantsGenerator.CREATURES[oa.getObjectNumber()] + "=" + meta.getImagesCount());
+                    + ObjectNumberConstants.CREATURES[oa.getObjectNumber()] + "=" + meta.getImagesCount());
         }
     }
 }

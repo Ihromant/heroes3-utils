@@ -1,6 +1,7 @@
 package ua.ihromant.sod;
 
 import org.junit.jupiter.api.Test;
+import ua.ihromant.sod.utils.map.SecondarySkill;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

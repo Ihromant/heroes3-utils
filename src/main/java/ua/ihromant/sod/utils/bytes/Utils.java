@@ -7,6 +7,10 @@ public class Utils {
         return IntStream.range(0, 32).filter(i -> ((1 << i) & coded) != 0);
     }
 
+    public static IntStream ones(int coded, int cap) {
+        return IntStream.range(0, cap).filter(i -> ((1 << i) & coded) != 0);
+    }
+
     public static IntStream zeros(int coded, int cap) {
         return IntStream.range(0, cap).filter(i -> ((1 << i) & coded) == 0);
     }

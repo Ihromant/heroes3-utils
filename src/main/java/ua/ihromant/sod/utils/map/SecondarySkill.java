@@ -1,4 +1,4 @@
-package ua.ihromant.sod;
+package ua.ihromant.sod.utils.map;
 
 public enum SecondarySkill {
     ARCHERY, OFFENSE, ARMORER, RESISTANCE, LEADERSHIP, LUCK, TACTICS, ARTILLERY, BALLISTICS, FIRST_AID, // combat

@@ -8,7 +8,7 @@ import org.dom4j.io.HTMLWriter;
 import org.dom4j.io.OutputFormat;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.H3MParser;
-import ua.ihromant.sod.utils.ObjectNumberConstants;
+import ua.ihromant.sod.utils.ObjectClassConstants;
 import ua.ihromant.sod.utils.ObjectType;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapTile;
@@ -17,7 +17,6 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
@@ -144,7 +143,7 @@ public class H3MParserTest {
 
     private Map<Integer, String> constantsMap() throws IllegalAccessException {
         TreeMap<Integer, String> result = new TreeMap<>();
-        Field[] fields = ObjectNumberConstants.class.getDeclaredFields();
+        Field[] fields = ObjectClassConstants.class.getDeclaredFields();
         for (Field field : fields) {
             result.put((Integer) field.get(null), field.getName());
         }

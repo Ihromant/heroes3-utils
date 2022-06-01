@@ -1,6 +1,6 @@
 package ua.ihromant.sod.utils;
 
-import static ua.ihromant.sod.utils.ObjectNumberConstants.*;
+import static ua.ihromant.sod.utils.ObjectClassConstants.*;
 
 public enum ObjectType {
     META_OBJECT_ABANDONED_MINE_ABSOD,
