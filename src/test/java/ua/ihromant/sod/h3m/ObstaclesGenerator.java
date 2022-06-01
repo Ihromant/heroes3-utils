@@ -5,17 +5,20 @@ import ua.ihromant.sod.ImageMerger;
 import ua.ihromant.sod.ImageMetadata;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectType;
+import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.entities.ObjectAttribute;
-import ua.ihromant.sod.utils.entities.ObjectData;
 import ua.ihromant.sod.utils.map.BackgroundType;
+import ua.ihromant.sod.utils.map.ResourceType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -100,5 +103,80 @@ public class ObstaclesGenerator {
         }
         return shifts.stream().sorted(Comparator.comparing(ObjectAttribute.Shift::getDy).reversed().thenComparing(ObjectAttribute.Shift::getDx))
                 .map(sh -> String.valueOf(Math.abs(sh.getDx())) + Math.abs(sh.getDy())).collect(Collectors.joining());
+    }
+
+    @Test
+    public void generateMines() throws IOException {
+        Map<String, ObjectAttribute> defs = new TreeMap<>();
+        for (int i = 0; i < 74; i++) {
+            new H3MParser().setDataInterceptor(od -> {
+                        ObjectType type = od.getOa().getType();
+                        if (type == ObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(od.getOa().def())) {
+                            defs.put(od.getOa().def(), od.getOa());
+                        }
+                    })
+                    .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
+        }
+        defs.forEach((k, v) -> System.out.println(k + "="
+                + Utils.ones(v.getLandscapeGroup()).mapToObj(i -> BackgroundType.values()[i]).toList()));
+        defs.get("avmsulf0").setLandscapeGroup(255);
+        defs.get("avmalch0").setLandscapeGroup(255 ^ (1 << BackgroundType.SNOW.ordinal()));
+        defs.get("avmgems0").setLandscapeGroup(1 << BackgroundType.GRASS.ordinal());
+        defs.get("avmgerf0").setLandscapeGroup(1 << BackgroundType.ROUGH.ordinal());
+        defs.put("avmgesd0", new ObjectAttribute().setDef("avmgesd0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        defs.put("avmgesu0", new ObjectAttribute().setDef("avmgesu0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
+        defs.put("avmgesw0", new ObjectAttribute().setDef("avmgesw0.def").setLandscapeGroup(1 << BackgroundType.SWAMP.ordinal()));
+        defs.put("avmords0", new ObjectAttribute().setDef("avmords0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        defs.put("avmorsb0", new ObjectAttribute().setDef("avmorsb0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
+        defs.put("avmswds0", new ObjectAttribute().setDef("avmswds0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        ResourceType resource = null;
+        for (ObjectAttribute oa : defs.values()) {
+            boolean resourceChanged = resource != (resource = byDef(oa.def()));
+            String genName = resource.getGeneratorName();
+            if (resourceChanged) {
+                System.out.println();
+                System.out.println("insert into resource_generator (");
+                System.out.println("id, full_name, resource_id, daily_growth, obstacle_type_id, ai_value");
+                System.out.println(") values");
+                System.out.println("((SELECT MAX(id) + 1 FROM resource_generator),'" + genName
+                        + "',(select id from resource where full_name = '" + resource.name() + "'),"
+                        + resource.getDayDelta() + ",(select id from map_obstacle_type where full_name = '" + resource.getObstacleType()
+                        + "')," + resource.getAiValue() + ");");
+                System.out.println("insert into generator_to_terrain (");
+                System.out.println("id, graph_name, generator_id, terrain_id, pict_width, pict_height, pict_count");
+                System.out.println(") values");
+            }
+            long count = Utils.ones(oa.getLandscapeGroup()).count();
+            String name = genName + "_" + (count > 2 ? "COMMON" :
+            count == 1 ? BackgroundType.values()[Utils.ones(oa.getLandscapeGroup()).findFirst().orElseThrow()]
+                    : Utils.ones(oa.getLandscapeGroup()).mapToObj(i -> BackgroundType.values()[i].toString()).collect(Collectors.joining("_")));
+            ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", oa.def(), name.toLowerCase());
+            System.out.println(Utils.ones(oa.getLandscapeGroup()).mapToObj(i ->
+                            "((SELECT MAX(id) + 1 FROM generator_to_terrain),'" + name
+                                    + "',(select id from resource_generator where full_name = '" + genName
+                                    + "'),(select id from terrain where full_name = '" + BackgroundType.values()[i] + "'),"
+                                    + (meta.getImageWidth() / 32) + "," + (meta.getImageHeight() / 32)
+                                    + "," + meta.getImagesCount() + ")")
+                    .collect(Collectors.joining(",\n", "", ";")));
+        }
+    }
+
+    private static ResourceType byDef(String def) {
+        return switch (def.substring(3, 5)) {
+            case "su" -> ResourceType.SULFUR;
+            case "or" -> ResourceType.ORE;
+            case "sw", "sa" -> ResourceType.WOOD;
+            case "go" -> ResourceType.GOLD;
+            case "al" -> ResourceType.MERCURY;
+            case "ge" -> ResourceType.GEMS;
+            case "cr" -> ResourceType.CRYSTAL;
+            default -> throw new IllegalArgumentException();
+        };
+    }
+
+    @Test
+    public void generateResources() {
+        Arrays.stream(ResourceType.values()).forEach(res -> System.out.println("(COALESCE((SELECT MAX(id) FROM resource), 0) + "
+                + (res.ordinal() + 1) + ",'" + res.name() + "'," + res.getDayDelta() + "),"));
     }
 }

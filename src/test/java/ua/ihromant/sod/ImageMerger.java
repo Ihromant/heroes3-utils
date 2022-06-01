@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ImageMerger {
-    private final List<String> castles = Stream.concat(Arrays.stream(Castle.values()).map(v -> v.name().toLowerCase()), Stream.of("neutrals")).collect(Collectors.toList());
+    private final List<String> castles = Stream.concat(Arrays.stream(Castle.values()).map(v -> v.name().toLowerCase()), Stream.of("neutrals")).toList();
     private static final int WIDTH = 450;
     private static final int HEIGHT = 400;
     private static final int HERO_WIDTH = 150;
@@ -51,6 +51,10 @@ public class ImageMerger {
     }
 
     public static ImageMetadata mergeImage(String rootFolder, String animName) throws IOException {
+        return mergeImage(rootFolder, animName, animName);
+    }
+
+    public static ImageMetadata mergeImage(String rootFolder, String animName, String destName) throws IOException {
         int xMax = 0;
         int yMax = 0;
         File root = new File(rootFolder + animName);
@@ -78,7 +82,7 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/mapimpassable", root.getName() + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/resgen", destName + ".png"));
         return meta;
     }
 

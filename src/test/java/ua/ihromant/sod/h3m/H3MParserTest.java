@@ -57,15 +57,16 @@ public class H3MParserTest {
     public void checkDataPresent() throws IllegalAccessException, IOException {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
+        Set<String> defs = new HashSet<>();
         new H3MParser().setDataInterceptor(od -> {
                     ObjectType type = od.getOa().getType();
                     types.add(od.getOa().getObjectClass());
-                    if (type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD) {
+                    if (type == ObjectType.META_OBJECT_RESOURCE_GENERATOR && defs.add(od.getOa().getDef())) {
                         System.out.println("x: " + od.getX() + ", y: " + od.getY() + ", sprite: " + od.getOa().getDef()
                                 + ", landscape: " + od.getOa().getLandscapeGroup() + ", rest: " + Arrays.toString(od.getOa().getPassable()));
                     }
                 })
-                .parse(getUnzippedBytes("GeneratedJC"));
+                .parse(getUnzippedBytes("Generated6lm"));
         System.out.println(types.size());
         types.stream()
                 .sorted(Comparator.comparing(i -> ObjectType.objectNumberToType(i).ordinal()))
