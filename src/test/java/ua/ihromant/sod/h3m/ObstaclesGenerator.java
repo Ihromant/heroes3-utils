@@ -59,7 +59,7 @@ public class ObstaclesGenerator {
         System.out.println(") values");
         String passableName = generateName(oa.passableShifts().toList());
         String def = oa.def();
-        ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", def);
+        ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", "/home/ihromant/workspace/ihromant.github.io/img/mapimpassable", def);
         System.out.println("((SELECT MAX(id) + 1 FROM map_impassable),'" + def
                 + "',(select id from map_obstacle_type where full_name = '" + passableName + "'),"
                 + (meta.getImageWidth() / 32) + "," + (meta.getImageHeight() / 32) + "," + meta.getImagesCount() + ");");

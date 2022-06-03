@@ -47,14 +47,16 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "avgmumy");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysopb9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_slow");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysob10", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_medium");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysob11", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_fast");
     }
 
-    public static ImageMetadata mergeImage(String rootFolder, String animName) throws IOException {
-        return mergeImage(rootFolder, animName, animName);
+    public static ImageMetadata mergeImage(String rootFolder, String destFolder, String animName) throws IOException {
+        return mergeImage(rootFolder, animName, destFolder, animName);
     }
 
-    public static ImageMetadata mergeImage(String rootFolder, String animName, String destName) throws IOException {
+    public static ImageMetadata mergeImage(String rootFolder, String animName, String destFolder, String destName) throws IOException {
         int xMax = 0;
         int yMax = 0;
         File root = new File(rootFolder + animName);
@@ -82,7 +84,7 @@ public class ImageMerger {
             }
             result.getGraphics().drawImage(toDraw, xIdx * toDraw.getWidth(), yIdx * toDraw.getHeight(), null);
         }
-        ImageIO.write(Objects.requireNonNull(result), "PNG", new File("/home/ihromant/workspace/ihromant.github.io/img/mapmonsters", destName + ".png"));
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File(destFolder, destName + ".png"));
         return meta;
     }
 
