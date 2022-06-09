@@ -12,7 +12,7 @@ public enum BackgroundType {
     SNOW(0xC0_C0_B0, 79),
     SWAMP(0x6F_80_4F, 79),
     ROUGH(0x30_70_80, 79),
-    SUBTERRANEAN(0x30_80_00, 79),
+    SUBTERRANEAN(0x00_30_80, 79),
     LAVA(0x4F_4F_4F, 79),
     WATER(0x90_50_0F, 33),
     ROCK(0x00_00_00, 48);

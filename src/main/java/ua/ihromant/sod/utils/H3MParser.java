@@ -76,8 +76,7 @@ public class H3MParser {
                     .setCanBeComputer(wrap.readBoolean())
                     .setBehavior(wrap.readUnsigned())
                     .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
-                    .setTownTypes(wrap.readUnsigned())
-                    .setTownConflux(isROE ? null : wrap.readUnsigned())
+                    .setTownTypes(isROE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
             player.setStartingTown(hasMainTown ? new StartingTownMetadata().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())

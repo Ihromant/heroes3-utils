@@ -13,7 +13,6 @@ public class PlayerMetadata {
     private int behavior;
     private Integer allowedAlignments;
     private int townTypes;
-    private Integer townConflux;
     private boolean ownsRandomTown;
     private boolean hasMainTown;
 
