@@ -93,15 +93,14 @@ Conflux
 0	0	0	0	0	0	10000	Artifact Merchants
 0	0	0	0	0	0	1000	Pixie Horde
 0	0	0	0	0	0	1000	Sprite Horde
-0	0	0	0	0	0	0	never used
+0	0	0	0	0	0	0
 10	0	10	0	0	0	5000	Magic University
-0	0	0	0	0	0	0	unused
-0	0	0	0	0	0	0	unused
-0	0	0	0	0	0	0	unused
-0	0	0	0	0	0	0	unused
+0	0	0	0	0	0	0
+0	0	0	0	0	0	0
+0	0	0	0	0	0	0
+0	0	0	0	0	0	0
 
 Neutral Buildings
-
 5	0	5	0	0	0	2000	 MAGE_GUILD_ID
 5	4	5	4	4	4	1000	 MAGE_GUILD2_ID
 5	6	5	6	6	6	1000	 MAGE_GUILD3_ID
@@ -265,3 +264,4 @@ Conflux
 0	0	0	5	0	0	1000	Temple of Magma - Magma Elementals
 0	3	0	3	3	3	3000	Temple of Magic - Magic Elementals
 10	20	10	0	0	0	15000	Funeral Pyre - Phoenixes
+
