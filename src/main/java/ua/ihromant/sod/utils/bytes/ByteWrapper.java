@@ -1,116 +1,97 @@
 package ua.ihromant.sod.utils.bytes;
 
-import com.google.common.io.LittleEndianDataInputStream;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class ByteWrapper {
-    private int position;
-    private byte[] bytes;
-    private final LittleEndianDataInputStream str;
+    private final ByteBuffer str;
 
     public ByteWrapper(byte[] bytes) {
-        this.str = new LittleEndianDataInputStream(new ByteArrayInputStream(bytes));
-        this.bytes = bytes;
+        this.str = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
     }
 
-    public void seek(int position) throws IOException {
-        str.reset();
-        str.skipBytes(position);
-        this.position = position;
+    public void seek(int position) {
+        str.position(position);
     }
 
-    public int readInt() throws IOException {
-        position = position + 4;
-        return str.readInt();
+    public int readInt() {
+        return str.getInt();
     }
 
-    public String readString(int characters) throws IOException {
-        position = position + characters;
+    public String readString(int characters) {
         char[] nm = new char[characters];
         for (int k = 0; k < characters; k++) {
-            nm[k] = (char) str.readByte();
+            nm[k] = (char) str.get();
         }
         return new String(nm);
     }
 
-    public String readString() throws IOException {
+    public String readString() {
         return readString(readInt());
     }
 
-    public int readUnsigned() throws IOException {
-        position = position + 1;
-        return str.readUnsignedByte();
+    public int readUnsigned() {
+        return str.get() & 0xFF;
     }
 
-    public int readRGB() throws IOException {
-        position = position + 3;
-        return (str.readUnsignedByte() << 16) | (str.readUnsignedByte() << 8) | str.readUnsignedByte();
+    public int readRGB() {
+        return (readUnsigned() << 16) | (readUnsigned() << 8) | readUnsigned();
     }
 
-    public int readBGR() throws IOException {
-        position = position + 3;
-        return str.readUnsignedByte() | (str.readUnsignedByte() << 8) | (str.readUnsignedByte() << 16);
+    public int readBGR() {
+        return readUnsigned() | (readUnsigned() << 8) | (readUnsigned() << 16);
     }
 
-    public byte[] readBytes(int size) throws IOException {
-        position = position + size;
+    public byte[] readBytes(int size) {
         byte[] bytes = new byte[size];
-        str.read(bytes);
+        str.get(bytes);
         return bytes;
     }
 
-    public int[] readUnsigned(int size) throws IOException {
-        position = position + size;
+    public int[] readUnsigned(int size) {
         int[] bytes = new int[size];
         for (int i = 0; i < size; i++) {
-            bytes[i] = str.readUnsignedByte();
+            bytes[i] = readUnsigned();
         }
         return bytes;
     }
 
-    public byte readByte() throws IOException {
-        position = position + 1;
-        return str.readByte();
+    public byte readByte() {
+        return str.get();
     }
 
-    public boolean readBoolean() throws IOException {
+    public boolean readBoolean() {
         return readUnsigned() > 0;
     }
 
-    public int readUnsignedShort() throws IOException {
-        position = position + 2;
-        return str.readUnsignedShort();
+    public int readUnsignedShort() {
+        return str.getShort() & 0xFFFF;
     }
 
-    public int[] readUnsignedShort(int size) throws IOException {
-        position = position + 2 * size;
+    public int[] readUnsignedShort(int size) {
         int[] shorts = new int[size];
         for (int i = 0; i < size; i++) {
-            shorts[i] = str.readUnsignedShort();
+            shorts[i] = readUnsignedShort();
         }
         return shorts;
     }
 
-    public int[] readInt(int size) throws IOException {
-        position = position + 4 * size;
+    public int[] readInt(int size) {
         int[] ints = new int[size];
         for (int i = 0; i < size; i++) {
-            ints[i] = str.readInt();
+            ints[i] = str.getInt();
         }
         return ints;
     }
 
     public int getPosition() {
-        return position;
+        return str.position();
     }
 
     public int[] debug() throws IOException {
-        int[] result = new int[500];
-        for (int i = 0; i < 500; i++) {
-            result[i] = bytes[position + i] & 0xFF;
-        }
+        int[] result = readUnsigned(500);
+        str.position(str.position() - 500);
         return result;
     }
 }

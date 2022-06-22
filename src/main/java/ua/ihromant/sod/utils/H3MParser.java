@@ -35,8 +35,8 @@ import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 import ua.ihromant.sod.utils.map.SecondarySkill;
 
-import java.io.EOFException;
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -359,13 +359,13 @@ public class H3MParser {
         wrap.readInt();
         try {
             wrap.readUnsigned(); // HD
-        } catch (EOFException e) {
+        } catch (BufferUnderflowException e) {
             return map; // normal
         }
         wrap.readUnsigned(115);
         try {
             wrap.readUnsigned();
-        } catch (EOFException e) {
+        } catch (BufferUnderflowException e) {
             return map; // normal
         }
         throw new IOException();
