@@ -291,7 +291,7 @@ public class LodResourceExtractor {
         ImageIO.write(img, "png", new File(fileName.replace("pcx", "png")));
     }
 
-    private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream, GraphMode mode, int frame) throws IOException {
+    private BufferedImage readPalettedImageWithSpecial(int width, int height, int[] palette, ByteWrapper stream, GraphMode mode, int frame) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -348,7 +348,7 @@ public class LodResourceExtractor {
         return img;
     }
 
-    private BufferedImage readPalettedImage(int width, int height, int[] palette, ByteWrapper stream) throws IOException {
+    private BufferedImage readPalettedImage(int width, int height, int[] palette, ByteWrapper stream) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -359,7 +359,7 @@ public class LodResourceExtractor {
         return img;
     }
 
-    private BufferedImage readRGBImage(int width, int height, ByteWrapper stream) throws IOException {
+    private BufferedImage readRGBImage(int width, int height, ByteWrapper stream) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -369,7 +369,7 @@ public class LodResourceExtractor {
         return img;
     }
 
-    private boolean isPcx(byte[] array) throws IOException {
+    private boolean isPcx(byte[] array) {
         ByteWrapper stream = new ByteWrapper(array);
         int size = stream.readInt();
         int width = stream.readInt();
