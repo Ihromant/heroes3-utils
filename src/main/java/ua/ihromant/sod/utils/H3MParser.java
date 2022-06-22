@@ -35,7 +35,6 @@ import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 import ua.ihromant.sod.utils.map.SecondarySkill;
 
-import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -54,7 +53,7 @@ public class H3MParser {
 
     private Consumer<ObjectData> dataInterceptor;
 
-    public MapMetadata parse(byte[] bytes) throws IOException {
+    public MapMetadata parse(byte[] bytes) {
         MapMetadata map = new MapMetadata();
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
@@ -368,7 +367,7 @@ public class H3MParser {
         } catch (BufferUnderflowException e) {
             return map; // normal
         }
-        throw new IOException();
+        throw new IllegalStateException();
     }
 
     private SecondarySkill[] readSkills(int[] masks) {
@@ -377,20 +376,20 @@ public class H3MParser {
                         .mapToObj(j -> ObjectNumberConstants.SECONDARY[8 * i + j])).toArray(SecondarySkill[]::new);
     }
 
-    private Coordinates readCoordinates(ByteWrapper wrap) throws IOException {
+    private Coordinates readCoordinates(ByteWrapper wrap) {
         return new Coordinates().setX(wrap.readUnsigned())
                 .setY(wrap.readUnsigned())
                 .setZ(wrap.readUnsigned());
     }
 
-    private void parseAiTeams(ByteWrapper wrap) throws IOException {
+    private void parseAiTeams(ByteWrapper wrap) {
         int teamsCount = wrap.readUnsigned(); // teamsCount
         if (teamsCount != 0) {
             wrap.readUnsigned(8);
         }
     }
 
-    private void parseLoseCondition(ByteWrapper wrap) throws IOException {
+    private void parseLoseCondition(ByteWrapper wrap) {
         int loseCond = wrap.readUnsigned();
         if (loseCond == 0xFF) {
             return;
@@ -408,7 +407,7 @@ public class H3MParser {
         }
     }
 
-    private void parseWinCondition(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private void parseWinCondition(ByteWrapper wrap, boolean isRoE) {
         int winCond = wrap.readUnsigned();
         if (winCond == 0xFF) {
             return;
@@ -451,12 +450,12 @@ public class H3MParser {
         }
     }
 
-    private void readResource(ByteWrapper wrap) throws IOException {
+    private void readResource(ByteWrapper wrap) {
         wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
         wrap.readInt(); // amount
     }
 
-    private void parseReward(ByteWrapper wrap, boolean isRoE) throws IOException { // TODO merge with common reward
+    private void parseReward(ByteWrapper wrap, boolean isRoE) { // TODO merge with common reward
         int rewardType = wrap.readUnsigned();
         switch (rewardType) {
             case 0: // none
@@ -498,7 +497,7 @@ public class H3MParser {
         }
     }
 
-    private void parseQuestRequest(ByteWrapper wrap, boolean isROE, int questType) throws IOException {
+    private void parseQuestRequest(ByteWrapper wrap, boolean isROE, int questType) {
         switch (questType) {
             case 0: // none
                 break;
@@ -542,7 +541,7 @@ public class H3MParser {
         }
     }
 
-    private MapMonster parseMonster(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private MapMonster parseMonster(ByteWrapper wrap, boolean isRoE) {
         return new MapMonster().setAbSodId(isRoE ? null : wrap.readInt())
                 .setQuantity(wrap.readUnsignedShort())
                 .setDisposition(wrap.readUnsigned())
@@ -554,7 +553,7 @@ public class H3MParser {
                 .setUnknown1(wrap.readUnsigned(2));
     }
 
-    private CommonHero parseHero(ByteWrapper wrap, boolean isRoE, boolean isSoD) throws IOException {
+    private CommonHero parseHero(ByteWrapper wrap, boolean isRoE, boolean isSoD) {
         CommonHero result = new CommonHero().setAbSodId(isRoE ? null : wrap.readInt())
                 .setOwner(wrap.readUnsigned())
                 .setType(wrap.readUnsigned())
@@ -579,11 +578,11 @@ public class H3MParser {
         return result;
     }
 
-    private int readArtifact(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private int readArtifact(ByteWrapper wrap, boolean isRoE) {
         return isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort();
     }
 
-    private HeroArtifacts parseHeroArtifacts(ByteWrapper wrap, boolean isRoE, boolean isSoD) throws IOException {
+    private HeroArtifacts parseHeroArtifacts(ByteWrapper wrap, boolean isRoE, boolean isSoD) {
         return new HeroArtifacts().setHeadwear(readArtifact(wrap, isRoE)) // TODO somewhere is bug, feet wrongly recognized
                 .setShoulders(readArtifact(wrap, isRoE))
                 .setRightHand(readArtifact(wrap, isRoE))
@@ -606,7 +605,7 @@ public class H3MParser {
                 .setBackpack(isRoE ? wrap.readUnsigned(wrap.readUnsignedShort()) : wrap.readUnsignedShort(wrap.readUnsignedShort()));
     }
 
-    private TownEvent[] readTownEvents(ByteWrapper wrap, boolean isSoD) throws IOException {
+    private TownEvent[] readTownEvents(ByteWrapper wrap, boolean isSoD) {
         TownEvent[] result = new TownEvent[wrap.readInt()];
         for (int i = 0; i < result.length; i++) {
             result[i] = new TownEvent().setName(wrap.readString())
@@ -625,7 +624,7 @@ public class H3MParser {
         return result;
     }
 
-    private MapTown readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) throws IOException {
+    private MapTown readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) {
         MapTown town = new MapTown().setAbSodId(isRoe ? null : wrap.readInt())
                 .setOwner(wrap.readUnsigned())
                 .setName(wrap.readBoolean() ? wrap.readString() : null)
@@ -645,7 +644,7 @@ public class H3MParser {
         return town;
     }
 
-    private CommonReward readCommonReward(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private CommonReward readCommonReward(ByteWrapper wrap, boolean isRoE) {
         return new CommonReward().setExperience(wrap.readInt())
                 .setSpellPoints(wrap.readInt())
                 .setMorale(wrap.readByte())
@@ -659,13 +658,13 @@ public class H3MParser {
                 .setUnknown(wrap.readUnsigned(8));
     }
 
-    private CommonGuardian readCommonGuardian(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private CommonGuardian readCommonGuardian(ByteWrapper wrap, boolean isRoE) {
         return new CommonGuardian().setMessage(wrap.readString())
                 .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoE) : null)
                 .setUnknown1(wrap.readUnsigned(4));
     }
 
-    private CommonSecondarySkill[] readSecondarySkills(ByteWrapper wrap, int size) throws IOException {
+    private CommonSecondarySkill[] readSecondarySkills(ByteWrapper wrap, int size) {
         CommonSecondarySkill[] result = new CommonSecondarySkill[size];
         for (int i = 0; i < result.length; i++) {
             result[i] = new CommonSecondarySkill().setType(wrap.readUnsigned()).setLevel(wrap.readUnsigned());
@@ -673,12 +672,12 @@ public class H3MParser {
         return result;
     }
 
-    private CreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private CreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) {
         return new CreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                 .setQuantity(wrap.readUnsignedShort());
     }
 
-    private CreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE, int count) throws IOException {
+    private CreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE, int count) {
         CreatureSlot[] creatures = new CreatureSlot[count];
         for (int j = 0; j < creatures.length; j++) {
             creatures[j] = readCreature(wrap, isRoE);
@@ -686,15 +685,15 @@ public class H3MParser {
         return creatures;
     }
 
-    private CreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private CreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE) {
         return readArmy(wrap, isRoE, 7);
     }
 
-    private int[] readResources(ByteWrapper wrap) throws IOException {
+    private int[] readResources(ByteWrapper wrap) {
         return wrap.readInt(7);
     }
 
-    private int[] readArtifacts(ByteWrapper wrap, boolean isRoE) throws IOException {
+    private int[] readArtifacts(ByteWrapper wrap, boolean isRoE) {
         if (isRoE) {
             return wrap.readUnsigned(wrap.readUnsigned());
         } else {
@@ -702,7 +701,7 @@ public class H3MParser {
         }
     }
 
-    private PrimarySkills readPrimarySkills(ByteWrapper wrap) throws IOException {
+    private PrimarySkills readPrimarySkills(ByteWrapper wrap) {
         return new PrimarySkills().setAttack(wrap.readUnsigned())
                 .setDefense(wrap.readUnsigned())
                 .setSpellPower(wrap.readUnsigned())

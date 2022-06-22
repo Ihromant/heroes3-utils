@@ -89,7 +89,7 @@ public class ByteWrapper {
         return str.position();
     }
 
-    public int[] debug() throws IOException {
+    public int[] debug() {
         int[] result = readUnsigned(500);
         str.position(str.position() - 500);
         return result;
