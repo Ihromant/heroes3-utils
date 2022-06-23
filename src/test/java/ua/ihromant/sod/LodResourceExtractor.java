@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -83,7 +85,15 @@ public class LodResourceExtractor {
         //files.forEach(f -> System.out.println(f.getName() + " " + f.getOffset() + " " + f.getSize() + " " + f.getCSize()));
     }
 
-    private void readDef(byte[] bytes, String fileName) throws IOException {
+    @Test
+    public void testReadDef() throws IOException {
+        String fileName = "bckpck.def";
+        Path path = Path.of("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common", fileName);
+        byte[] bytes = Files.readAllBytes(path);
+        readDef(bytes, fileName);
+    }
+
+    public void readDef(byte[] bytes, String fileName) throws IOException {
         String folderName = fileName.substring(0, fileName.indexOf("."));
         // if (!fileName.startsWith("c") && !fileName.startsWith("sm")) { // creatures
 //        if (!fileName.startsWith("ch0") && !fileName.startsWith("ch1")) { // heroes
