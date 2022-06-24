@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -47,9 +46,13 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysopb9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_slow");
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysob10", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_medium");
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "sysob11", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x32", "battle_speed_fast");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "ok");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns2", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "dismiss_hero");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns4", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "quest_log");
+        //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
+        //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
+        //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm006", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_wait");
+        //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm007", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_defend");
     }
 
     public static ImageMetadata mergeImage(String rootFolder, String destFolder, String animName) throws IOException {
@@ -127,6 +130,21 @@ public class ImageMerger {
                 newDir.mkdir();
                 ImageIO.write(result, "PNG", new File(newDir, dir.getName() + "_" + HeroAnimStage.values()[i].toString().toLowerCase() + ".png"));
             }
+        }
+    }
+
+    @Test
+    public void removeBorder() throws IOException {
+        File root = new File("/home/ihromant/Games/units/images-shadow/itpa");
+        for (File f : Objects.requireNonNull(root.listFiles())) {
+            BufferedImage img = ImageIO.read(f);
+            BufferedImage res = new BufferedImage(img.getWidth() - 2, img.getHeight() - 2, BufferedImage.TYPE_INT_ARGB);
+            for (int i = 0; i < res.getWidth(); i++) {
+                for (int j = 0; j < res.getHeight(); j++) {
+                    res.setRGB(i, j, img.getRGB(i + 1, j + 1));
+                }
+            }
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/castle", f.getName()));
         }
     }
 }
