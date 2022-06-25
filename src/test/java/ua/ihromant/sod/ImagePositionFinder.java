@@ -21,9 +21,10 @@ public class ImagePositionFinder {
     private static final int BACK_WIDTH = 800;
     private static final int BACK_HEIGHT = 374;
     private static final int TEST_COUNT = 256;
+    private static final int TRUTH_PERCENTAGE = 25;
     @Test
     public void determine() throws AWTException, IOException {
-        printImageData("tbcsback", "tbcscstl");
+        printImageData("tbcsback", "tbcshall");
     }
 
     private void printImageData(String castleBack, String bFolder) throws AWTException, IOException {
@@ -47,7 +48,7 @@ public class ImagePositionFinder {
         return IntStream.rangeClosed(0, BACK_WIDTH - width).boxed().flatMap(i ->
                 IntStream.rangeClosed(0, BACK_HEIGHT - height).filter(j -> building.entrySet().stream().limit(TEST_COUNT)
                         .filter(e -> e.getValue() == src.getRGB(i + e.getKey().getX() + offset.getX(), j + e.getKey().getY() + offset.getY()))
-                        .count() * 100 / TEST_COUNT > 25).mapToObj(j -> new Point(i, j))).collect(Collectors.toList());
+                        .count() * 100 / TEST_COUNT > TRUTH_PERCENTAGE).mapToObj(j -> new Point(i, j))).collect(Collectors.toList());
     }
 
     private static Map<Point, Integer> readNonTransparent(BufferedImage img) {
