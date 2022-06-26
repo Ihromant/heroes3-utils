@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,7 +25,7 @@ public class ImagePositionFinder {
     private static final int TRUTH_PERCENTAGE = 25;
     @Test
     public void determine() throws AWTException, IOException {
-        printImageData("tbcsback", "tbcshall");
+        printImageData("tbcsback", "tbcsmag3");
     }
 
     private void printImageData(String castleBack, String bFolder) throws AWTException, IOException {
@@ -32,10 +33,10 @@ public class ImagePositionFinder {
         BufferedImage realImg = robot.createScreenCapture(new Rectangle(1920, 0, 1024, 768));
         BufferedImage background = ImageIO.read(new File("/home/ihromant/Games/units/images/zbackground/" + castleBack + ".png"));
         Point p = determineOffset(realImg, background);
-        System.out.println(p);
         File folder = new File("/home/ihromant/Games/units/images-shadow", bFolder);
         BufferedImage building = ImageIO.read(new File(folder, "00_00.png"));
         Map<Point, Integer> points = readNonTransparent(building);
+        System.out.println(p + " " + points.size());
         List<Point> dest = determineImage(realImg, points, building.getWidth(), building.getHeight(), p);
         if (dest.size() == 1) {
             System.out.println(building.getWidth() + "," + building.getHeight() + "," + folder.listFiles().length + "," + dest.get(0).getX() + "," + dest.get(0).getY());
@@ -81,6 +82,36 @@ public class ImagePositionFinder {
             }
         }
         throw new IllegalStateException();
+    }
+
+    @Test
+    public void merge() throws IOException {
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "tbcsup_5", "/home/ihromant/workspace/ihromant.github.io/img/townbuildings/castle", "upgr_training_grounds");
+    }
+
+    public static void mergeImage(String rootFolder, String animName, String destFolder, String destName) throws IOException {
+        File root = new File(rootFolder, animName);
+        File[] images = Objects.requireNonNull(root.listFiles());
+        BufferedImage base = ImageIO.read(new File(root, "00_00.png"));
+        BufferedImage result = new BufferedImage(base.getWidth(), base.getHeight() * images.length, BufferedImage.TYPE_INT_ARGB);
+        for (File img : images) {
+            String name = img.getName();
+            int yIdx = Integer.parseInt(name.substring(3, 5), 10);
+            BufferedImage toDraw = ImageIO.read(img);
+            mergeWithBase(toDraw, base);
+            result.getGraphics().drawImage(toDraw, 0, yIdx * toDraw.getHeight(), null);
+        }
+        ImageIO.write(Objects.requireNonNull(result), "PNG", new File(destFolder, destName + ".png"));
+    }
+
+    private static void mergeWithBase(BufferedImage img, BufferedImage base) {
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                if (img.getRGB(i, j) >> 24 == 0) {
+                    img.setRGB(i, j, base.getRGB(i, j));
+                }
+            }
+        }
     }
 
     @EqualsAndHashCode
