@@ -88,9 +88,13 @@ public class ByteWrapper {
         return str.position();
     }
 
-    public int[] debug() {
-        int[] result = readUnsigned(500);
-        str.position(str.position() - 500);
+    public int[] debug(int count) {
+        int[] result = readUnsigned(count);
+        str.position(str.position() - count);
         return result;
+    }
+
+    public int size() {
+        return str.capacity();
     }
 }

@@ -2,7 +2,7 @@ package ua.ihromant.sod;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 
@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -78,7 +77,7 @@ public class LodResourceExtractor {
                     }
                     readDef(bytes, meta.getName());
                 } else {
-                    IOUtils.write(bytes, new FileOutputStream(fileName));
+                    FileUtils.writeByteArrayToFile(new File(fileName), bytes);
                 }
             }
         }
