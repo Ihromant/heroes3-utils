@@ -14,6 +14,7 @@ public class AggResourceExtractor {
 	private static final String NAME = "/home/ihromant/Games/HoMM 2 Gold/DATA/HEROES2.AGG";
 	private static final String BASE_FOLDER = "/tmp/images/";
     private static final String PALETTE = "H2Palette.bmp";
+    private static final int TERM = 0x80;
     private static BufferedImage pal;
     private static int[] palette;
 
@@ -90,13 +91,10 @@ public class AggResourceExtractor {
             right = Math.max(right, headers[i].x + headers[i].width);
             bottom = Math.max(bottom, headers[i].y + headers[i].height);
         }
-        int height = pal.getHeight();
         for (int i = 0; i < count; i++) {
-            wrap.seek(headers[i].offset + 6);
             File result = new File(dir, String.format("%02d.png", i));
             //boolean mask = i == 0 || "font.icn".equals(name);
-            BufferedImage img = new BufferedImage(headers[i].width, headers[i].height, BufferedImage.TYPE_INT_ARGB);
-            unpackCadre(wrap, img, headers[i].bits == 0x20);
+            BufferedImage img = unpackFrame(wrap, headers[i]);;
             //BufferedImage img = readPalettedImageWithSpecial(headers[i].x, headers[i].y, headers[i].width, headers[i].height, palette, wrap);
             ImageIO.write(img, "png", result);
         }
@@ -106,25 +104,27 @@ public class AggResourceExtractor {
         img.setRGB(pointer % img.getWidth(), pointer / img.getWidth(), color);
     }
 
-    public static void unpackCadre(ByteWrapper wrap, BufferedImage img, boolean mono) throws IOException {
+    public static BufferedImage unpackFrame(ByteWrapper wrap, Header header) {
+        wrap.seek(header.offset + 6);
+        BufferedImage img = new BufferedImage(header.width, header.height, BufferedImage.TYPE_INT_ARGB);
+        boolean mono = header.bits == 0x20;
         int x = 0;
         int y = 0;
-        while (true) {
-            int code = wrap.readUnsigned();
+        int code;
+        do {
+            code = wrap.readUnsigned();
             if (mono) {
                 switch (code) {
                     case 0:
                         x = ++y * img.getWidth();
                         break;
-                    case 0x80:
-                        return;
                     default: {
-                        if (code < 0x80) {
+                        if (code < TERM) {
                             for (int i = 0; i < code; i++) {
                                 paintPixel(img, x++, 0xFF << 24);
                             }
-                        } else {
-                            x += code - 0x80;
+                        } else if (code > TERM) {
+                            x += code - TERM;
                         }
                     }
                 }
@@ -133,8 +133,6 @@ public class AggResourceExtractor {
                     case 0:
                         x = ++y * img.getWidth();
                         break;
-                    case 0x80:
-                        return;
                     case 0xC0:
                         int nextByte = wrap.readUnsigned();
                         if (nextByte % 4 == 0) {
@@ -156,14 +154,14 @@ public class AggResourceExtractor {
                         }
                         break;
                     default:
-                        if (code < 0x80) {
+                        if (code < TERM) {
                             int[] colors = wrap.readUnsigned(code);
                             for (int i = 0; i < code; i++) {
                                 paintPixel(img, x++, palette[colors[i]]);
                             }
-                        } else if (code < 0xC0) {
-                            x += code - 0x80;
-                        } else { // 0xC2 to 0xFF
+                        } else if (code > TERM && code < 0xC0) {
+                            x += code - TERM;
+                        } else if (code > 0xC1){ // 0xC2 to 0xFF
                             int color = wrap.readUnsigned();
                             int count = code - 0xC0;
                             for (int i = 0; i < count; i++) {
@@ -172,7 +170,8 @@ public class AggResourceExtractor {
                         }
                 }
             }
-        }
+        } while (code != 0x80);
+        return img;
     }
 
     public static BufferedImage readPalettedImageWithSpecial(int x, int y,int width, int height, int[] palette, ByteWrapper stream) {
