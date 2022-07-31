@@ -408,7 +408,7 @@ public class H3MParser {
         }
     }
 
-    private H3MReward parseReward(ByteWrapper wrap, boolean isRoE) { // TODO merge with common reward
+    private H3MReward parseReward(ByteWrapper wrap, boolean isRoE) {
         int rewardType = wrap.readUnsigned();
         switch (rewardType) {
             case 0: // none
