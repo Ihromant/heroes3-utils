@@ -17,7 +17,6 @@ import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.H3MMapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
-import ua.ihromant.sod.utils.entities.MessageBearer;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.ObjectData;
 import ua.ihromant.sod.utils.entities.PlaceholderHero;
@@ -219,8 +218,8 @@ public class H3MParser {
                     break;
                 case META_OBJECT_SIGN:
                 case META_OBJECT_OCEAN_BOTTLE:
-                    new MessageBearer().setMessage(wrap.readString())
-                            .setUnknown1(wrap.readUnsigned(4));
+                    wrap.readString(); // message text
+                    wrap.readUnsigned(4); // unknown1
                     break;
                 case META_OBJECT_GARRISON:
                 case META_OBJECT_GARRISON_ABSOD:
