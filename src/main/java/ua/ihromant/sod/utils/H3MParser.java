@@ -7,7 +7,6 @@ import ua.ihromant.sod.utils.entities.AiRumor;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.BasicInformation;
-import ua.ihromant.sod.utils.entities.CommonGuardian;
 import ua.ihromant.sod.utils.entities.H3MHero;
 import ua.ihromant.sod.utils.entities.H3MReward;
 import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
@@ -300,17 +299,17 @@ public class H3MParser {
                 case META_OBJECT_ARTIFACT:
                 case META_OBJECT_ARTIFACT_AB:
                 case META_OBJECT_ARTIFACT_SOD:
-                    CommonGuardian grd = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null; // only optional guardian here
+                    H3MCreatureSlot[] grd = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null; // only optional guardian here
                     break;
                 case META_OBJECT_SHRINE:
                     wrap.readInt(); // spell
                     break;
                 case META_OBJECT_SPELL_SCROLL:
-                    CommonGuardian grd1 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
+                    H3MCreatureSlot[] grd1 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
                     wrap.readInt(); // spell
                     break;
                 case META_OBJECT_RESOURCE:
-                    CommonGuardian grd2 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
+                    H3MCreatureSlot[] grd2 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
                     wrap.readInt(); // quantity
                     wrap.readUnsigned(4); // unknown1
                     break;
@@ -653,10 +652,11 @@ public class H3MParser {
                 .setUnknown(wrap.readUnsigned(8));
     }
 
-    private CommonGuardian readCommonGuardian(ByteWrapper wrap, boolean isRoE) {
-        return new CommonGuardian().setMessage(wrap.readString())
-                .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoE) : null)
-                .setUnknown1(wrap.readUnsigned(4));
+    private H3MCreatureSlot[] readCommonGuardian(ByteWrapper wrap, boolean isRoE) {
+        wrap.readString(); // message
+        H3MCreatureSlot[] creatures = wrap.readBoolean() ? readArmy(wrap, isRoE) : null;
+        wrap.readUnsigned(4); // unknown1
+        return creatures;
     }
 
     private H3MSecondarySkill[] readSecondarySkills(ByteWrapper wrap, int size) {
