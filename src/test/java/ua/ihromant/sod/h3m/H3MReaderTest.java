@@ -2,7 +2,7 @@ package ua.ihromant.sod.h3m;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-import ua.ihromant.sod.utils.H3MParser;
+import ua.ihromant.sod.utils.H3MReader;
 import ua.ihromant.sod.utils.ObjectClassConstants;
 import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.ParserInterceptor;
@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 
-public class H3MParserTest {
+public class H3MReaderTest {
     @Test
     public void testParserCorrectness() throws IOException {
         testFileName("FBA2018");
@@ -39,11 +39,11 @@ public class H3MParserTest {
     }
 
     private void testFileName(String fileName) throws IOException {
-        new H3MParser().parse(new ByteWrapper(getUnzippedBytes(fileName)), new ParserInterceptor(){});
+        new H3MReader().parse(new ByteWrapper(getUnzippedBytes(fileName)), new ParserInterceptor(){});
     }
 
     public static byte[] getUnzippedBytes(String fileName) throws IOException {
-        return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(H3MParserTest.class.getResourceAsStream("/h3m/" + fileName + ".h3m"))));
+        return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(H3MReaderTest.class.getResourceAsStream("/h3m/" + fileName + ".h3m"))));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class H3MParserTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
-        new H3MParser().parse(new ByteWrapper(getUnzippedBytes("Generated6lm")), new ParserInterceptor() {
+        new H3MReader().parse(new ByteWrapper(getUnzippedBytes("Generated6lm")), new ParserInterceptor() {
             @Override
             public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                 H3MObjectType type = attr.type();

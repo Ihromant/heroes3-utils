@@ -22,7 +22,7 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.nio.BufferUnderflowException;
 
-public class H3MParser {
+public class H3MReader {
     private static final int H3M_FORMAT_ROE = 0x0000000E;
     private static final int H3M_FORMAT_AB = 0x00000015;
     private static final int H3M_FORMAT_SOD = 0x0000001C;
