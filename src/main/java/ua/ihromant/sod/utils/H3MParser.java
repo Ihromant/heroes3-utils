@@ -4,7 +4,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
-import ua.ihromant.sod.utils.entities.BasicInformation;
 import ua.ihromant.sod.utils.entities.H3MHero;
 import ua.ihromant.sod.utils.entities.H3MReward;
 import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
@@ -36,7 +35,8 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    private ParserInterceptor dataInterceptor;
+    private ParserInterceptor interceptor = new ParserInterceptor() {
+    }; // empty
 
     public MapMetadata parse(byte[] bytes) {
         MapMetadata map = new MapMetadata();
@@ -47,12 +47,10 @@ public class H3MParser {
         wrap.readBoolean(); // at least 1 hero ?? wtf
         int side = wrap.readInt();
         Coordinate size = new Coordinate(side, side, wrap.readBoolean() ? 2 : 1);
-        map.setBasic(new BasicInformation()
-                .setMapName(wrap.readString())
-                .setMapDescription(wrap.readString())
-                .setMapDifficulty(wrap.readUnsigned()));
+        interceptor.interceptBasics(size, wrap.readString(), wrap.readString());
+        wrap.readUnsigned(); // map difficulty
         if (!isROE) {
-            map.getBasic().setMasteryLevelCap(wrap.readUnsigned());
+            wrap.readUnsigned(); // masteryLevelCap
         }
         for (int i = 0; i < 8; i++) {
             boolean ai;

@@ -13,6 +13,5 @@ import ua.ihromant.sod.utils.entities.PlayerMetadata;
 @Accessors(chain = true)
 public class MapMetadata {
     private PlayerMetadata[] playersMetadata = new PlayerMetadata[8];
-    private BasicInformation basic;
     private MapTile[][][] tiles;
 }

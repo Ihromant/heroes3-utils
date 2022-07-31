@@ -60,7 +60,7 @@ public class H3MParserTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
-        new H3MParser().setDataInterceptor(new ParserInterceptor() {
+        new H3MParser().setInterceptor(new ParserInterceptor() {
                     @Override
                     public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                         H3MObjectType type = attr.type();

@@ -31,7 +31,7 @@ public class ObstaclesGenerator {
         Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
         for (int i = 0; i < 74; i++) {
             List<H3MObjectAttribute> current = new ArrayList<>();
-            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+            new H3MParser().setInterceptor(new ParserInterceptor() {
                         @Override
                         public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                             H3MObjectType type = attr.type();
@@ -114,7 +114,7 @@ public class ObstaclesGenerator {
     public void generateMines() throws IOException {
         Map<String, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+            new H3MParser().setInterceptor(new ParserInterceptor() {
                         @Override
                         public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                             H3MObjectType type = attr.type();
@@ -192,7 +192,7 @@ public class ObstaclesGenerator {
     public void generateMonsters() throws IOException {
         Map<Integer, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+            new H3MParser().setInterceptor(new ParserInterceptor() {
                         @Override
                         public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                             if (attr.type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(attr.getObjectNumber())) {
