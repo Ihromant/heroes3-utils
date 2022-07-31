@@ -9,8 +9,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class BasicInformation {
     private boolean atLeast1Hero;
-    private int mapSize;
-    private boolean twoLevel;
     private String mapName;
     private String mapDescription;
     private int mapDifficulty;

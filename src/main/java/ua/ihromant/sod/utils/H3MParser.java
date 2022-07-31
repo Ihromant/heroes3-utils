@@ -48,10 +48,10 @@ public class H3MParser {
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
         boolean isSoD = format == H3M_FORMAT_SOD;
+        wrap.readBoolean(); // at least 1 hero ?? wtf
+        int side = wrap.readInt();
+        Coordinate size = new Coordinate(side, side, wrap.readBoolean() ? 2 : 1);
         map.setBasic(new BasicInformation()
-                .setAtLeast1Hero(wrap.readBoolean())
-                .setMapSize(wrap.readInt())
-                .setTwoLevel(wrap.readBoolean())
                 .setMapName(wrap.readString())
                 .setMapDescription(wrap.readString())
                 .setMapDifficulty(wrap.readUnsigned()));
@@ -161,12 +161,12 @@ public class H3MParser {
                 hero.setPrimarySkills(readPrimarySkills(wrap));
             }
         }
-        map.setTiles(new MapTile[map.getBasic().isTwoLevel() ? 2 : 1][map.getBasic().getMapSize()][map.getBasic().getMapSize()]);
-        for (int z = 0; z < map.getTiles().length; z++) {
+        map.setTiles(new MapTile[size.getZ()][size.getY()][size.getX()]);
+        for (int z = 0; z < size.getZ(); z++) {
             MapTile[][] level = map.getTiles()[z];
-            for (int y = 0; y < map.getBasic().getMapSize(); y++) {
+            for (int y = 0; y < size.getY(); y++) {
                 MapTile[] row = level[y];
-                for (int x = 0; x < map.getBasic().getMapSize(); x++) {
+                for (int x = 0; x < size.getX(); x++) {
                     row[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
                             .setTerrainSprite(wrap.readUnsigned())
                             .setRiverType(RiverType.values()[wrap.readUnsigned()])
