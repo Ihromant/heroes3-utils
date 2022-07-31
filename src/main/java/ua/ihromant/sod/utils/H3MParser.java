@@ -19,7 +19,6 @@ import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.ObjectData;
-import ua.ihromant.sod.utils.entities.PlaceholderHero;
 import ua.ihromant.sod.utils.entities.PlayerMetadata;
 import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
 import ua.ihromant.sod.utils.entities.StartingTownMetadata;
@@ -199,10 +198,9 @@ public class H3MParser {
             H3MObjectType type = attribute.type();
             switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:
-                    PlaceholderHero hero = new PlaceholderHero().setOwner(wrap.readUnsigned())
-                            .setType(wrap.readUnsigned());
-                    if (hero.getType() == 0xFF) {
-                        hero.setPowerRating(wrap.readUnsigned());
+                    wrap.readUnsigned(); // placeholder hero owner
+                    if (wrap.readUnsigned() == 0xFF) { // placeholder hero type
+                        wrap.readUnsigned(); // placeholder hero power rating
                     }
                     break;
                 case META_OBJECT_QUEST_GUARD:
