@@ -2,7 +2,6 @@ package ua.ihromant.sod.utils;
 
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.entities.AiRumor;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
@@ -31,12 +30,9 @@ import ua.ihromant.sod.utils.entities.H3MTownEvent;
 import ua.ihromant.sod.utils.map.ObjectGroup;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
-import ua.ihromant.sod.utils.map.SecondarySkill;
 
 import java.nio.BufferUnderflowException;
-import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.stream.IntStream;
 
 import static ua.ihromant.sod.utils.H3MObjectType.*;
 
@@ -137,7 +133,7 @@ public class H3MParser {
             int[] avaliableArtifacts = wrap.readUnsigned(isSoD ? 18 : 17);
             if (isSoD) {
                 int[] availableSpells = wrap.readUnsigned(9);
-                SecondarySkill[] availableSkills = readSkills(wrap.readUnsigned(4));
+                int[] availableSkills = wrap.readUnsigned(4);
             }
         }
         int rumorsCount = wrap.readInt();
@@ -314,7 +310,7 @@ public class H3MParser {
                     wrap.readUnsigned(4); // unknown1
                     break;
                 case META_OBJECT_WITCH_HUT:
-                    SecondarySkill[] potentialSkills = isROE ? null : readSkills(wrap.readUnsigned(4));
+                    int[] potentialSkills = isROE ? null : wrap.readUnsigned(4);
                     break;
                 case META_OBJECT_SEERS_HUT:
                     int abmbigious = wrap.readUnsigned(); // in ROE it's artifact request, otherwise see code below
@@ -359,12 +355,6 @@ public class H3MParser {
             return map; // normal
         }
         throw new IllegalStateException();
-    }
-
-    private SecondarySkill[] readSkills(int[] masks) {
-        return IntStream.range(0, 4).boxed()
-                .flatMap(i -> Utils.ones(masks[i], Math.min(ObjectNumberConstants.SECONDARY.length - 8 * i, 8))
-                        .mapToObj(j -> ObjectNumberConstants.SECONDARY[8 * i + j])).toArray(SecondarySkill[]::new);
     }
 
     private Coordinate readCoordinate(ByteWrapper wrap) {
