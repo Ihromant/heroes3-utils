@@ -244,7 +244,7 @@ public class H3MParser {
                     break; // Generic objects have no body
                 case META_OBJECT_TOWN:
                 case META_OBJECT_TOWN_ABSOD:
-                    readTown(wrap, isROE, isSoD);
+                    interceptor.interceptTown(coords, attribute, readTown(wrap, isROE, isSoD));
                     break;
                 case META_OBJECT_RANDOM_DWELLING_ABSOD:
                 case META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD:

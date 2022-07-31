@@ -1,6 +1,7 @@
 package ua.ihromant.sod.utils;
 
 import ua.ihromant.sod.utils.entities.Coordinate;
+import ua.ihromant.sod.utils.entities.H3MMapTown;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.H3MPlayer;
@@ -23,6 +24,10 @@ public interface ParserInterceptor {
     }
 
     default void interceptImpassable(Coordinate coords, H3MObjectAttribute attribute) {
+
+    }
+
+    default void interceptTown(Coordinate coords, H3MObjectAttribute attribute, H3MMapTown readTown) {
 
     }
 }
