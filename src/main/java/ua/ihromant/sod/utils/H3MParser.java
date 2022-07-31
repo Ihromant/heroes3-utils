@@ -11,7 +11,6 @@ import ua.ihromant.sod.utils.entities.H3MReward;
 import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
 import ua.ihromant.sod.utils.entities.Coordinate;
 import ua.ihromant.sod.utils.entities.H3MCreatureSlot;
-import ua.ihromant.sod.utils.entities.CustomHero;
 import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.H3MMapMonster;
@@ -117,7 +116,7 @@ public class H3MParser {
         if (isSoD) {
             int customHeroesCount = wrap.readUnsigned();
             for (int i = 0; i < customHeroesCount; i++) {
-                new CustomHero().setType(wrap.readUnsigned())
+                new H3MHero().setType(wrap.readUnsigned())
                         .setFace(wrap.readUnsigned())
                         .setName(wrap.readString())
                         .setAllowedPlayers(wrap.readUnsigned());
@@ -133,8 +132,8 @@ public class H3MParser {
         }
         int rumorsCount = wrap.readInt();
         for (int i = 0; i < rumorsCount; i++) {
-            new AiRumor().setName(wrap.readString())
-                    .setDesc(wrap.readString());
+            wrap.readString(); // ai rumor name
+            wrap.readString(); // ai rumor description
         }
         for (int i = 0; i < (isSoD ? 156 : 0); i++) {
             if (!wrap.readBoolean()) {

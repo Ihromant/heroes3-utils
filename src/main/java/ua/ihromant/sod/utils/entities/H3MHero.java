@@ -24,5 +24,6 @@ public class H3MHero {
     private Integer abSpell;
     private int[] sodSpells;
     private H3MPrimarySkills primarySkills;
+    private Integer allowedPlayers;
     private int[] unknown2;
 }
