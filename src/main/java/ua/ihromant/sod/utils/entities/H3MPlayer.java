@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class PlayerMetadata {
+public class H3MPlayer {
     private boolean canBeHuman;
     private boolean canBeComputer;
     private int behavior;
@@ -22,7 +22,7 @@ public class PlayerMetadata {
     private int startingHeroType;
     private int startingHeroFace;
 
-    private StartingTownMetadata startingTown;
+    private H3MStartingTown startingTown;
 
     private boolean hasAi;
     private int extTypes;

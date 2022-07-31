@@ -11,7 +11,7 @@ import ua.ihromant.sod.utils.map.RoadType;
 @Setter
 @Accessors(chain = true)
 public class MapTile {
-    private BackgroundType terrainType;
+    private int terrainType;
     private int terrainSprite;
     private RiverType riverType;
     private int riverSprite;

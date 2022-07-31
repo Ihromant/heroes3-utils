@@ -1,8 +1,5 @@
 package ua.ihromant.sod.utils;
 
-import lombok.Setter;
-import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.H3MHero;
 import ua.ihromant.sod.utils.entities.H3MReward;
@@ -10,14 +7,13 @@ import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
 import ua.ihromant.sod.utils.entities.Coordinate;
 import ua.ihromant.sod.utils.entities.H3MCreatureSlot;
 import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
-import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.H3MMapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
-import ua.ihromant.sod.utils.entities.PlayerMetadata;
+import ua.ihromant.sod.utils.entities.H3MPlayer;
 import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
-import ua.ihromant.sod.utils.entities.StartingTownMetadata;
+import ua.ihromant.sod.utils.entities.H3MStartingTown;
 import ua.ihromant.sod.utils.entities.H3MMapTown;
 import ua.ihromant.sod.utils.entities.H3MTownEvent;
 import ua.ihromant.sod.utils.map.H3MObjectGroup;
@@ -26,8 +22,6 @@ import ua.ihromant.sod.utils.map.RoadType;
 
 import java.nio.BufferUnderflowException;
 
-@Setter
-@Accessors(chain = true)
 public class H3MParser {
     private static final int H3M_FORMAT_ROE = 0x0000000E;
     private static final int H3M_FORMAT_AB = 0x00000015;
@@ -35,11 +29,7 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    private ParserInterceptor interceptor = new ParserInterceptor() {
-    }; // empty
-
-    public MapMetadata parse(byte[] bytes) {
-        MapMetadata map = new MapMetadata();
+    public void parse(byte[] bytes, ParserInterceptor interceptor) {
         ByteWrapper wrap = new ByteWrapper(bytes);
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
@@ -54,14 +44,14 @@ public class H3MParser {
         }
         for (int i = 0; i < 8; i++) {
             boolean ai;
-            PlayerMetadata player = new PlayerMetadata().setCanBeHuman(wrap.readBoolean())
+            H3MPlayer player = new H3MPlayer().setCanBeHuman(wrap.readBoolean())
                     .setCanBeComputer(wrap.readBoolean())
                     .setBehavior(wrap.readUnsigned())
                     .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
                     .setTownTypes(isROE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
-            player.setStartingTown(hasMainTown ? new StartingTownMetadata().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
+            player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
                     .setStartingTownType(isROE ? null : wrap.readUnsigned())
                     .setCoordinates(readCoordinate(wrap)) : null);
             boolean startingHeroIsRandom = wrap.readBoolean();
@@ -99,7 +89,9 @@ public class H3MParser {
                     wrap.readString(); // name
                 }
             }
-            map.getPlayersMetadata()[i] = player;
+            if (player.isCanBeComputer() || player.isCanBeHuman()) {
+                interceptor.interceptKingdomInfo(i, player);
+            }
         }
         parseWinCondition(wrap, isROE);
         parseLoseCondition(wrap);
@@ -155,19 +147,17 @@ public class H3MParser {
                 hero.setPrimarySkills(readPrimarySkills(wrap));
             }
         }
-        map.setTiles(new MapTile[size.getZ()][size.getY()][size.getX()]);
         for (int z = 0; z < size.getZ(); z++) {
-            MapTile[][] level = map.getTiles()[z];
             for (int y = 0; y < size.getY(); y++) {
-                MapTile[] row = level[y];
                 for (int x = 0; x < size.getX(); x++) {
-                    row[x] = new MapTile().setTerrainType(BackgroundType.values()[wrap.readUnsigned()])
-                            .setTerrainSprite(wrap.readUnsigned())
-                            .setRiverType(RiverType.values()[wrap.readUnsigned()])
-                            .setRiverSprite(wrap.readUnsigned())
-                            .setRoadType(RoadType.values()[wrap.readUnsigned()])
-                            .setRoadSprite(wrap.readUnsigned())
-                            .setMirroring(wrap.readUnsigned());
+                    interceptor.interceptTile(new Coordinate(x, y, z),
+                            new MapTile().setTerrainType(wrap.readUnsigned())
+                                    .setTerrainSprite(wrap.readUnsigned())
+                                    .setRiverType(RiverType.values()[wrap.readUnsigned()])
+                                    .setRiverSprite(wrap.readUnsigned())
+                                    .setRoadType(RoadType.values()[wrap.readUnsigned()])
+                                    .setRoadSprite(wrap.readUnsigned())
+                                    .setMirroring(wrap.readUnsigned()));
                 }
             }
         }
@@ -240,11 +230,13 @@ public class H3MParser {
                 case META_OBJECT_ABANDONED_MINE_ABSOD:
                     wrap.readInt(); // owner
                     break;
+                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN:
+                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD:
+                    interceptor.interceptImpassable(coords, attribute);
+                    break; // Generic objects have no body
                 case META_OBJECT_GENERIC_BOAT:
                 case META_OBJECT_GENERIC_PASSABLE_TERRAIN:
                 case META_OBJECT_GENERIC_PASSABLE_TERRAIN_SOD:
-                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN:
-                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD:
                 case META_OBJECT_GENERIC_VISITABLE:
                 case META_OBJECT_GENERIC_VISITABLE_ABSOD:
                 case META_OBJECT_GENERIC_TREASURE:
@@ -334,13 +326,13 @@ public class H3MParser {
         try {
             wrap.readUnsigned(); // HD
         } catch (BufferUnderflowException e) {
-            return map; // normal
+            return; // normal
         }
         wrap.readUnsigned(115);
         try {
             wrap.readUnsigned();
         } catch (BufferUnderflowException e) {
-            return map; // normal
+            return; // normal
         }
         throw new IllegalStateException();
     }

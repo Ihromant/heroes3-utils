@@ -31,17 +31,16 @@ public class ObstaclesGenerator {
         Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
         for (int i = 0; i < 74; i++) {
             List<H3MObjectAttribute> current = new ArrayList<>();
-            new H3MParser().setInterceptor(new ParserInterceptor() {
-                        @Override
-                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
-                            H3MObjectType type = attr.type();
-                            if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
-                                    && !obstacles.containsKey(attr.def())) {
-                                current.add(attr);
-                            }
-                        }
-                    })
-                    .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
+            new H3MParser().parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i), new ParserInterceptor() {
+                @Override
+                public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                    H3MObjectType type = attr.type();
+                    if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
+                            && !obstacles.containsKey(attr.def())) {
+                        current.add(attr);
+                    }
+                }
+            });
             for (H3MObjectAttribute oa : current) {
                 obstacles.put(oa.def(), oa);
             }
@@ -114,16 +113,15 @@ public class ObstaclesGenerator {
     public void generateMines() throws IOException {
         Map<String, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setInterceptor(new ParserInterceptor() {
-                        @Override
-                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
-                            H3MObjectType type = attr.type();
-                            if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(attr.def())) {
-                                defs.put(attr.def(), attr);
-                            }
-                        }
-                    })
-                    .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
+            new H3MParser().parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i), new ParserInterceptor() {
+                @Override
+                public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                    H3MObjectType type = attr.type();
+                    if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(attr.def())) {
+                        defs.put(attr.def(), attr);
+                    }
+                }
+            });
         }
         defs.forEach((k, v) -> System.out.println(k + "="
                 + Utils.ones(v.getLandscapeGroup()).mapToObj(i -> BackgroundType.values()[i]).toList()));
@@ -192,15 +190,14 @@ public class ObstaclesGenerator {
     public void generateMonsters() throws IOException {
         Map<Integer, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setInterceptor(new ParserInterceptor() {
-                        @Override
-                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
-                            if (attr.type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(attr.getObjectNumber())) {
-                                defs.put(attr.getObjectNumber(), attr);
-                            }
-                        }
-                    })
-                    .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
+            new H3MParser().parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i), new ParserInterceptor() {
+                @Override
+                public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                    if (attr.type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(attr.getObjectNumber())) {
+                        defs.put(attr.getObjectNumber(), attr);
+                    }
+                }
+            });
         }
         defs.put(139, new H3MObjectAttribute().setDef("avwpeas.def").setObjectNumber(139));
         for (H3MObjectAttribute oa : defs.values()) {

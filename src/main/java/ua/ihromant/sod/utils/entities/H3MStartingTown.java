@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class StartingTownMetadata {
+public class H3MStartingTown {
     private Boolean startingTownCreateHero;
     private Integer startingTownType;
     private Coordinate coordinates;
