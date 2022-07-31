@@ -23,7 +23,6 @@ import ua.ihromant.sod.utils.entities.PlaceholderHero;
 import ua.ihromant.sod.utils.entities.PlayerMetadata;
 import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
 import ua.ihromant.sod.utils.entities.StartingTownMetadata;
-import ua.ihromant.sod.utils.entities.StaticGarrison;
 import ua.ihromant.sod.utils.entities.H3MMapTown;
 import ua.ihromant.sod.utils.entities.H3MTownEvent;
 import ua.ihromant.sod.utils.map.ObjectGroup;
@@ -223,10 +222,10 @@ public class H3MParser {
                     break;
                 case META_OBJECT_GARRISON:
                 case META_OBJECT_GARRISON_ABSOD:
-                    new StaticGarrison().setOwner(wrap.readInt())
-                            .setCreatures(readArmy(wrap, isROE))
-                            .setRemovableUnits(isROE ? 0 : wrap.readUnsigned())
-                            .setUnknown1(wrap.readUnsigned(8));
+                    wrap.readInt(); // garrison owner
+                    readArmy(wrap, isROE); // garrison creatures
+                    int remUnits = isROE ? 0 : wrap.readUnsigned(); // removable units
+                    wrap.readUnsigned(8); // unknown1
                     break;
                 case META_OBJECT_EVENT:
                     if (wrap.readBoolean()) {
