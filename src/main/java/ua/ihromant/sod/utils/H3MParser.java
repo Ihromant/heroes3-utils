@@ -358,9 +358,7 @@ public class H3MParser {
     }
 
     private Coordinate readCoordinate(ByteWrapper wrap) {
-        return new Coordinate().setX(wrap.readUnsigned())
-                .setY(wrap.readUnsigned())
-                .setZ(wrap.readUnsigned());
+        return new Coordinate(wrap.readUnsigned(), wrap.readUnsigned(), wrap.readUnsigned());
     }
 
     private void parseAiTeams(ByteWrapper wrap) {
