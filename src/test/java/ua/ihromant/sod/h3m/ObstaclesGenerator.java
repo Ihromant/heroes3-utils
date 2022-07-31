@@ -31,7 +31,7 @@ public class ObstaclesGenerator {
             List<H3MObjectAttribute> current = new ArrayList<>();
             new H3MParser().setDataInterceptor(od -> {
                         H3MObjectAttribute oa = od.getOa();
-                        H3MObjectType type = oa.getType();
+                        H3MObjectType type = oa.type();
                         if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
                                 && !obstacles.containsKey(oa.def())) {
                             current.add(oa);
@@ -111,7 +111,7 @@ public class ObstaclesGenerator {
         Map<String, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
             new H3MParser().setDataInterceptor(od -> {
-                        H3MObjectType type = od.getOa().getType();
+                        H3MObjectType type = od.getOa().type();
                         if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(od.getOa().def())) {
                             defs.put(od.getOa().def(), od.getOa());
                         }
@@ -186,7 +186,7 @@ public class ObstaclesGenerator {
         Map<Integer, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
             new H3MParser().setDataInterceptor(od -> {
-                        if (od.getOa().getType() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
+                        if (od.getOa().type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
                             defs.put(od.getOa().getObjectNumber(), od.getOa());
                         }
                     })

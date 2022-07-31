@@ -11,7 +11,7 @@ public class H3MMapMonster {
     private Integer abSodId;
     private int quantity;
     private int disposition;
-    private MessageAndTreasure messTreasure;
+    private H3MMessageAndTreasure messTreasure;
     private int neverFlees;
     private int doesNotGrow;
     private int[] unknown1;

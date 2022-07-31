@@ -58,7 +58,7 @@ public class H3MParserTest {
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
         new H3MParser().setDataInterceptor(od -> {
-                    H3MObjectType type = od.getOa().getType();
+                    H3MObjectType type = od.getOa().type();
                     types.add(od.getOa().getObjectClass());
                     if (type == H3MObjectType.META_OBJECT_MONSTER && defs.add(od.getOa().def())) {
                         System.out.println(od.getOa());
@@ -67,8 +67,8 @@ public class H3MParserTest {
                 .parse(getUnzippedBytes("Generated6lm"));
         System.out.println(types.size());
         types.stream()
-                .sorted(Comparator.comparing(i -> H3MObjectType.objectNumberToType(i).ordinal()))
-                .forEach(i -> System.out.println(H3MObjectType.objectNumberToType(i) + " -> " + constants.get(i)));
+                .sorted(Comparator.comparing(i -> H3MObjectType.objectClassToType(i).ordinal()))
+                .forEach(i -> System.out.println(H3MObjectType.objectClassToType(i) + " -> " + constants.get(i)));
     }
 
     @Test

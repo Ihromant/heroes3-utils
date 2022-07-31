@@ -49,7 +49,7 @@ public enum H3MObjectType {
     META_OBJECT_TOWN_ABSOD,
     META_OBJECT_WITCH_HUT;
 
-    public static H3MObjectType objectNumberToType(int objectClass) {
+    public static H3MObjectType objectClassToType(int objectClass) {
         switch (objectClass) {
             // RoE
             case H3M_OA_CLASS_NONE_0:

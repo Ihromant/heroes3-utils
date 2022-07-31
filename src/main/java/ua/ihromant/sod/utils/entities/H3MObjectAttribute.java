@@ -29,7 +29,10 @@ public class H3MObjectAttribute {
     private ObjectGroup objectGroup;
     private int above;
     private int[] unknown;
-    private H3MObjectType type;
+
+    public H3MObjectType type() {
+        return H3MObjectType.objectClassToType(objectClass);
+    }
 
     public Stream<BackgroundType> backgrounds() {
         return Utils.ones(landscapeGroup).mapToObj(i -> BackgroundType.values()[i]);

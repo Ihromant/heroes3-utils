@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class MessageAndTreasure {
+public class H3MMessageAndTreasure {
     private String message;
     private int[] resources;
     private int artifact;

@@ -18,7 +18,7 @@ import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.H3MMapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
-import ua.ihromant.sod.utils.entities.MessageAndTreasure;
+import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.MessageBearer;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.ObjectData;
@@ -199,15 +199,14 @@ public class H3MParser {
                     .setObjectGroup(ObjectGroup.values()[wrap.readUnsigned()])
                     .setAbove(wrap.readUnsigned())
                     .setUnknown(wrap.readUnsigned(16));
-            map.getObjectAttributes()[i].setType(objectNumberToType(map.getObjectAttributes()[i].getObjectClass()));
         }
         int dataLength = wrap.readInt();
         for (int i = 0; i < dataLength; i++) {
             Coordinate coords = readCoordinate(wrap);
             H3MObjectAttribute attribute = map.getObjectAttributes()[wrap.readInt()];
             wrap.readUnsigned(5);
-            H3MObjectType type = attribute.getType();
-            switch (attribute.getType()) {
+            H3MObjectType type = attribute.type();
+            switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:
                     PlaceholderHero hero = new PlaceholderHero().setOwner(wrap.readUnsigned())
                             .setType(wrap.readUnsigned());
@@ -541,7 +540,7 @@ public class H3MParser {
         return new H3MMapMonster().setAbSodId(isRoE ? null : wrap.readInt())
                 .setQuantity(wrap.readUnsignedShort())
                 .setDisposition(wrap.readUnsigned())
-                .setMessTreasure(wrap.readBoolean() ? new MessageAndTreasure().setMessage(wrap.readString())
+                .setMessTreasure(wrap.readBoolean() ? new H3MMessageAndTreasure().setMessage(wrap.readString())
                         .setResources(readResources(wrap))
                         .setArtifact(readArtifact(wrap, isRoE)) : null)
                 .setNeverFlees(wrap.readUnsigned())
