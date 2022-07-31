@@ -15,5 +15,4 @@ public class MapMetadata {
     private PlayerMetadata[] playersMetadata = new PlayerMetadata[8];
     private BasicInformation basic;
     private MapTile[][][] tiles;
-    private H3MObjectAttribute[] objectAttributes;
 }

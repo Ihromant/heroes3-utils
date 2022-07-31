@@ -1,6 +1,6 @@
 package ua.ihromant.sod.utils.map;
 
-public enum ObjectGroup {
+public enum H3MObjectGroup {
     OTHER,
     TOWNS,
     MONSTERS,

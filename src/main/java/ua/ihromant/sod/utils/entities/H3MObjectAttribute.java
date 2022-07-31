@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.map.BackgroundType;
-import ua.ihromant.sod.utils.map.ObjectGroup;
+import ua.ihromant.sod.utils.map.H3MObjectGroup;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -26,7 +26,7 @@ public class H3MObjectAttribute {
     private int landscapeGroup;
     private int objectClass;
     private int objectNumber;
-    private ObjectGroup objectGroup;
+    private H3MObjectGroup objectGroup;
     private int above;
     private int[] unknown;
 

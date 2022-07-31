@@ -24,7 +24,7 @@ import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
 import ua.ihromant.sod.utils.entities.StartingTownMetadata;
 import ua.ihromant.sod.utils.entities.H3MMapTown;
 import ua.ihromant.sod.utils.entities.H3MTownEvent;
-import ua.ihromant.sod.utils.map.ObjectGroup;
+import ua.ihromant.sod.utils.map.H3MObjectGroup;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
@@ -177,23 +177,23 @@ public class H3MParser {
                 }
             }
         }
-        map.setObjectAttributes(new H3MObjectAttribute[wrap.readInt()]);
-        for (int i = 0; i < map.getObjectAttributes().length; i++) {
-            map.getObjectAttributes()[i] = new H3MObjectAttribute().setDef(wrap.readString())
+        H3MObjectAttribute[] objectAttributes = new H3MObjectAttribute[wrap.readInt()];
+        for (int i = 0; i < objectAttributes.length; i++) {
+            objectAttributes[i] = new H3MObjectAttribute().setDef(wrap.readString())
                     .setPassable(wrap.readUnsigned(6))
                     .setActive(wrap.readUnsigned(6))
                     .setAllowedLandsapes(wrap.readUnsignedShort())
                     .setLandscapeGroup(wrap.readUnsignedShort())
                     .setObjectClass(wrap.readInt())
                     .setObjectNumber(wrap.readInt())
-                    .setObjectGroup(ObjectGroup.values()[wrap.readUnsigned()])
+                    .setObjectGroup(H3MObjectGroup.values()[wrap.readUnsigned()])
                     .setAbove(wrap.readUnsigned())
                     .setUnknown(wrap.readUnsigned(16));
         }
         int dataLength = wrap.readInt();
         for (int i = 0; i < dataLength; i++) {
             Coordinate coords = readCoordinate(wrap);
-            H3MObjectAttribute attribute = map.getObjectAttributes()[wrap.readInt()];
+            H3MObjectAttribute attribute = objectAttributes[wrap.readInt()];
             wrap.readUnsigned(5);
             H3MObjectType type = attribute.type();
             switch (type) {
