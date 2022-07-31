@@ -177,7 +177,7 @@ public class H3MParser {
         for (int i = 0; i < dataLength; i++) {
             Coordinate coords = readCoordinate(wrap);
             H3MObjectAttribute attribute = objectAttributes[wrap.readInt()];
-            wrap.readUnsigned(5);
+            wrap.readUnsigned(5); // unknown1
             H3MObjectType type = attribute.type();
             switch (type) {
                 case META_OBJECT_PLACEHOLDER_HERO:
@@ -241,8 +241,7 @@ public class H3MParser {
                 case META_OBJECT_GENERIC_TREASURE:
                 case META_OBJECT_MONOLITH_TWO_WAY:
                 case META_OBJECT_SUBTERRANEAN_GATE:
-                    // Generic objects have no body
-                    break;
+                    break; // Generic objects have no body
                 case META_OBJECT_TOWN:
                 case META_OBJECT_TOWN_ABSOD:
                     readTown(wrap, isROE, isSoD);
