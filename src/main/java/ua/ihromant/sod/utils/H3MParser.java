@@ -34,8 +34,6 @@ import ua.ihromant.sod.utils.map.RoadType;
 import java.nio.BufferUnderflowException;
 import java.util.function.Consumer;
 
-import static ua.ihromant.sod.utils.H3MObjectType.*;
-
 @Setter
 @Accessors(chain = true)
 public class H3MParser {
@@ -272,13 +270,13 @@ public class H3MParser {
                 case META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD:
                 case META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD:
                     wrap.readInt(); // owner
-                    if (type != META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
+                    if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
                         int abSodId = wrap.readInt();
                         if (abSodId == 0) {
                             wrap.readUnsignedShort(); // alignment
                         }
                     }
-                    if (type != META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
+                    if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
                         wrap.readUnsigned(); // min level
                         wrap.readUnsigned(); // max level
                     }
