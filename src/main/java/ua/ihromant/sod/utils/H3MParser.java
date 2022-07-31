@@ -3,7 +3,6 @@ package ua.ihromant.sod.utils;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.bytes.Utils;
-import ua.ihromant.sod.utils.entities.AiHeroSettings;
 import ua.ihromant.sod.utils.entities.AiRumor;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
@@ -151,25 +150,25 @@ public class H3MParser {
             if (!wrap.readBoolean()) {
                 continue;
             }
-            AiHeroSettings heroSettings = new AiHeroSettings();
+            CommonHero hero = new CommonHero();
             if (wrap.readBoolean()) {
-                heroSettings.setExperience(wrap.readInt());
+                hero.setExperience(wrap.readInt());
             }
             if (wrap.readBoolean()) {
-                heroSettings.setSecondarySkills(readSecondarySkills(wrap, wrap.readInt()));
+                hero.setSecondarySkills(readSecondarySkills(wrap, wrap.readInt()));
             }
             if (wrap.readBoolean()) {
-                heroSettings.setArtConf(parseHeroArtifacts(wrap, isROE, isSoD));
+                hero.setHeroAtrifacts(parseHeroArtifacts(wrap, isROE, isSoD));
             }
             if (wrap.readBoolean()) {
-                heroSettings.setBiography(wrap.readString());
+                hero.setBiography(wrap.readString());
             }
-            heroSettings.setGender(wrap.readUnsigned());
+            hero.setGender(wrap.readUnsigned());
             if (wrap.readBoolean()) {
-                heroSettings.setSpells(wrap.readUnsigned(9));
+                hero.setSodSpells(wrap.readUnsigned(9));
             }
             if (wrap.readBoolean()) {
-                heroSettings.setPrimary(readPrimarySkills(wrap));
+                hero.setPrimarySkills(readPrimarySkills(wrap));
             }
         }
         map.setTiles(new MapTile[map.getBasic().isTwoLevel() ? 2 : 1][map.getBasic().getMapSize()][map.getBasic().getMapSize()]);
@@ -230,7 +229,7 @@ public class H3MParser {
                     if (wrap.readBoolean()) {
                         readCommonGuardian(wrap, isROE);
                     }
-                    CommonReward reward = readCommonReward(wrap, isROE);
+                    readCommonReward(wrap, isROE);
                     break;
                 case META_OBJECT_SIGN:
                 case META_OBJECT_OCEAN_BOTTLE:
@@ -423,7 +422,8 @@ public class H3MParser {
                         .setQuantity(wrap.readInt()); // can't use readCreature
                 return;
             case 2: // accumulate resources
-                readResource(wrap);
+                wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
+                wrap.readInt(); // amount
                 return;
             case 8: // flag dwellings
             case 9: // flag mines
@@ -450,48 +450,50 @@ public class H3MParser {
         }
     }
 
-    private void readResource(ByteWrapper wrap) {
-        wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
-        wrap.readInt(); // amount
-    }
-
-    private void parseReward(ByteWrapper wrap, boolean isRoE) { // TODO merge with common reward
+    private CommonReward parseReward(ByteWrapper wrap, boolean isRoE) { // TODO merge with common reward
         int rewardType = wrap.readUnsigned();
         switch (rewardType) {
             case 0: // none
-                break;
+                return new CommonReward();
             case 1: // experience
-                wrap.readInt();
-                break;
+                return new CommonReward().setExperience(wrap.readInt());
             case 2: // spell points
-                wrap.readInt();
-                break;
+                return new CommonReward().setSpellPoints(wrap.readInt());
             case 3: // morale
-                wrap.readUnsigned();
-                break;
+                return new CommonReward().setMorale(wrap.readUnsigned());
             case 4: // luck
-                wrap.readUnsigned();
-                break;
+                return new CommonReward().setLuck(wrap.readUnsigned());
             case 5: // resource
-                readResource(wrap);
-                break;
+                int[] resources = new int[7];
+                resources[wrap.readUnsigned()] = wrap.readInt();
+                return new CommonReward().setResources(resources);
             case 6: // primary skill
-                wrap.readUnsigned();
-                wrap.readUnsigned();
-                break;
+                PrimarySkills skills = new PrimarySkills();
+                switch (wrap.readUnsigned()) {
+                    case 0:
+                        skills.setAttack(wrap.readUnsigned());
+                        break;
+                    case 1:
+                        skills.setDefense(wrap.readUnsigned());
+                        break;
+                    case 2:
+                        skills.setSpellPower(wrap.readUnsigned());
+                        break;
+                    case 3:
+                        skills.setKnowledge(wrap.readUnsigned());
+                        break;
+                    default: // TODO assumption, remove after check
+                        throw new IllegalArgumentException();
+                }
+                return new CommonReward().setSkills(skills);
             case 7: // secondary skill
-                wrap.readUnsigned();
-                wrap.readUnsigned();
-                break;
+                return new CommonReward().setSecondarySkills(new CommonSecondarySkill[]{readSecondarySkill(wrap)});
             case 8: // artifact
-                readArtifact(wrap, isRoE);
-                break;
+                return new CommonReward().setArtifacts(new int[]{readArtifact(wrap, isRoE)});
             case 9: // spell
-                wrap.readUnsigned();
-                break;
+                return new CommonReward().setSpells(new String[]{ObjectNumberConstants.SPELLS[wrap.readUnsigned()]});
             case 10:
-                readCreature(wrap, isRoE);
-                break;
+                return new CommonReward().setCreatures(new CreatureSlot[]{readCreature(wrap, isRoE)});
             default:
                 throw new IllegalArgumentException();
         }
@@ -667,9 +669,13 @@ public class H3MParser {
     private CommonSecondarySkill[] readSecondarySkills(ByteWrapper wrap, int size) {
         CommonSecondarySkill[] result = new CommonSecondarySkill[size];
         for (int i = 0; i < result.length; i++) {
-            result[i] = new CommonSecondarySkill().setType(wrap.readUnsigned()).setLevel(wrap.readUnsigned());
+            result[i] = readSecondarySkill(wrap);
         }
         return result;
+    }
+
+    private CommonSecondarySkill readSecondarySkill(ByteWrapper wrap) {
+        return new CommonSecondarySkill().setType(wrap.readUnsigned()).setLevel(wrap.readUnsigned());
     }
 
     private CreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) {
