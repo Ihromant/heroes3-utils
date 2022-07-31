@@ -2,7 +2,7 @@ package ua.ihromant.sod.utils;
 
 import static ua.ihromant.sod.utils.ObjectClassConstants.*;
 
-public enum ObjectType {
+public enum H3MObjectType {
     META_OBJECT_ABANDONED_MINE_ABSOD,
     META_OBJECT_ARTIFACT,
     META_OBJECT_ARTIFACT_AB,
@@ -49,7 +49,7 @@ public enum ObjectType {
     META_OBJECT_TOWN_ABSOD,
     META_OBJECT_WITCH_HUT;
 
-    public static ObjectType objectNumberToType(int objectClass) {
+    public static H3MObjectType objectNumberToType(int objectClass) {
         switch (objectClass) {
             // RoE
             case H3M_OA_CLASS_NONE_0:

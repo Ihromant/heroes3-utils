@@ -11,7 +11,7 @@ import ua.ihromant.sod.utils.entities.CommonGuardian;
 import ua.ihromant.sod.utils.entities.H3MHero;
 import ua.ihromant.sod.utils.entities.H3MReward;
 import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
-import ua.ihromant.sod.utils.entities.Coordinates;
+import ua.ihromant.sod.utils.entities.Coordinate;
 import ua.ihromant.sod.utils.entities.H3MCreatureSlot;
 import ua.ihromant.sod.utils.entities.CustomHero;
 import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
@@ -20,7 +20,7 @@ import ua.ihromant.sod.utils.entities.H3MMapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.MessageAndTreasure;
 import ua.ihromant.sod.utils.entities.MessageBearer;
-import ua.ihromant.sod.utils.entities.ObjectAttribute;
+import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.ObjectData;
 import ua.ihromant.sod.utils.entities.PlaceholderHero;
 import ua.ihromant.sod.utils.entities.PlayerMetadata;
@@ -39,7 +39,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
-import static ua.ihromant.sod.utils.ObjectType.*;
+import static ua.ihromant.sod.utils.H3MObjectType.*;
 
 @Setter
 @Accessors(chain = true)
@@ -79,7 +79,7 @@ public class H3MParser {
             boolean hasMainTown = wrap.readBoolean();
             player.setStartingTown(hasMainTown ? new StartingTownMetadata().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
                     .setStartingTownType(isROE ? null : wrap.readUnsigned())
-                    .setCoordinates(readCoordinates(wrap)) : null);
+                    .setCoordinates(readCoordinate(wrap)) : null);
             boolean startingHeroIsRandom = wrap.readBoolean();
             int startingHeroType = wrap.readUnsigned();
             if (!hasMainTown) {
@@ -187,9 +187,9 @@ public class H3MParser {
                 }
             }
         }
-        map.setObjectAttributes(new ObjectAttribute[wrap.readInt()]);
+        map.setObjectAttributes(new H3MObjectAttribute[wrap.readInt()]);
         for (int i = 0; i < map.getObjectAttributes().length; i++) {
-            map.getObjectAttributes()[i] = new ObjectAttribute().setDef(wrap.readString())
+            map.getObjectAttributes()[i] = new H3MObjectAttribute().setDef(wrap.readString())
                     .setPassable(wrap.readUnsigned(6))
                     .setActive(wrap.readUnsigned(6))
                     .setAllowedLandsapes(wrap.readUnsignedShort())
@@ -201,19 +201,13 @@ public class H3MParser {
                     .setUnknown(wrap.readUnsigned(16));
             map.getObjectAttributes()[i].setType(objectNumberToType(map.getObjectAttributes()[i].getObjectClass()));
         }
-        map.setObjectData(new ObjectData[wrap.readInt()]);
-        for (int i = 0; i < map.getObjectData().length; i++) {
-            ObjectData data = new ObjectData().setX(wrap.readUnsigned())
-                    .setY(wrap.readUnsigned())
-                    .setZ(wrap.readUnsigned());
-            map.getObjectData()[i] = data;
-            data.setOa(map.getObjectAttributes()[wrap.readInt()]);
-            data.setUnknown1(wrap.readUnsigned(5));
-            ObjectType type = data.getOa().getType();
-            if (dataInterceptor != null) {
-                dataInterceptor.accept(data);
-            }
-            switch (type) {
+        int dataLength = wrap.readInt();
+        for (int i = 0; i < dataLength; i++) {
+            Coordinate coords = readCoordinate(wrap);
+            H3MObjectAttribute attribute = map.getObjectAttributes()[wrap.readInt()];
+            wrap.readUnsigned(5);
+            H3MObjectType type = attribute.getType();
+            switch (attribute.getType()) {
                 case META_OBJECT_PLACEHOLDER_HERO:
                     PlaceholderHero hero = new PlaceholderHero().setOwner(wrap.readUnsigned())
                             .setType(wrap.readUnsigned());
@@ -375,8 +369,8 @@ public class H3MParser {
                         .mapToObj(j -> ObjectNumberConstants.SECONDARY[8 * i + j])).toArray(SecondarySkill[]::new);
     }
 
-    private Coordinates readCoordinates(ByteWrapper wrap) {
-        return new Coordinates().setX(wrap.readUnsigned())
+    private Coordinate readCoordinate(ByteWrapper wrap) {
+        return new Coordinate().setX(wrap.readUnsigned())
                 .setY(wrap.readUnsigned())
                 .setZ(wrap.readUnsigned());
     }
@@ -396,7 +390,7 @@ public class H3MParser {
         switch (loseCond) {
             case 0: // lose town
             case 1: // lose hero
-                readCoordinates(wrap);
+                readCoordinate(wrap);
                 break;
             case 2: // time
                 wrap.readUnsignedShort(); // days
@@ -431,7 +425,7 @@ public class H3MParser {
         }
         switch (winCond) {
             case 3: // upgrade town
-                readCoordinates(wrap);
+                readCoordinate(wrap);
                 wrap.readUnsigned(); // 0 - town, 1 - city, 2 - capitol
                 wrap.readUnsigned(); // 0 - fort, 1 - citadel, 2 - castle
                 break;
@@ -439,11 +433,11 @@ public class H3MParser {
             case 5: // defeat hero
             case 6: // capture town
             case 7: // defeat monster
-                readCoordinates(wrap);
+                readCoordinate(wrap);
                 break;
             case 10: // transport artifact
                 wrap.readUnsigned(); // type
-                readCoordinates(wrap);
+                readCoordinate(wrap);
                 break;
             default:
                 throw new IllegalArgumentException();

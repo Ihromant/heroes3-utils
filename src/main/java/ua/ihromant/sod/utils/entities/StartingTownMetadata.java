@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 public class StartingTownMetadata {
     private Boolean startingTownCreateHero;
     private Integer startingTownType;
-    private Coordinates coordinates;
+    private Coordinate coordinates;
 }

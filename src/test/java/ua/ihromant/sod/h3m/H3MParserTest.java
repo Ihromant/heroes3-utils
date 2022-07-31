@@ -9,7 +9,7 @@ import org.dom4j.io.OutputFormat;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectClassConstants;
-import ua.ihromant.sod.utils.ObjectType;
+import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.map.RiverType;
@@ -58,17 +58,17 @@ public class H3MParserTest {
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
         new H3MParser().setDataInterceptor(od -> {
-                    ObjectType type = od.getOa().getType();
+                    H3MObjectType type = od.getOa().getType();
                     types.add(od.getOa().getObjectClass());
-                    if (type == ObjectType.META_OBJECT_MONSTER && defs.add(od.getOa().def())) {
+                    if (type == H3MObjectType.META_OBJECT_MONSTER && defs.add(od.getOa().def())) {
                         System.out.println(od.getOa());
                     }
                 })
                 .parse(getUnzippedBytes("Generated6lm"));
         System.out.println(types.size());
         types.stream()
-                .sorted(Comparator.comparing(i -> ObjectType.objectNumberToType(i).ordinal()))
-                .forEach(i -> System.out.println(ObjectType.objectNumberToType(i) + " -> " + constants.get(i)));
+                .sorted(Comparator.comparing(i -> H3MObjectType.objectNumberToType(i).ordinal()))
+                .forEach(i -> System.out.println(H3MObjectType.objectNumberToType(i) + " -> " + constants.get(i)));
     }
 
     @Test

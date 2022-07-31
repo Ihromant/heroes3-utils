@@ -5,8 +5,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.entities.BasicInformation;
 import ua.ihromant.sod.utils.entities.MapTile;
-import ua.ihromant.sod.utils.entities.ObjectAttribute;
-import ua.ihromant.sod.utils.entities.ObjectData;
+import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.entities.PlayerMetadata;
 
 @Getter
@@ -16,6 +15,5 @@ public class MapMetadata {
     private PlayerMetadata[] playersMetadata = new PlayerMetadata[8];
     private BasicInformation basic;
     private MapTile[][][] tiles;
-    private ObjectAttribute[] objectAttributes;
-    private ObjectData[] objectData;
+    private H3MObjectAttribute[] objectAttributes;
 }

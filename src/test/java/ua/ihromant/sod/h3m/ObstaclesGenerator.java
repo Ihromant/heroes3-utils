@@ -5,9 +5,9 @@ import ua.ihromant.sod.ImageMerger;
 import ua.ihromant.sod.ImageMetadata;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectNumberConstants;
-import ua.ihromant.sod.utils.ObjectType;
+import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.bytes.Utils;
-import ua.ihromant.sod.utils.entities.ObjectAttribute;
+import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.map.ResourceType;
 
@@ -26,19 +26,19 @@ import java.util.stream.IntStream;
 public class ObstaclesGenerator {
     @Test
     public void generateObstacles() throws IOException {
-        Map<String, ObjectAttribute> obstacles = new HashMap<>();
+        Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
         for (int i = 0; i < 74; i++) {
-            List<ObjectAttribute> current = new ArrayList<>();
+            List<H3MObjectAttribute> current = new ArrayList<>();
             new H3MParser().setDataInterceptor(od -> {
-                        ObjectAttribute oa = od.getOa();
-                        ObjectType type = oa.getType();
-                        if ((type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == ObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
+                        H3MObjectAttribute oa = od.getOa();
+                        H3MObjectType type = oa.getType();
+                        if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
                                 && !obstacles.containsKey(oa.def())) {
                             current.add(oa);
                         }
                     })
                     .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
-            for (ObjectAttribute oa : current) {
+            for (H3MObjectAttribute oa : current) {
                 obstacles.put(oa.def(), oa);
             }
             System.out.println(i + ": " + current.size());
@@ -48,12 +48,12 @@ public class ObstaclesGenerator {
 //                + shifts.stream().mapToInt(s -> s.stream().mapToInt(ObjectAttribute.Shift::getDy).min().orElse(0)).min().orElseThrow());
 //        shifts.forEach(ObstaclesGenerator::generateShiftsSql);
         System.out.println(obstacles.size());
-        for (ObjectAttribute oa : obstacles.values()) {
+        for (H3MObjectAttribute oa : obstacles.values()) {
             generateObstacle(oa);
         }
     }
 
-    private static void generateObstacle(ObjectAttribute oa) throws IOException {
+    private static void generateObstacle(H3MObjectAttribute oa) throws IOException {
         System.out.println("insert into map_impassable (");
         System.out.println("id, full_name, obstacle_type_id, pict_width, pict_height, pict_count");
         System.out.println(") values");
@@ -74,7 +74,7 @@ public class ObstaclesGenerator {
         }).collect(Collectors.joining(",\n", "", ";\n")));
     }
 
-    private static void generateShiftsSql(List<ObjectAttribute.Shift> passable) {
+    private static void generateShiftsSql(List<H3MObjectAttribute.Shift> passable) {
         String name = generateName(passable);
         System.out.println("insert into map_obstacle_type (");
         System.out.println("id, full_name");
@@ -95,24 +95,24 @@ public class ObstaclesGenerator {
         }).collect(Collectors.joining(",\n", "", ";\n")));
     }
 
-    private static String generateName(List<ObjectAttribute.Shift> shifts) {
+    private static String generateName(List<H3MObjectAttribute.Shift> shifts) {
         if (shifts.isEmpty()) {
             return "NONE";
         }
-        if (Collections.singletonList(new ObjectAttribute.Shift(0, 0)).equals(shifts)) {
+        if (Collections.singletonList(new H3MObjectAttribute.Shift(0, 0)).equals(shifts)) {
             return "SINGLE";
         }
-        return shifts.stream().sorted(Comparator.comparing(ObjectAttribute.Shift::getDy).reversed().thenComparing(ObjectAttribute.Shift::getDx))
+        return shifts.stream().sorted(Comparator.comparing(H3MObjectAttribute.Shift::getDy).reversed().thenComparing(H3MObjectAttribute.Shift::getDx))
                 .map(sh -> String.valueOf(Math.abs(sh.getDx())) + Math.abs(sh.getDy())).collect(Collectors.joining());
     }
 
     @Test
     public void generateMines() throws IOException {
-        Map<String, ObjectAttribute> defs = new TreeMap<>();
+        Map<String, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
             new H3MParser().setDataInterceptor(od -> {
-                        ObjectType type = od.getOa().getType();
-                        if (type == ObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(od.getOa().def())) {
+                        H3MObjectType type = od.getOa().getType();
+                        if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(od.getOa().def())) {
                             defs.put(od.getOa().def(), od.getOa());
                         }
                     })
@@ -124,14 +124,14 @@ public class ObstaclesGenerator {
         defs.get("avmalch0").setLandscapeGroup(255 ^ (1 << BackgroundType.SNOW.ordinal()));
         defs.get("avmgems0").setLandscapeGroup(1 << BackgroundType.GRASS.ordinal());
         defs.get("avmgerf0").setLandscapeGroup(1 << BackgroundType.ROUGH.ordinal());
-        defs.put("avmgesd0", new ObjectAttribute().setDef("avmgesd0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
-        defs.put("avmgesu0", new ObjectAttribute().setDef("avmgesu0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
-        defs.put("avmgesw0", new ObjectAttribute().setDef("avmgesw0.def").setLandscapeGroup(1 << BackgroundType.SWAMP.ordinal()));
-        defs.put("avmords0", new ObjectAttribute().setDef("avmords0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
-        defs.put("avmorsb0", new ObjectAttribute().setDef("avmorsb0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
-        defs.put("avmswds0", new ObjectAttribute().setDef("avmswds0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        defs.put("avmgesd0", new H3MObjectAttribute().setDef("avmgesd0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        defs.put("avmgesu0", new H3MObjectAttribute().setDef("avmgesu0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
+        defs.put("avmgesw0", new H3MObjectAttribute().setDef("avmgesw0.def").setLandscapeGroup(1 << BackgroundType.SWAMP.ordinal()));
+        defs.put("avmords0", new H3MObjectAttribute().setDef("avmords0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
+        defs.put("avmorsb0", new H3MObjectAttribute().setDef("avmorsb0.def").setLandscapeGroup(1 << BackgroundType.SUBTERRANEAN.ordinal()));
+        defs.put("avmswds0", new H3MObjectAttribute().setDef("avmswds0.def").setLandscapeGroup(1 << BackgroundType.SAND.ordinal()));
         ResourceType resource = null;
-        for (ObjectAttribute oa : defs.values()) {
+        for (H3MObjectAttribute oa : defs.values()) {
             boolean resourceChanged = resource != (resource = byDef(oa.def()));
             String genName = resource.getGeneratorName();
             if (resourceChanged) {
@@ -183,17 +183,17 @@ public class ObstaclesGenerator {
 
     @Test
     public void generateMonsters() throws IOException {
-        Map<Integer, ObjectAttribute> defs = new TreeMap<>();
+        Map<Integer, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
             new H3MParser().setDataInterceptor(od -> {
-                        if (od.getOa().getType() == ObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
+                        if (od.getOa().getType() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
                             defs.put(od.getOa().getObjectNumber(), od.getOa());
                         }
                     })
                     .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
         }
-        defs.put(139, new ObjectAttribute().setDef("avwpeas.def").setObjectNumber(139));
-        for (ObjectAttribute oa : defs.values()) {
+        defs.put(139, new H3MObjectAttribute().setDef("avwpeas.def").setObjectNumber(139));
+        for (H3MObjectAttribute oa : defs.values()) {
             ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", oa.def(), ObjectNumberConstants.CREATURES[oa.getObjectNumber()].toLowerCase());
             System.out.println((meta.getImageWidth() != 64 || meta.getImageHeight() != 64 ? "!!!" : "")
                     + ObjectNumberConstants.CREATURES[oa.getObjectNumber()] + "=" + meta.getImagesCount());

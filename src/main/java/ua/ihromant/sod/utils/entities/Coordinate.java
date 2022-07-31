@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Coordinates {
+public class Coordinate {
     private int x;
     private int y;
     private int z;

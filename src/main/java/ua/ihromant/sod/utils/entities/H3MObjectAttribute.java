@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.ObjectType;
+import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.map.ObjectGroup;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Setter
 @Accessors(chain = true)
 @ToString
-public class ObjectAttribute {
+public class H3MObjectAttribute {
     private String def;
     private int[] passable;
     private int[] active;
@@ -29,7 +29,7 @@ public class ObjectAttribute {
     private ObjectGroup objectGroup;
     private int above;
     private int[] unknown;
-    private ObjectType type;
+    private H3MObjectType type;
 
     public Stream<BackgroundType> backgrounds() {
         return Utils.ones(landscapeGroup).mapToObj(i -> BackgroundType.values()[i]);

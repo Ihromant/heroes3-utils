@@ -12,6 +12,6 @@ public class ObjectData {
     private int y;
     private int z;
     private int oaIndex;
-    private ObjectAttribute oa;
+    private H3MObjectAttribute oa;
     private int[] unknown1;
 }
