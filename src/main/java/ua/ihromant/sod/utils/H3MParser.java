@@ -483,7 +483,7 @@ public class H3MParser {
             case 8: // artifact
                 return new H3MReward().setArtifacts(new int[]{readArtifact(wrap, isRoE)});
             case 9: // spell
-                return new H3MReward().setSpells(new String[]{ObjectNumberConstants.SPELLS[wrap.readUnsigned()]});
+                return new H3MReward().setSpells(new int[]{wrap.readUnsigned()});
             case 10:
                 return new H3MReward().setCreatures(new H3MCreatureSlot[]{readCreature(wrap, isRoE)});
             default:
@@ -647,7 +647,7 @@ public class H3MParser {
                 .setSkills(readPrimarySkills(wrap))
                 .setSecondarySkills(readSecondarySkills(wrap, wrap.readUnsigned()))
                 .setArtifacts(readArtifacts(wrap, isRoE))
-                .setSpells(Arrays.stream(wrap.readUnsigned(wrap.readUnsigned())).mapToObj(i -> ObjectNumberConstants.SPELLS[i]).toArray(String[]::new))
+                .setSpells(wrap.readUnsigned(wrap.readUnsigned()))
                 .setCreatures(readArmy(wrap, isRoE, wrap.readUnsigned()))
                 .setUnknown(wrap.readUnsigned(8));
     }

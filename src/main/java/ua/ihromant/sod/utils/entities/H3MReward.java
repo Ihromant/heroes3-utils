@@ -16,7 +16,7 @@ public class H3MReward {
     private H3MPrimarySkills skills;
     private H3MSecondarySkill[] secondarySkills;
     private int[] artifacts;
-    private String[] spells;
+    private int[] spells;
     private H3MCreatureSlot[] creatures;
     private int[] unknown;
 }
