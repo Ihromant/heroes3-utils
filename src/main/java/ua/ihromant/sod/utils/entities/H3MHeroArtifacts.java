@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class HeroArtifacts {
+public class H3MHeroArtifacts {
     private int headwear;
     private int shoulders;
     private int rightHand;

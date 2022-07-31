@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class CreatureSlot {
+public class H3MSecondarySkill {
     private int type;
-    private int quantity;
+    private int level;
 }

@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class TownEvent {
+public class H3MTownEvent {
     private String name;
     private String message;
     private int[] resources;

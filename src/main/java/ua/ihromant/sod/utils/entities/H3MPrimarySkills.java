@@ -7,7 +7,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class CommonSecondarySkill {
-    private int type;
-    private int level;
+public class H3MPrimarySkills {
+    private int attack;
+    private int defense;
+    private int spellPower;
+    private int knowledge;
 }

@@ -3,12 +3,11 @@ package ua.ihromant.sod.utils.entities;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.entities.MessageAndTreasure;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class MapMonster {
+public class H3MMapMonster {
     private Integer abSodId;
     private int quantity;
     private int disposition;
