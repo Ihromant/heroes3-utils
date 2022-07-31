@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectClassConstants;
 import ua.ihromant.sod.utils.H3MObjectType;
+import ua.ihromant.sod.utils.ParserInterceptor;
+import ua.ihromant.sod.utils.entities.Coordinate;
+import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.MapMetadata;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.map.RiverType;
@@ -57,11 +60,14 @@ public class H3MParserTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
-        new H3MParser().setDataInterceptor(od -> {
-                    H3MObjectType type = od.getOa().type();
-                    types.add(od.getOa().getObjectClass());
-                    if (type == H3MObjectType.META_OBJECT_MONSTER && defs.add(od.getOa().def())) {
-                        System.out.println(od.getOa());
+        new H3MParser().setDataInterceptor(new ParserInterceptor() {
+                    @Override
+                    public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                        H3MObjectType type = attr.type();
+                        types.add(attr.getObjectClass());
+                        if (type == H3MObjectType.META_OBJECT_MONSTER && defs.add(attr.def())) {
+                            System.out.println(attr);
+                        }
                     }
                 })
                 .parse(getUnzippedBytes("Generated6lm"));

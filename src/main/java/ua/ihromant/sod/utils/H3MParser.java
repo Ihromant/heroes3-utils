@@ -2,7 +2,6 @@ package ua.ihromant.sod.utils;
 
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.entities.AiRumor;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.BasicInformation;
@@ -17,7 +16,6 @@ import ua.ihromant.sod.utils.entities.H3MMapMonster;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
-import ua.ihromant.sod.utils.entities.ObjectData;
 import ua.ihromant.sod.utils.entities.PlayerMetadata;
 import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
 import ua.ihromant.sod.utils.entities.StartingTownMetadata;
@@ -28,7 +26,6 @@ import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
 import java.nio.BufferUnderflowException;
-import java.util.function.Consumer;
 
 @Setter
 @Accessors(chain = true)
@@ -39,7 +36,7 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    private Consumer<ObjectData> dataInterceptor;
+    private ParserInterceptor dataInterceptor;
 
     public MapMetadata parse(byte[] bytes) {
         MapMetadata map = new MapMetadata();

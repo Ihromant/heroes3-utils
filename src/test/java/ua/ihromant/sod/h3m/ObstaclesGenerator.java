@@ -6,7 +6,9 @@ import ua.ihromant.sod.ImageMetadata;
 import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectNumberConstants;
 import ua.ihromant.sod.utils.H3MObjectType;
+import ua.ihromant.sod.utils.ParserInterceptor;
 import ua.ihromant.sod.utils.bytes.Utils;
+import ua.ihromant.sod.utils.entities.Coordinate;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.BackgroundType;
 import ua.ihromant.sod.utils.map.ResourceType;
@@ -29,12 +31,14 @@ public class ObstaclesGenerator {
         Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
         for (int i = 0; i < 74; i++) {
             List<H3MObjectAttribute> current = new ArrayList<>();
-            new H3MParser().setDataInterceptor(od -> {
-                        H3MObjectAttribute oa = od.getOa();
-                        H3MObjectType type = oa.type();
-                        if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
-                                && !obstacles.containsKey(oa.def())) {
-                            current.add(oa);
+            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+                        @Override
+                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                            H3MObjectType type = attr.type();
+                            if ((type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN || type == H3MObjectType.META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD)
+                                    && !obstacles.containsKey(attr.def())) {
+                                current.add(attr);
+                            }
                         }
                     })
                     .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
@@ -110,10 +114,13 @@ public class ObstaclesGenerator {
     public void generateMines() throws IOException {
         Map<String, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setDataInterceptor(od -> {
-                        H3MObjectType type = od.getOa().type();
-                        if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(od.getOa().def())) {
-                            defs.put(od.getOa().def(), od.getOa());
+            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+                        @Override
+                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                            H3MObjectType type = attr.type();
+                            if (type == H3MObjectType.META_OBJECT_RESOURCE_GENERATOR && !defs.containsKey(attr.def())) {
+                                defs.put(attr.def(), attr);
+                            }
                         }
                     })
                     .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
@@ -185,9 +192,12 @@ public class ObstaclesGenerator {
     public void generateMonsters() throws IOException {
         Map<Integer, H3MObjectAttribute> defs = new TreeMap<>();
         for (int i = 0; i < 74; i++) {
-            new H3MParser().setDataInterceptor(od -> {
-                        if (od.getOa().type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(od.getOa().getObjectNumber())) {
-                            defs.put(od.getOa().getObjectNumber(), od.getOa());
+            new H3MParser().setDataInterceptor(new ParserInterceptor() {
+                        @Override
+                        public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
+                            if (attr.type() == H3MObjectType.META_OBJECT_MONSTER && !defs.containsKey(attr.getObjectNumber())) {
+                                defs.put(attr.getObjectNumber(), attr);
+                            }
                         }
                     })
                     .parse(H3MParserTest.getUnzippedBytes("/generated/Generated" + i));
