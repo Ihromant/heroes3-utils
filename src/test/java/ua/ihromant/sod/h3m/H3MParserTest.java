@@ -6,6 +6,7 @@ import ua.ihromant.sod.utils.H3MParser;
 import ua.ihromant.sod.utils.ObjectClassConstants;
 import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.ParserInterceptor;
+import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.Coordinate;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 
@@ -38,8 +39,7 @@ public class H3MParserTest {
     }
 
     private void testFileName(String fileName) throws IOException {
-        byte[] bytes = getUnzippedBytes(fileName);
-        new H3MParser().parse(bytes, new ParserInterceptor(){});
+        new H3MParser().parse(new ByteWrapper(getUnzippedBytes(fileName)), new ParserInterceptor(){});
     }
 
     public static byte[] getUnzippedBytes(String fileName) throws IOException {
@@ -51,7 +51,7 @@ public class H3MParserTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
-        new H3MParser().parse(getUnzippedBytes("Generated6lm"), new ParserInterceptor() {
+        new H3MParser().parse(new ByteWrapper(getUnzippedBytes("Generated6lm")), new ParserInterceptor() {
             @Override
             public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                 H3MObjectType type = attr.type();

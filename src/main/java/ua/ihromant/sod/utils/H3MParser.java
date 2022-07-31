@@ -29,8 +29,7 @@ public class H3MParser {
     private static final int H3M_FORMAT_CHR = 0x0000001D;
     private static final int H3M_FORMAT_WOG = 0x00000033;
 
-    public void parse(byte[] bytes, ParserInterceptor interceptor) {
-        ByteWrapper wrap = new ByteWrapper(bytes);
+    public void parse(ByteWrapper wrap, ParserInterceptor interceptor) {
         int format = wrap.readInt();
         boolean isROE = format == H3M_FORMAT_ROE;
         boolean isSoD = format == H3M_FORMAT_SOD;
