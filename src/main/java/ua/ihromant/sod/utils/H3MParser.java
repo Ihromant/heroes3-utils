@@ -53,7 +53,7 @@ public class H3MParser {
             boolean hasMainTown = wrap.readBoolean();
             player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
                     .setStartingTownType(isROE ? null : wrap.readUnsigned())
-                    .setCoordinates(readCoordinate(wrap)) : null);
+                    .setCoordinate(readCoordinate(wrap)) : null);
             boolean startingHeroIsRandom = wrap.readBoolean();
             int startingHeroType = wrap.readUnsigned();
             if (!hasMainTown) {

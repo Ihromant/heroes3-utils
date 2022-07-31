@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 public class H3MStartingTown {
     private Boolean startingTownCreateHero;
     private Integer startingTownType;
-    private Coordinate coordinates;
+    private Coordinate coordinate;
 }
