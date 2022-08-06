@@ -88,6 +88,8 @@ public interface ObjectNumberConstants {
 
     String[] CASTLES = {"CASTLE", "RAMPART", "TOWER", "INFERNO", "NECROPOLIS", "DUNGEON", "STRONGHOLD", "FORTRESS", "CONFLUX"};
 
+    String[] KINGDOMS = {"RED", "BLUE", "TAN", "GREEN", "ORANGE", "PURPLE", "TEAL", "PINK"};
+
     String[] HEROES = {
             "ORRIN", "VALESKA", "EDRIC", "SYLVIA", "LORD_HAART", "SORSHA", "CHRISTIAN", "TYRIS",
             "RION", "ADELA", "CUTHBERT", "ADELAIDE", "INGHAM", "SANYA", "LOYNIS", "CAITLIN",
@@ -108,4 +110,10 @@ public interface ObjectNumberConstants {
             "PASIS", "THUNAR", "IGNISSA", "LACUS", "MONERE", "ERDAMON", "FIUR", "KALT",
             "LUNA", "BRISSA", "CIELE", "LABETHA", "INTEUS", "AENAIN", "GELARE", "GRINDAN",
             "SIR_MULLICH"};
+
+    String[] HERO_TYPES = {
+            "KNIGHT", "CLERIC", "RANGER", "DRUID", "ALCHEMIST", "WIZARD",
+            "DEMONIAC", "HERETIC", "DEATH_KNIGHT", "NECROMANCER", "OVERLORD", "WARLOCK",
+            "BARBARIAN", "BATTLE_MAGE", "BEASTMASTER", "WITCH", "PLANESWALKER", "ELEMENTALIST"
+    };
 }

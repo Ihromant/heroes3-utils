@@ -1,6 +1,7 @@
 package ua.ihromant.sod;
 
 import org.junit.jupiter.api.Test;
+import ua.ihromant.sod.utils.ObjectNumberConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ImageMerger {
@@ -94,40 +95,53 @@ public class ImageMerger {
         BASE, STANDING, UNHAPPY, HAPPY, CAST;
     }
 
+    private static final int HERO_MAP_WIDTH = 96;
+    private static final int HERO_MAP_HEIGHT = 64;
+
+    private static final String[] STAGES = {"TOP", "TOP_RIGHT", "RIGHT", "BOTTOM_RIGHT", "BOTTOM"};
+
     @Test
-    public void mergeHeroesImages() throws IOException {
-        File root = new File("/home/ihromant/Games/units/heroes/heroes");
-        for (HeroType type : HeroType.values()) {
-            int max = 0;
-            File dir = new File(root, type.name().toLowerCase());
-            for (File img : Objects.requireNonNull(dir.listFiles())) {
-                int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
-                if (max < yIdx) {
-                    max = yIdx;
-                }
+    public void mergeHeroAnimations() throws IOException {
+        File root = new File("/home/ihromant/Games/units/images-shadow");
+        for (int i = 0; i < ObjectNumberConstants.HERO_TYPES.length; i++) {
+            File dir = new File(root, "ah" + (i < 10 ? "0" : "") + i + "_");
+            File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/map/heroes/" + ObjectNumberConstants.HERO_TYPES[i].toLowerCase());
+            newDir.mkdir();
+            BufferedImage result = new BufferedImage(HERO_MAP_WIDTH, HERO_MAP_HEIGHT * 5, BufferedImage.TYPE_INT_ARGB);
+            for (int j = 0; j < 5; j++) {
+                BufferedImage img = ImageIO.read(new File(dir, "0" + j + "_00.png"));
+                result.getGraphics().drawImage(img, 0, j * HERO_MAP_HEIGHT, null);
             }
-            File[][] files = new File[5][max + 1];
-            //BufferedImage result = new BufferedImage(HERO_WIDTH * 5, HERO_HEIGHT * max + HERO_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-            for (File img : Objects.requireNonNull(dir.listFiles())) {
-                String name = img.getName();
-                int xIdx = Integer.parseInt(name.substring(0, 2), 10);
-                int yIdx = Integer.parseInt(name.substring(3, 5), 10);
-                files[xIdx][yIdx] = img;
-            }
-            for (int i = 0; i < files.length; i++) {
-                File[] layer = files[i];
-                int colMax = IntStream.range(0, max).filter(j -> layer[j] == null).findFirst().orElse(max + 1);
-                BufferedImage result = new BufferedImage(HERO_WIDTH, HERO_HEIGHT * colMax, BufferedImage.TYPE_INT_ARGB);
-                for (int j = 0; j < colMax; j++) {
-                    File img = layer[j];
-                    if (img != null) {
-                        BufferedImage toDraw = ImageIO.read(img);
-                        result.getGraphics().drawImage(toDraw, 0, j * HERO_HEIGHT, null);
-                    }
+            ImageIO.write(result, "png", new File(newDir, "staying.png"));
+            for (int j = 5; j < 10; j++) {
+                BufferedImage res = new BufferedImage(HERO_MAP_WIDTH, HERO_MAP_HEIGHT * 8, BufferedImage.TYPE_INT_ARGB);
+                for (int k = 0; k < 8; k++) {
+                    BufferedImage img = ImageIO.read(new File(dir, "0" + j + "_0" + k + ".png"));
+                    res.getGraphics().drawImage(img, 0, k * HERO_MAP_HEIGHT, null);
                 }
-                File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/animations/heroes/" + dir.getName());
-                newDir.mkdir();
-                ImageIO.write(result, "PNG", new File(newDir, dir.getName() + "_" + HeroAnimStage.values()[i].toString().toLowerCase() + ".png"));
+                ImageIO.write(res, "png", new File(newDir, "move_" + STAGES[j - 5].toLowerCase() + ".png"));
+            }
+        }
+    }
+
+    private static final Map<String, String> FLAGS = Map.of(
+            "b", "orange", "d", "green", "g", "blue", "k", "pink",
+            "l", "red", "p", "purple", "r", "tan", "w", "teal");
+
+    @Test
+    public void mergeFlagAnimations() throws IOException {
+        File root = new File("/home/ihromant/Games/units/images-shadow/");
+        for (Map.Entry<String, String> e : FLAGS.entrySet()) {
+            File dir = new File(root, "abf01" + e.getKey());
+            File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/map/hero_flags/" + e.getValue());
+            newDir.mkdir();
+            for (int i = 0; i < 10; i++) {
+                BufferedImage res = new BufferedImage(HERO_MAP_WIDTH, HERO_MAP_HEIGHT * 8, BufferedImage.TYPE_INT_ARGB);
+                for (int j = 0; j < 8; j++) {
+                    BufferedImage img = ImageIO.read(new File(dir, "0" + i + "_0" + j + ".png"));
+                    res.getGraphics().drawImage(img, 0, j * HERO_MAP_HEIGHT, null);
+                }
+                ImageIO.write(res, "png", new File(newDir, i + "stage" + ".png"));
             }
         }
     }
