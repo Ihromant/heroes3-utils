@@ -124,24 +124,20 @@ public class ImageMerger {
         }
     }
 
-    private static final Map<String, String> FLAGS = Map.of(
-            "b", "orange", "d", "green", "g", "blue", "k", "pink",
-            "l", "red", "p", "purple", "r", "tan", "w", "teal");
-
     @Test
     public void mergeFlagAnimations() throws IOException {
         File root = new File("/home/ihromant/Games/units/images-shadow/");
-        for (Map.Entry<String, String> e : FLAGS.entrySet()) {
-            File dir = new File(root, "abf01" + e.getKey());
-            File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/map/hero_flags/" + e.getValue());
+        for (int i = 0; i < ObjectNumberConstants.KINGDOMS.length; i++) {
+            File dir = new File(root, "af0" + i);
+            File newDir = new File("/home/ihromant/workspace/ihromant.github.io/img/map/hero_flags/" + ObjectNumberConstants.KINGDOMS[i].toLowerCase());
             newDir.mkdir();
-            for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
                 BufferedImage res = new BufferedImage(HERO_MAP_WIDTH, HERO_MAP_HEIGHT * 8, BufferedImage.TYPE_INT_ARGB);
-                for (int j = 0; j < 8; j++) {
-                    BufferedImage img = ImageIO.read(new File(dir, "0" + i + "_0" + j + ".png"));
-                    res.getGraphics().drawImage(img, 0, j * HERO_MAP_HEIGHT, null);
+                for (int k = 0; k < 8; k++) {
+                    BufferedImage img = ImageIO.read(new File(dir, "0" + j + "_0" + k + ".png"));
+                    res.getGraphics().drawImage(img, 0, k * HERO_MAP_HEIGHT, null);
                 }
-                ImageIO.write(res, "png", new File(newDir, i + "stage" + ".png"));
+                ImageIO.write(res, "png", new File(newDir, j + "stage" + ".png"));
             }
         }
     }
