@@ -47,8 +47,8 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "imobil", "/home/ihromant/workspace/ihromant.github.io/img/adventure", "mobil_slider");
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "imana", "/home/ihromant/workspace/ihromant.github.io/img/adventure", "mana_slider");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns5", "/home/ihromant/workspace/ihromant.github.io/img/buttons/22x46", "art_right");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns3", "/home/ihromant/workspace/ihromant.github.io/img/buttons/22x46", "art_left");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm006", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_wait");

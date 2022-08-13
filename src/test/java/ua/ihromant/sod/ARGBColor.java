@@ -33,6 +33,14 @@ public class ARGBColor {
         return (base, a) -> interpolate(base, to, a);
     }
 
+    public static int dist(int from, int to) {
+        return (int) Math.round(Math.sqrt(sqr(getR(from) - getR(to)) + sqr(getG(from) - getG(to)) + sqr(getB(from) - getB(to)) + sqr(getA(from) - getA(to))));
+    }
+
+    private static int sqr(int a) {
+        return a * a;
+    }
+
     private static int linear(int from, int to, double a) {
         return round(from * (1 - a) + to * a);
     }
