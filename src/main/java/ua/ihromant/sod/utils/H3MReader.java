@@ -543,25 +543,25 @@ public class H3MReader {
     }
 
     private H3MHeroArtifacts parseHeroArtifacts(ByteWrapper wrap, boolean isRoE, boolean isSoD) {
-        return new H3MHeroArtifacts().setHeadwear(readArtifact(wrap, isRoE)) // TODO somewhere is bug, feet wrongly recognized
-                .setShoulders(readArtifact(wrap, isRoE))
+        return new H3MHeroArtifacts().setHeadwear(readArtifact(wrap, isRoE))
+                .setCape(readArtifact(wrap, isRoE))
+                .setNecklace(readArtifact(wrap, isRoE))
                 .setRightHand(readArtifact(wrap, isRoE))
                 .setLeftHand(readArtifact(wrap, isRoE))
                 .setTorso(readArtifact(wrap, isRoE))
                 .setRightRing(readArtifact(wrap, isRoE))
                 .setLeftRing(readArtifact(wrap, isRoE))
                 .setFeet(readArtifact(wrap, isRoE))
+                .setMisc0(readArtifact(wrap, isRoE))
                 .setMisc1(readArtifact(wrap, isRoE))
                 .setMisc2(readArtifact(wrap, isRoE))
                 .setMisc3(readArtifact(wrap, isRoE))
-                .setMisc4(readArtifact(wrap, isRoE))
-                .setDevice1(readArtifact(wrap, isRoE))
-                .setDevice2(readArtifact(wrap, isRoE))
-                .setDevice3(readArtifact(wrap, isRoE))
-                .setDevice4(readArtifact(wrap, isRoE))
-                .setUnknown(isSoD ? wrap.readUnsignedShort() : null)
+                .setBallista(readArtifact(wrap, isRoE))
+                .setAmmoCart(readArtifact(wrap, isRoE))
+                .setFirstAidTent(readArtifact(wrap, isRoE))
+                .setCatapult(readArtifact(wrap, isRoE))
                 .setSpellbook(readArtifact(wrap, isRoE))
-                .setMisc5(readArtifact(wrap, isRoE))
+                .setMisc4(isSoD ? wrap.readUnsignedShort() : null)
                 .setBackpack(isRoE ? wrap.readUnsigned(wrap.readUnsignedShort()) : wrap.readUnsignedShort(wrap.readUnsignedShort()));
     }
 
