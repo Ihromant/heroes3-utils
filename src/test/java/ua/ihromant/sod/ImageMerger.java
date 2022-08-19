@@ -1,5 +1,6 @@
 package ua.ihromant.sod;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.utils.ObjectNumberConstants;
 
@@ -47,8 +48,8 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns5", "/home/ihromant/workspace/ihromant.github.io/img/buttons/22x46", "art_right");
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns3", "/home/ihromant/workspace/ihromant.github.io/img/buttons/22x46", "art_left");
+        mergeImage("/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "luck", "/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "luck");
+        mergeImage("/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "morale", "/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "morale");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm006", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_wait");
@@ -62,7 +63,7 @@ public class ImageMerger {
     public static ImageMetadata mergeImage(String rootFolder, String animName, String destFolder, String destName) throws IOException {
         int xMax = 0;
         int yMax = 0;
-        File root = new File(rootFolder + animName);
+        File root = new File(rootFolder, animName);
         for (File img : Objects.requireNonNull(root.listFiles())) {
             int xIdx = Integer.parseInt(img.getName().substring(0, 2), 10);
             int yIdx = Integer.parseInt(img.getName().substring(3, 5), 10);
@@ -154,6 +155,19 @@ public class ImageMerger {
                 }
             }
             ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/castle", f.getName()));
+        }
+    }
+
+    @Test
+    public void transferCreatureIcons() throws IOException {
+        File root = new File("/home/ihromant/Games/units/images-shadow/cprsmall");
+        for (File f : Objects.requireNonNull(root.listFiles())) {
+            String name = f.getName();
+            int idx = Integer.parseInt(name.substring(name.indexOf('_') + 1, name.indexOf('.')), 10) - 2;
+            if (idx >= 0 && idx < ObjectNumberConstants.CREATURES.length && ObjectNumberConstants.CREATURES[idx] != null) {
+                String newName = ObjectNumberConstants.CREATURES[idx];
+                FileUtils.copyFile(f, new File("/home/ihromant/workspace/ihromant.github.io/img/icons/32x32/creature", newName.toLowerCase() + ".png"));
+            }
         }
     }
 }
