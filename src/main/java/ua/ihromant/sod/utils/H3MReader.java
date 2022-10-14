@@ -75,10 +75,12 @@ public class H3MReader {
                 }
             } else {
                 ai = startingHeroType != 0xFF;
-                player.setStartingHeroIsRandom(startingHeroIsRandom)
-                        .setStartingHeroType(startingHeroType)
-                        .setStartingHeroFace(wrap.readUnsigned())
-                        .setStartingHeroName(wrap.readString());
+                if (!isROE || ai) {
+                    player.setStartingHeroIsRandom(startingHeroIsRandom)
+                            .setStartingHeroType(startingHeroType)
+                            .setStartingHeroFace(wrap.readUnsigned())
+                            .setStartingHeroName(wrap.readString());
+                }
             }
             if (!isROE && ai) {
                 wrap.readUnsigned(); // unknown1

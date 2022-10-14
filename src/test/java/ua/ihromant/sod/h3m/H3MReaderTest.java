@@ -33,6 +33,7 @@ public class H3MReaderTest {
         testFileName("TheWordOfGod");
         testFileName("TheRock");
         testFileName("ArmageddonsBlade");
+        testFileName("Barbarian");
         testFileName("BarbaricCrusade");
         testFileName("BackToTheRoots");
         testFileName("ArenaKonwentowa24");
