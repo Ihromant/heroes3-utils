@@ -606,6 +606,10 @@ public class H3MReader {
         return town;
     }
 
+    private static String binary(int i) {
+        return Integer.toString(i, 2);
+    }
+
     private H3MReward readCommonReward(ByteWrapper wrap, boolean isRoE) {
         return new H3MReward().setExperience(wrap.readInt())
                 .setSpellPoints(wrap.readInt())
