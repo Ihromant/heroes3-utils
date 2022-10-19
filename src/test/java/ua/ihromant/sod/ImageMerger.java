@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -48,8 +47,8 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "luck", "/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "luck");
-        mergeImage("/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "morale", "/home/ihromant/workspace/ihromant.github.io/img/icons/22x12", "morale");
+        mergeImage("/home/ihromant/Games/units/from_hd/res/", "bckpck.dir", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "backpack");
+        //mergeImage("/home/ihromant/Games/units/images/aabuttons", "icancel", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x30", "icancel");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm006", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_wait");
@@ -168,6 +167,25 @@ public class ImageMerger {
                 String newName = ObjectNumberConstants.CREATURES[idx];
                 FileUtils.copyFile(f, new File("/home/ihromant/workspace/ihromant.github.io/img/icons/32x32/creature", newName.toLowerCase() + ".png"));
             }
+        }
+    }
+
+    private static final int TRANSPARENT = -16711681;
+
+    @Test
+    public void reconvertImages() throws IOException {
+        for (File f : Objects.requireNonNull(new File("/home/ihromant/Games/units/images/hdicons").listFiles())) {
+            BufferedImage img = ImageIO.read(f);
+            String name = f.getName();
+            BufferedImage res = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            for (int i = 0; i < img.getWidth(); i++) {
+                for (int j = 0; j < img.getHeight(); j++) {
+                    if (img.getRGB(i, j) != TRANSPARENT) {
+                        res.setRGB(i, j, img.getRGB(i, j));
+                    }
+                }
+            }
+            ImageIO.write(res, "png", new File(f.getParent(), name.substring(0, name.indexOf('.')) + ".png"));
         }
     }
 }

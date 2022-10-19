@@ -21,6 +21,7 @@ import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
 import java.nio.BufferUnderflowException;
+import java.util.BitSet;
 
 public class H3MReader {
     private static final int H3M_FORMAT_ROE = 0x0000000E;
@@ -50,7 +51,7 @@ public class H3MReader {
                     .setTownTypes(isROE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
-            player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE ? null : wrap.readBoolean())
+            player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE || wrap.readBoolean())
                     .setStartingTownType(isROE ? null : wrap.readUnsigned())
                     .setCoordinate(readCoordinate(wrap)) : null);
             boolean startingHeroIsRandom = wrap.readBoolean();
@@ -593,8 +594,8 @@ public class H3MReader {
                 .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoe) : null)
                 .setFormation(wrap.readUnsigned());
         if (wrap.readBoolean()) {
-            town.setBuilt(wrap.readUnsigned(6))
-                    .setDisabled(wrap.readUnsigned(6));
+            town.setBuilt(BitSet.valueOf(wrap.readBytes(6)))
+                    .setDisabled(BitSet.valueOf(wrap.readBytes(6)));
         } else {
             town.setHasFort(wrap.readBoolean());
         }

@@ -8,7 +8,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class H3MStartingTown {
-    private Boolean startingTownCreateHero;
+    private boolean startingTownCreateHero;
     private Integer startingTownType;
     private Coordinate coordinate;
 }

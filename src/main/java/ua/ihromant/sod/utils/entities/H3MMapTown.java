@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.BitSet;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -13,8 +15,8 @@ public class H3MMapTown {
     private String name;
     private H3MCreatureSlot[] creatures;
     private int formation;
-    private int[] built;
-    private int[] disabled;
+    private BitSet built;
+    private BitSet disabled;
     private Boolean hasFort;
     private int[] mustHaveSpells;
     private int[] mayHaveSpells;

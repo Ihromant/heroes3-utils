@@ -42,12 +42,6 @@ public class ByteWrapper {
         return readUnsigned() | (readUnsigned() << 8) | (readUnsigned() << 16);
     }
 
-    public byte[] readBytes(int size) {
-        byte[] bytes = new byte[size];
-        str.get(bytes);
-        return bytes;
-    }
-
     public int[] readUnsigned(int size) {
         int[] bytes = new int[size];
         for (int i = 0; i < size; i++) {
@@ -58,6 +52,12 @@ public class ByteWrapper {
 
     public byte readByte() {
         return str.get();
+    }
+
+    public byte[] readBytes(int size) {
+        byte[] bytes = new byte[size];
+        str.get(bytes);
+        return bytes;
     }
 
     public boolean readBoolean() {

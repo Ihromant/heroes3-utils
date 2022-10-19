@@ -36,6 +36,7 @@ public class H3MReaderTest {
         testFileName("Barbarian");
         testFileName("BarbaricCrusade");
         testFileName("BackToTheRoots");
+        testFileName("MandateOfHeaven");
         testFileName("ArenaKonwentowa24");
     }
 
@@ -52,7 +53,7 @@ public class H3MReaderTest {
         Map<Integer, String> constants = constantsMap();
         Set<Integer> types = new HashSet<>();
         Set<String> defs = new HashSet<>();
-        new H3MReader().parse(new ByteWrapper(getUnzippedBytes("Generated6lm")), new ParserInterceptor() {
+        new H3MReader().parse(new ByteWrapper(getUnzippedBytes("MandateOfHeaven")), new ParserInterceptor() {
             @Override
             public void interceptObjectData(Coordinate coord, H3MObjectAttribute attr) {
                 H3MObjectType type = attr.type();
