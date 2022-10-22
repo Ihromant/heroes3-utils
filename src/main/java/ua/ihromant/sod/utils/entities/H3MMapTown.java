@@ -11,7 +11,7 @@ import java.util.BitSet;
 @Accessors(chain = true)
 public class H3MMapTown {
     private Integer abSodId;
-    private int owner;
+    private Integer owner;
     private String name;
     private H3MCreatureSlot[] creatures;
     private int formation;

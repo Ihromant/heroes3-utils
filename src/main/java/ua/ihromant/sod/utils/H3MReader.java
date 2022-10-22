@@ -589,7 +589,7 @@ public class H3MReader {
 
     private H3MMapTown readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) {
         H3MMapTown town = new H3MMapTown().setAbSodId(isRoe ? null : wrap.readInt())
-                .setOwner(wrap.readUnsigned())
+                .setOwner(wrap.readUnsignedOpt())
                 .setName(wrap.readBoolean() ? wrap.readString() : null)
                 .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoe) : null)
                 .setFormation(wrap.readUnsigned());

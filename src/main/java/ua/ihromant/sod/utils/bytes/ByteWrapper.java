@@ -34,6 +34,11 @@ public class ByteWrapper {
         return str.get() & 0xFF;
     }
 
+    public Integer readUnsignedOpt() {
+        int result = readUnsigned();
+        return result == 0xFF ? null : result;
+    }
+
     public int readRGB() {
         return (readUnsigned() << 16) | (readUnsigned() << 8) | readUnsigned();
     }
