@@ -98,7 +98,7 @@ public class H3MReader {
         parseWinCondition(wrap, isROE);
         parseLoseCondition(wrap);
         parseAiTeams(wrap);
-        int[] availableHeroes = wrap.readUnsigned(isROE ? 16 : 20);
+        BitSet availableHeroes = BitSet.valueOf(wrap.readBytes(isROE ? 16 : 20));
         if (!isROE) {
             int empty = wrap.readInt();
         }
@@ -143,7 +143,7 @@ public class H3MReader {
             }
             hero.setGender(wrap.readUnsigned());
             if (wrap.readBoolean()) {
-                hero.setSodSpells(wrap.readUnsigned(9));
+                hero.setSodSpells(BitSet.valueOf(wrap.readBytes(9)));
             }
             if (wrap.readBoolean()) {
                 hero.setPrimarySkills(readPrimarySkills(wrap));
@@ -534,7 +534,7 @@ public class H3MReader {
                 .setPatrolRadius(wrap.readUnsigned())
                 .setBiography(!isRoE && wrap.readBoolean() ? wrap.readString() : null)
                 .setGender(!isRoE ? wrap.readUnsigned() : null)
-                .setSodSpells(isSoD && wrap.readBoolean() ? wrap.readUnsigned(9) : null)
+                .setSodSpells(isSoD && wrap.readBoolean() ? BitSet.valueOf(wrap.readBytes(9)) : null)
                 .setAbSpell(!isSoD && !isRoE ? wrap.readUnsigned() : null)
                 .setPrimarySkills(isSoD && wrap.readBoolean() ? readPrimarySkills(wrap) : null)
                 .setUnknown2(wrap.readUnsigned(16));

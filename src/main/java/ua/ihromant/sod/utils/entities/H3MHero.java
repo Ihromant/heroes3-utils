@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.BitSet;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -22,7 +24,7 @@ public class H3MHero {
     private String biography;
     private Integer gender;
     private Integer abSpell;
-    private int[] sodSpells;
+    private BitSet sodSpells;
     private H3MPrimarySkills primarySkills;
     private Integer allowedPlayers;
     private int[] unknown2;
