@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.BitSet;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -12,7 +14,7 @@ public class H3MPlayer {
     private boolean canBeComputer;
     private int behavior;
     private Integer allowedAlignments;
-    private int townTypes;
+    private BitSet townTypes;
     private boolean ownsRandomTown;
     private boolean hasMainTown;
 

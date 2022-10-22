@@ -48,7 +48,7 @@ public class H3MReader {
                     .setCanBeComputer(wrap.readBoolean())
                     .setBehavior(wrap.readUnsigned())
                     .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
-                    .setTownTypes(isROE ? wrap.readUnsigned() : wrap.readUnsignedShort())
+                    .setTownTypes(BitSet.valueOf(wrap.readBytes(isROE ? 1 : 2)))
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
             player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE || wrap.readBoolean())
@@ -58,7 +58,7 @@ public class H3MReader {
             int startingHeroType = wrap.readUnsigned();
             if (!hasMainTown) {
                 if (startingHeroType == 0xFF) {
-                    if (isROE || player.getTownTypes() != 0) {
+                    if (isROE || !player.getTownTypes().isEmpty()) {
                         ai = true;
                     } else {
                         ai = false;
