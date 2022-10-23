@@ -44,9 +44,8 @@ public class H3MReader {
         }
         for (int i = 0; i < 8; i++) {
             boolean ai;
-            H3MPlayer player = new H3MPlayer().setCanBeHuman(wrap.readBoolean())
-                    .setCanBeComputer(wrap.readBoolean())
-                    .setBehavior(wrap.readUnsigned())
+            H3MPlayer player = new H3MPlayer().setControl(H3MPlayer.Control.of(wrap.readBoolean(), wrap.readBoolean()))
+                    .setBehavior(H3MPlayer.Behavior.values()[wrap.readUnsigned()])
                     .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
                     .setTownTypes(BitSet.valueOf(wrap.readBytes(isROE ? 1 : 2)))
                     .setOwnsRandomTown(wrap.readBoolean());
@@ -88,7 +87,7 @@ public class H3MReader {
                     wrap.readString(); // name
                 }
             }
-            if (player.isCanBeComputer() || player.isCanBeHuman()) {
+            if (player.getControl() != H3MPlayer.Control.NONE) {
                 interceptor.interceptKingdomInfo(i, player);
             }
         }

@@ -10,22 +10,32 @@ import java.util.BitSet;
 @Setter
 @Accessors(chain = true)
 public class H3MPlayer {
-    private boolean canBeHuman;
-    private boolean canBeComputer;
-    private int behavior;
+    private Control control;
+    private Behavior behavior;
     private Integer allowedAlignments;
     private BitSet townTypes;
     private boolean ownsRandomTown;
     private boolean hasMainTown;
 
-    private String startingHeroName;
-
     private boolean startingHeroIsRandom;
     private Integer startingHeroType;
     private Integer startingHeroFace;
+    private String startingHeroName;
 
     private H3MStartingTown startingTown;
 
     private boolean hasAi;
     private int extTypes;
+
+    public enum Control {
+        NONE, COMPUTER, HUMAN;
+
+        public static Control of(boolean canBeHuman, boolean canBeComputer) {
+            return canBeComputer ? canBeHuman ? HUMAN : COMPUTER : NONE;
+        }
+    }
+
+    public enum Behavior {
+        RANDOM, WARRIOR, BUILDER, EXPLORER
+    }
 }
