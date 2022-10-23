@@ -46,7 +46,7 @@ public class H3MReader {
             boolean ai;
             H3MPlayer player = new H3MPlayer().setControl(H3MPlayer.Control.of(wrap.readBoolean(), wrap.readBoolean()))
                     .setBehavior(H3MPlayer.Behavior.values()[wrap.readUnsigned()])
-                    .setAllowedAlignments(isSoD ? wrap.readUnsigned() : null)
+                    .setAllowedAlignments(isSoD ? wrap.readUnsigned() : 0)
                     .setTownTypes(BitSet.valueOf(wrap.readBytes(isROE ? 1 : 2)))
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();

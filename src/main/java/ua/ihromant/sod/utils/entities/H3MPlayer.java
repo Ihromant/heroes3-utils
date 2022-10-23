@@ -12,7 +12,7 @@ import java.util.BitSet;
 public class H3MPlayer {
     private Control control;
     private Behavior behavior;
-    private Integer allowedAlignments;
+    private int allowedAlignments;
     private BitSet townTypes;
     private boolean ownsRandomTown;
     private boolean hasMainTown;
