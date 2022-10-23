@@ -14,18 +14,14 @@ public class H3MPlayer {
     private Behavior behavior;
     private int allowedAlignments;
     private BitSet townTypes;
+
     private boolean ownsRandomTown;
-    private boolean hasMainTown;
+    private H3MStartingTown startingTown;
 
     private boolean startingHeroIsRandom;
     private Integer startingHeroType;
     private Integer startingHeroFace;
     private String startingHeroName;
-
-    private H3MStartingTown startingTown;
-
-    private boolean hasAi;
-    private int extTypes;
 
     public enum Control {
         NONE, COMPUTER, HUMAN;
