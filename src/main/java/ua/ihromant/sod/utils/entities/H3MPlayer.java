@@ -21,8 +21,8 @@ public class H3MPlayer {
     private String startingHeroName;
 
     private boolean startingHeroIsRandom;
-    private int startingHeroType;
-    private int startingHeroFace;
+    private Integer startingHeroType;
+    private Integer startingHeroFace;
 
     private H3MStartingTown startingTown;
 

@@ -54,31 +54,28 @@ public class H3MReader {
             player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE || wrap.readBoolean())
                     .setStartingTownType(isROE ? null : wrap.readUnsigned())
                     .setCoordinate(readCoordinate(wrap)) : null);
-            boolean startingHeroIsRandom = wrap.readBoolean();
-            int startingHeroType = wrap.readUnsigned();
+            player.setStartingHeroIsRandom(wrap.readBoolean());
+            Integer startingHeroType = wrap.readUnsignedOpt();
             if (!hasMainTown) {
-                if (startingHeroType == 0xFF) {
+                if (startingHeroType == null) {
                     if (isROE || !player.getTownTypes().isEmpty()) {
                         ai = true;
                     } else {
                         ai = false;
-                        player.setStartingHeroIsRandom(startingHeroIsRandom)
-                                .setStartingHeroType(startingHeroType)
+                        player.setStartingHeroType(startingHeroType)
                                 .setStartingHeroFace(wrap.readUnsigned())
                                 .setStartingHeroName(wrap.readString());
                     }
                 } else {
                     ai = true;
-                    player.setStartingHeroIsRandom(startingHeroIsRandom)
-                            .setStartingHeroType(startingHeroType)
+                    player.setStartingHeroType(startingHeroType)
                             .setStartingHeroFace(wrap.readUnsigned())
                             .setStartingHeroName(wrap.readString());
                 }
             } else {
-                ai = startingHeroType != 0xFF;
+                ai = startingHeroType != null;
                 if (!isROE || ai) {
-                    player.setStartingHeroIsRandom(startingHeroIsRandom)
-                            .setStartingHeroType(startingHeroType)
+                    player.setStartingHeroType(startingHeroType)
                             .setStartingHeroFace(wrap.readUnsigned())
                             .setStartingHeroName(wrap.readString());
                 }
