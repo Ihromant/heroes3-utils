@@ -47,7 +47,8 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/from_hd/res/", "bckpck.dir", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "backpack");
+        mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoplfa", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "left_arr");
+        mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoprta", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "right_arr");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "icancel", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x30", "icancel");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
@@ -57,6 +58,12 @@ public class ImageMerger {
 
     public static ImageMetadata mergeImage(String rootFolder, String destFolder, String animName) throws IOException {
         return mergeImage(rootFolder, animName, destFolder, animName);
+    }
+
+    @Test
+    public void generateTransparent() throws IOException {
+        BufferedImage img = new BufferedImage(11, 24, BufferedImage.TYPE_INT_ARGB);
+        ImageIO.write(img, "png", new File("/home/ihromant/tr.png"));
     }
 
     public static ImageMetadata mergeImage(String rootFolder, String animName, String destFolder, String destName) throws IOException {
