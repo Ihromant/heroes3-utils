@@ -373,20 +373,18 @@ public class H3MReader {
         switch (winCond) {
             case 0: // acquire artifact
                 readArtifact(wrap, isRoE);
-                return;
+                break;
             case 1: // accumulate creatures
                 new H3MCreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                         .setQuantity(wrap.readInt()); // can't use readCreature
-                return;
+                break;
             case 2: // accumulate resources
                 wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
                 wrap.readInt(); // amount
-                return;
+                break;
             case 8: // flag dwellings
             case 9: // flag mines
-                return;
-        }
-        switch (winCond) {
+                break;
             case 3: // upgrade town
                 readCoordinate(wrap);
                 wrap.readUnsigned(); // 0 - town, 1 - city, 2 - capitol
