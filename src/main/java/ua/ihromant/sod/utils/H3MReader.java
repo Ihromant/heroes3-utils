@@ -51,7 +51,7 @@ public class H3MReader {
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
             player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE || wrap.readBoolean())
-                    .setStartingTownType(isROE ? null : wrap.readUnsigned())
+                    .setStartingTownType(isROE ? null : wrap.readUnsignedOpt())
                     .setCoordinate(readCoordinate(wrap)) : null);
             player.setStartingHeroIsRandom(wrap.readBoolean());
             Integer startingHeroType = wrap.readUnsignedOpt();
