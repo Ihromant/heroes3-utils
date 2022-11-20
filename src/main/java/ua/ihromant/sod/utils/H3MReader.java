@@ -1,63 +1,103 @@
 package ua.ihromant.sod.utils;
 
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
-import ua.ihromant.sod.utils.entities.H3MHero;
-import ua.ihromant.sod.utils.entities.H3MReward;
-import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
-import ua.ihromant.sod.utils.entities.Coordinate;
+import ua.ihromant.sod.utils.entities.Behavior;
+import ua.ihromant.sod.utils.entities.Control;
 import ua.ihromant.sod.utils.entities.H3MCreatureSlot;
+import ua.ihromant.sod.utils.entities.H3MHeader;
 import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
-import ua.ihromant.sod.utils.entities.H3MMapMonster;
-import ua.ihromant.sod.utils.entities.MapTile;
+import ua.ihromant.sod.utils.entities.H3MLoseType;
+import ua.ihromant.sod.utils.entities.H3MMap;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
+import ua.ihromant.sod.utils.entities.H3MObjectGroup;
+import ua.ihromant.sod.utils.entities.H3MObjectType;
 import ua.ihromant.sod.utils.entities.H3MPlayer;
-import ua.ihromant.sod.utils.entities.H3MPrimarySkills;
+import ua.ihromant.sod.utils.entities.H3MReward;
+import ua.ihromant.sod.utils.entities.H3MRumor;
+import ua.ihromant.sod.utils.entities.H3MSecondarySkill;
 import ua.ihromant.sod.utils.entities.H3MStartingTown;
-import ua.ihromant.sod.utils.entities.H3MMapTown;
+import ua.ihromant.sod.utils.entities.H3MTimeEvent;
 import ua.ihromant.sod.utils.entities.H3MTownEvent;
-import ua.ihromant.sod.utils.map.H3MObjectGroup;
+import ua.ihromant.sod.utils.entities.H3MWinType;
+import ua.ihromant.sod.utils.entities.MapTile;
+import ua.ihromant.sod.utils.entities.PrimarySkills;
+import ua.ihromant.sod.utils.entities.conditions.AccumulateCreatureCondition;
+import ua.ihromant.sod.utils.entities.conditions.AccumulateResourceCondition;
+import ua.ihromant.sod.utils.entities.conditions.ArtifactCondition;
+import ua.ihromant.sod.utils.entities.conditions.BaseLoseCondition;
+import ua.ihromant.sod.utils.entities.conditions.BaseWinCondition;
+import ua.ihromant.sod.utils.entities.conditions.CoordinateCondition;
+import ua.ihromant.sod.utils.entities.conditions.LoseCoordinateCondition;
+import ua.ihromant.sod.utils.entities.conditions.TimeElapsedCondition;
+import ua.ihromant.sod.utils.entities.conditions.TransportArtifactCondition;
+import ua.ihromant.sod.utils.entities.conditions.UpgradeTownCondition;
+import ua.ihromant.sod.utils.entities.objects.H3MArtifact;
+import ua.ihromant.sod.utils.entities.objects.H3MBaseObject;
+import ua.ihromant.sod.utils.entities.objects.H3MCommonGuardian;
+import ua.ihromant.sod.utils.entities.objects.H3MGarrison;
+import ua.ihromant.sod.utils.entities.objects.H3MGrail;
+import ua.ihromant.sod.utils.entities.objects.H3MHero;
+import ua.ihromant.sod.utils.entities.objects.H3MMapEvent;
+import ua.ihromant.sod.utils.entities.objects.H3MMapMonster;
+import ua.ihromant.sod.utils.entities.objects.H3MMapTown;
+import ua.ihromant.sod.utils.entities.objects.H3MMessage;
+import ua.ihromant.sod.utils.entities.objects.H3MOwnedObject;
+import ua.ihromant.sod.utils.entities.objects.H3MPandoraBox;
+import ua.ihromant.sod.utils.entities.objects.H3MQuestGuard;
+import ua.ihromant.sod.utils.entities.objects.H3MRandomDwelling;
+import ua.ihromant.sod.utils.entities.objects.H3MResource;
+import ua.ihromant.sod.utils.entities.objects.H3MScholar;
+import ua.ihromant.sod.utils.entities.objects.H3MSeerHut;
+import ua.ihromant.sod.utils.entities.objects.H3MShrine;
+import ua.ihromant.sod.utils.entities.objects.H3MSpellScroll;
+import ua.ihromant.sod.utils.entities.objects.H3MWitchHut;
+import ua.ihromant.sod.utils.entities.quest.H3MArtifactsQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MBaseQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MCreaturesQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MDefeatMonsterQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MExperienceQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MHeroQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MPlayerQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MPrimarySkillsQuestRequest;
+import ua.ihromant.sod.utils.entities.quest.H3MQuestType;
+import ua.ihromant.sod.utils.entities.quest.H3MResourcesQuestRequest;
 import ua.ihromant.sod.utils.map.RiverType;
 import ua.ihromant.sod.utils.map.RoadType;
 
 import java.nio.BufferUnderflowException;
 import java.util.BitSet;
+import java.util.List;
+import java.util.function.Function;
 
 public class H3MReader {
-    private static final int H3M_FORMAT_ROE = 0x0000000E;
-    private static final int H3M_FORMAT_AB = 0x00000015;
-    private static final int H3M_FORMAT_SOD = 0x0000001C;
-    private static final int H3M_FORMAT_CHR = 0x0000001D;
-    private static final int H3M_FORMAT_WOG = 0x00000033;
-
-    public void parse(ByteWrapper wrap, ParserInterceptor interceptor) {
-        int format = wrap.readInt();
-        boolean isROE = format == H3M_FORMAT_ROE;
-        boolean isSoD = format == H3M_FORMAT_SOD;
-        wrap.readBoolean(); // at least 1 hero ?? wtf
-        int side = wrap.readInt();
-        Coordinate size = new Coordinate(side, side, wrap.readBoolean() ? 2 : 1);
-        interceptor.interceptBasics(size, wrap.readString(), wrap.readString());
-        wrap.readUnsigned(); // map difficulty
-        if (!isROE) {
-            wrap.readUnsigned(); // masteryLevelCap
-        }
+    public H3MHeader parseHeader(ByteWrapper wrap) {
+        H3MHeader result = new H3MHeader();
+        result.setFormat(wrap.readInt());
+        result.setAtLeastOneHero(wrap.readBoolean());
+        result.setSize(wrap.readInt());
+        result.setUnderground(wrap.readBoolean());
+        result.setName(wrap.readString());
+        result.setDescription(wrap.readString());
+        result.setMapDifficulty(wrap.readUnsigned());
+        result.setMasteryCapLevel(!result.isRoE() ? wrap.readUnsigned() : null);
         for (int i = 0; i < 8; i++) {
             boolean ai;
-            H3MPlayer player = new H3MPlayer().setControl(H3MPlayer.Control.of(wrap.readBoolean(), wrap.readBoolean()))
-                    .setBehavior(H3MPlayer.Behavior.values()[wrap.readUnsigned()])
-                    .setAllowedAlignments(isSoD ? wrap.readUnsigned() : 0)
-                    .setTownTypes(BitSet.valueOf(wrap.readBytes(isROE ? 1 : 2)))
+            H3MPlayer player = new H3MPlayer().setControl(Control.of(wrap.readBoolean(), wrap.readBoolean()))
+                    .setBehavior(Behavior.values()[wrap.readUnsigned()])
+                    .setAllowedAlignments(result.isSoD() ? wrap.readUnsigned() : 0)
+                    .setTownTypes(BitSet.valueOf(wrap.readBytes(result.isRoE() ? 1 : 2)))
                     .setOwnsRandomTown(wrap.readBoolean());
             boolean hasMainTown = wrap.readBoolean();
-            player.setStartingTown(hasMainTown ? new H3MStartingTown().setStartingTownCreateHero(isROE || wrap.readBoolean())
-                    .setStartingTownType(isROE ? null : wrap.readUnsignedOpt())
+            player.setStartingTown(hasMainTown ? new H3MStartingTown()
+                    .setStartingTownCreateHero(result.isRoE() || wrap.readBoolean())
+                    .setStartingTownType(result.isRoE() ? null : wrap.readUnsignedOpt())
                     .setCoordinate(readCoordinate(wrap)) : null);
             player.setStartingHeroIsRandom(wrap.readBoolean());
             Integer startingHeroType = wrap.readUnsignedOpt();
             if (!hasMainTown) {
                 if (startingHeroType == null) {
-                    if (isROE || !player.getTownTypes().isEmpty()) {
+                    if (result.isRoE() || !player.getTownTypes().isEmpty()) {
                         ai = true;
                     } else {
                         ai = false;
@@ -73,13 +113,13 @@ public class H3MReader {
                 }
             } else {
                 ai = startingHeroType != null;
-                if (!isROE || ai) {
+                if (!result.isRoE() || ai) {
                     player.setStartingHeroType(startingHeroType)
                             .setStartingHeroFace(wrap.readUnsigned())
                             .setStartingHeroName(wrap.readString());
                 }
             }
-            if (!isROE && ai) {
+            if (!result.isRoE() && ai) {
                 wrap.readUnsigned(); // unknown1
                 int heroesCount = wrap.readInt();
                 for (int j = 0 ; j < heroesCount; j++) {
@@ -87,44 +127,51 @@ public class H3MReader {
                     wrap.readString(); // name
                 }
             }
-            if (player.getControl() != H3MPlayer.Control.NONE) {
-                interceptor.interceptKingdomInfo(i, player);
-            }
+            result.getH3mPlayers()[i] = player;
         }
-        parseWinCondition(wrap, isROE);
-        parseLoseCondition(wrap);
-        parseAiTeams(wrap);
-        BitSet availableHeroes = BitSet.valueOf(wrap.readBytes(isROE ? 16 : 20));
-        if (!isROE) {
-            int empty = wrap.readInt();
+        result.setWinCondition(parseWinCondition(wrap, result.isRoE()));
+        result.setLoseCondition(parseLoseCondition(wrap));
+        result.setTeamsCount(wrap.readUnsigned());
+        result.setTeams(result.getTeamsCount() != 0 ? wrap.readBytes(8) : null);
+        result.setAvailableHeroes(BitSet.valueOf(wrap.readBytes(result.isRoE() ? 16 : 20)));
+        return result;
+    }
+
+    public H3MMap parse(ByteWrapper wrap) {
+        H3MHeader header = parseHeader(wrap);
+        H3MMap result = new H3MMap().setHeader(header);
+        if (!header.isRoE()) {
+            wrap.readInt(); // empty
         }
-        if (isSoD) {
-            int customHeroesCount = wrap.readUnsigned();
-            for (int i = 0; i < customHeroesCount; i++) {
-                new H3MHero().setType(wrap.readUnsigned())
+        if (header.isSoD()) {
+            H3MHero[] customHeroes = new H3MHero[wrap.readUnsigned()];
+            for (int i = 0; i < customHeroes.length; i++) {
+                customHeroes[i] = new H3MHero().setHeroType(wrap.readUnsigned())
                         .setFace(wrap.readUnsigned())
                         .setName(wrap.readString())
                         .setAllowedPlayers(wrap.readUnsigned());
             }
+            result.setCustomHeroes(customHeroes);
         }
         wrap.readUnsigned(31); // 31 empty bytes
-        if (!isROE) {
-            int[] avaliableArtifacts = wrap.readUnsigned(isSoD ? 18 : 17);
-            if (isSoD) {
-                int[] availableSpells = wrap.readUnsigned(9);
-                int[] availableSkills = wrap.readUnsigned(4);
+        if (!header.isRoE()) {
+            result.setAvailableArtifacts(BitSet.valueOf(wrap.readBytes(header.isSoD() ? 18 : 17)));
+            if (header.isSoD()) {
+                result.setAvailableSpells(BitSet.valueOf(wrap.readBytes(9)));
+                result.setAvailableSkills(BitSet.valueOf(wrap.readBytes(4)));
             }
         }
-        int rumorsCount = wrap.readInt();
-        for (int i = 0; i < rumorsCount; i++) {
-            wrap.readString(); // ai rumor name
-            wrap.readString(); // ai rumor description
+        H3MRumor[] rumors = new H3MRumor[wrap.readInt()];
+        for (int i = 0; i < rumors.length; i++) {
+            rumors[i] = new H3MRumor().setName(wrap.readString()).setDescription(wrap.readString());
         }
-        for (int i = 0; i < (isSoD ? 156 : 0); i++) {
+        result.setRumors(rumors);
+        H3MHero[] sodHeroes = new H3MHero[header.isSoD() ? 156 : 0];
+        for (int i = 0; i < sodHeroes.length; i++) {
             if (!wrap.readBoolean()) {
                 continue;
             }
-            H3MHero hero = new H3MHero();
+            H3MHero hero = new H3MHero().setHeroType(i);
             if (wrap.readBoolean()) {
                 hero.setExperience(wrap.readInt());
             }
@@ -132,7 +179,7 @@ public class H3MReader {
                 hero.setSecondarySkills(readSecondarySkills(wrap, wrap.readInt()));
             }
             if (wrap.readBoolean()) {
-                hero.setHeroAtrifacts(parseHeroArtifacts(wrap, isROE, isSoD));
+                hero.setHeroAtrifacts(parseHeroArtifacts(wrap, header));
             }
             if (wrap.readBoolean()) {
                 hero.setBiography(wrap.readString());
@@ -144,21 +191,24 @@ public class H3MReader {
             if (wrap.readBoolean()) {
                 hero.setPrimarySkills(readPrimarySkills(wrap));
             }
+            sodHeroes[i] = hero;
         }
-        for (int z = 0; z < size.getZ(); z++) {
-            for (int y = 0; y < size.getY(); y++) {
-                for (int x = 0; x < size.getX(); x++) {
-                    interceptor.interceptTile(new Coordinate(x, y, z),
-                            new MapTile().setTerrainType(wrap.readUnsigned())
-                                    .setTerrainSprite(wrap.readUnsigned())
-                                    .setRiverType(RiverType.values()[wrap.readUnsigned()])
-                                    .setRiverSprite(wrap.readUnsigned())
-                                    .setRoadType(RoadType.values()[wrap.readUnsigned()])
-                                    .setRoadSprite(wrap.readUnsigned())
-                                    .setMirroring(wrap.readUnsigned()));
+        result.setSodHeroes(sodHeroes);
+        MapTile[][][] tiles = new MapTile[header.getSize()][header.getSize()][header.isUnderground() ? 2 : 1];
+        for (int z = 0; z < (header.isUnderground() ? 2 : 1); z++) {
+            for (int y = 0; y < header.getSize(); y++) {
+                for (int x = 0; x < header.getSize(); x++) {
+                    tiles[x][y][z] = new MapTile().setTerrainType(wrap.readUnsigned())
+                            .setTerrainSprite(wrap.readUnsigned())
+                            .setRiverType(RiverType.values()[wrap.readUnsigned()])
+                            .setRiverSprite(wrap.readUnsigned())
+                            .setRoadType(RoadType.values()[wrap.readUnsigned()])
+                            .setRoadSprite(wrap.readUnsigned())
+                            .setMirroring(wrap.readUnsigned());
                 }
             }
         }
+        result.setTiles(tiles);
         H3MObjectAttribute[] objectAttributes = new H3MObjectAttribute[wrap.readInt()];
         for (int i = 0; i < objectAttributes.length; i++) {
             objectAttributes[i] = new H3MObjectAttribute().setDef(wrap.readString())
@@ -172,240 +222,215 @@ public class H3MReader {
                     .setAbove(wrap.readUnsigned())
                     .setUnknown(wrap.readUnsigned(16));
         }
+        result.setObjectAttributes(objectAttributes);
         int dataLength = wrap.readInt();
         for (int i = 0; i < dataLength; i++) {
-            Coordinate coords = readCoordinate(wrap);
+            Coordinate coord = readCoordinate(wrap);
             H3MObjectAttribute attribute = objectAttributes[wrap.readInt()];
             wrap.readUnsigned(5); // unknown1
             H3MObjectType type = attribute.type();
-            switch (type) {
-                case META_OBJECT_PLACEHOLDER_HERO:
-                    wrap.readUnsigned(); // placeholder hero owner
-                    if (wrap.readUnsigned() == 0xFF) { // placeholder hero type
-                        wrap.readUnsigned(); // placeholder hero power rating
-                    }
-                    break;
-                case META_OBJECT_QUEST_GUARD:
-                    int questType = wrap.readUnsigned();
-                    parseQuestRequest(wrap, isROE, questType);
-                    break;
-                case META_OBJECT_PANDORAS_BOX:
-                    if (wrap.readBoolean()) {
-                        readCommonGuardian(wrap, isROE);
-                    }
-                    readCommonReward(wrap, isROE);
-                    break;
-                case META_OBJECT_SIGN:
-                case META_OBJECT_OCEAN_BOTTLE:
-                    wrap.readString(); // message text
-                    wrap.readUnsigned(4); // unknown1
-                    break;
-                case META_OBJECT_GARRISON:
-                case META_OBJECT_GARRISON_ABSOD:
-                    wrap.readInt(); // garrison owner
-                    readArmy(wrap, isROE); // garrison creatures
-                    int remUnits = isROE ? 0 : wrap.readUnsigned(); // removable units
-                    wrap.readUnsigned(8); // unknown1
-                    break;
-                case META_OBJECT_EVENT:
-                    if (wrap.readBoolean()) {
-                        readCommonGuardian(wrap, isROE);
-                    }
-                    readCommonReward(wrap, isROE);
-                    wrap.readUnsigned(); // applies to players
-                    wrap.readUnsigned(); // applies to computers
-                    wrap.readUnsigned(); // cancel after visit
-                    wrap.readUnsigned(4); // unknown1
-                    break;
-                case META_OBJECT_GRAIL:
-                    wrap.readInt(); // allowable radius
-                    break;
-                case META_OBJECT_DWELLING:
-                case META_OBJECT_DWELLING_ABSOD:
-                case META_OBJECT_LIGHTHOUSE:
-                case META_OBJECT_RESOURCE_GENERATOR:
-                case META_OBJECT_SHIPYARD:
-                case META_OBJECT_ABANDONED_MINE_ABSOD:
-                    wrap.readInt(); // owner
-                    break;
-                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN:
-                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD:
-                    interceptor.interceptImpassable(coords, attribute);
-                    break; // Generic objects have no body
-                case META_OBJECT_GENERIC_BOAT:
-                case META_OBJECT_GENERIC_PASSABLE_TERRAIN:
-                case META_OBJECT_GENERIC_PASSABLE_TERRAIN_SOD:
-                case META_OBJECT_GENERIC_VISITABLE:
-                case META_OBJECT_GENERIC_VISITABLE_ABSOD:
-                case META_OBJECT_GENERIC_TREASURE:
-                case META_OBJECT_MONOLITH_TWO_WAY:
-                case META_OBJECT_SUBTERRANEAN_GATE:
-                    break; // Generic objects have no body
-                case META_OBJECT_TOWN:
-                case META_OBJECT_TOWN_ABSOD:
-                    interceptor.interceptTown(coords, attribute, readTown(wrap, isROE, isSoD));
-                    break;
-                case META_OBJECT_RANDOM_DWELLING_ABSOD:
-                case META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD:
-                case META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD:
-                    wrap.readInt(); // owner
-                    if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
-                        int abSodId = wrap.readInt();
-                        if (abSodId == 0) {
-                            wrap.readUnsignedShort(); // alignment
-                        }
-                    }
-                    if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
-                        wrap.readUnsigned(); // min level
-                        wrap.readUnsigned(); // max level
-                    }
-                    break;
-                case META_OBJECT_HERO:
-                case META_OBJECT_RANDOM_HERO:
-                case META_OBJECT_PRISON:
-                    parseHero(wrap, isROE, isSoD);
-                    break;
-                case META_OBJECT_MONSTER:
-                case META_OBJECT_MONSTER_ABSOD:
-                    parseMonster(wrap, isROE);
-                    break;
-                case META_OBJECT_ARTIFACT:
-                case META_OBJECT_ARTIFACT_AB:
-                case META_OBJECT_ARTIFACT_SOD:
-                    H3MCreatureSlot[] grd = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null; // only optional guardian here
-                    break;
-                case META_OBJECT_SHRINE:
-                    wrap.readInt(); // spell
-                    break;
-                case META_OBJECT_SPELL_SCROLL:
-                    H3MCreatureSlot[] grd1 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
-                    wrap.readInt(); // spell
-                    break;
-                case META_OBJECT_RESOURCE:
-                    H3MCreatureSlot[] grd2 = wrap.readBoolean() ? readCommonGuardian(wrap, isROE) : null;
-                    wrap.readInt(); // quantity
-                    wrap.readUnsigned(4); // unknown1
-                    break;
-                case META_OBJECT_WITCH_HUT:
-                    int[] potentialSkills = isROE ? null : wrap.readUnsigned(4);
-                    break;
-                case META_OBJECT_SEERS_HUT:
-                    int abmbigious = wrap.readUnsigned(); // in ROE it's artifact request, otherwise see code below
-                    if (!isROE) {
-                        parseQuestRequest(wrap, isROE, abmbigious);
-                    }
-                    parseReward(wrap, isROE);
-                    wrap.readUnsigned(2); // unknown1
-                    break;
-                case META_OBJECT_SCHOLAR:
-                    wrap.readUnsigned(); // reward type
-                    wrap.readUnsigned(); // reward value
-                    wrap.readUnsigned(6); // unknown
-                    break;
-                default:
-                    throw new IllegalArgumentException();
-            }
+            H3MBaseObject object = switch (type) {
+                case META_OBJECT_PLACEHOLDER_HERO -> append(result, H3MMap::getPlaceholders, readPlaceholder(wrap));
+                case META_OBJECT_QUEST_GUARD ->
+                        append(result, H3MMap::getQuestGuards, new H3MQuestGuard().setRequest(parseQuestRequest(wrap, header.isRoE(), wrap.readUnsignedOpt())));
+                case META_OBJECT_PANDORAS_BOX -> append(result, H3MMap::getPandoras, new H3MPandoraBox()
+                        .setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null)
+                        .setReward(readCommonReward(wrap, header.isRoE())));
+                case META_OBJECT_SIGN, META_OBJECT_OCEAN_BOTTLE ->
+                        append(result, H3MMap::getMessages, readMessage(wrap));
+                case META_OBJECT_GARRISON, META_OBJECT_GARRISON_ABSOD ->
+                        append(result, H3MMap::getGarrisons, readGarrison(wrap, header.isRoE()));
+                case META_OBJECT_EVENT -> append(result, H3MMap::getMapEvents, readEvent(wrap, header.isRoE()));
+                case META_OBJECT_GRAIL -> append(result, H3MMap::getGrails, new H3MGrail().setRadius(wrap.readInt()));
+                case META_OBJECT_DWELLING, META_OBJECT_DWELLING_ABSOD, META_OBJECT_LIGHTHOUSE, META_OBJECT_RESOURCE_GENERATOR, META_OBJECT_SHIPYARD, META_OBJECT_ABANDONED_MINE_ABSOD ->
+                        append(result, H3MMap::getOwnedObjects, new H3MOwnedObject().setOwner(wrap.readInt()));
+                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN, META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD, META_OBJECT_GENERIC_BOAT, META_OBJECT_GENERIC_PASSABLE_TERRAIN, META_OBJECT_GENERIC_PASSABLE_TERRAIN_SOD, META_OBJECT_GENERIC_VISITABLE, META_OBJECT_GENERIC_VISITABLE_ABSOD, META_OBJECT_GENERIC_TREASURE, META_OBJECT_MONOLITH_TWO_WAY, META_OBJECT_SUBTERRANEAN_GATE ->
+                        append(result, H3MMap::getBaseObjects, new H3MBaseObject());
+                case META_OBJECT_TOWN, META_OBJECT_TOWN_ABSOD ->
+                        append(result, H3MMap::getTowns, readTown(wrap, header));
+                case META_OBJECT_RANDOM_DWELLING_ABSOD, META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD, META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD ->
+                        append(result, H3MMap::getRandomDwellings, readRandomDwelling(wrap, type));
+                case META_OBJECT_HERO, META_OBJECT_HERO_AB, META_OBJECT_RANDOM_HERO, META_OBJECT_PRISON ->
+                        append(result, H3MMap::getMapHeroes, parseHero(wrap, header));
+                case META_OBJECT_MONSTER, META_OBJECT_MONSTER_ABSOD ->
+                        append(result, H3MMap::getMapMonsters, parseMonster(wrap, header.isRoE()));
+                case META_OBJECT_ARTIFACT, META_OBJECT_ARTIFACT_AB, META_OBJECT_ARTIFACT_SOD ->
+                        append(result, H3MMap::getArtifacts, new H3MArtifact().setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null));
+                case META_OBJECT_SHRINE -> append(result, H3MMap::getShrines, new H3MShrine().setSpell(wrap.readInt()));
+                case META_OBJECT_SPELL_SCROLL -> append(result, H3MMap::getScrolls, new H3MSpellScroll()
+                        .setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null)
+                        .setSpell(wrap.readInt()));
+                case META_OBJECT_RESOURCE -> append(result, H3MMap::getResources, readResource(wrap, header.isRoE()));
+                case META_OBJECT_WITCH_HUT ->
+                        append(result, H3MMap::getWitchHuts, new H3MWitchHut().setPotentialSkills(header.isRoE() ? null : BitSet.valueOf(wrap.readBytes(4))));
+                case META_OBJECT_SEERS_HUT -> append(result, H3MMap::getSeerHuts, readSeerHut(wrap, header.isRoE()));
+                case META_OBJECT_SCHOLAR -> append(result, H3MMap::getScholars, readScholar(wrap));
+            };
+            object.setType(type);
+            object.setCoordinate(coord);
+            object.setAttribute(attribute);
         }
-        int eventCount = wrap.readInt();
-        for (int i = 0; i < eventCount; i++) {
-            wrap.readString(); // event name;
-            wrap.readString(); // event message
-            wrap.readInt(7); // resources
-            wrap.readUnsigned(); // applies to players
-            Integer appliesToHuman = isSoD ? wrap.readUnsigned() : null;
-            wrap.readUnsigned(); // applies to computer
-            wrap.readUnsignedShort(); // first occurence
-            wrap.readUnsigned(); // subsequent occurences
+        H3MTimeEvent[] timeEvents = new H3MTimeEvent[wrap.readInt()];
+        for (int i = 0; i < timeEvents.length; i++) {
+            H3MTimeEvent event = new H3MTimeEvent();
+            event.setEventName(wrap.readString());
+            event.setEventMessage(wrap.readString());
+            event.setResources(wrap.readInt(7));
+            event.setAppliesToPlayers(wrap.readUnsigned());
+            event.setAppliesToHuman(header.isSoD() ? wrap.readUnsigned() : null);
+            event.setAppliesToComputer(wrap.readUnsigned());
+            event.setFirstOccurence(wrap.readUnsignedShort());
+            event.setSubsequentOccurences(wrap.readUnsigned());
             wrap.readUnsigned(17); // unknown1
+            timeEvents[i] = event;
         }
+        result.setTimeEvents(timeEvents);
         wrap.readInt();
         wrap.readInt();
         try {
             wrap.readUnsigned(); // HD
         } catch (BufferUnderflowException e) {
-            return; // normal
+            return result; // normal
         }
         wrap.readUnsigned(115);
         try {
             wrap.readUnsigned();
         } catch (BufferUnderflowException e) {
-            return; // normal
+            return result; // normal
         }
         throw new IllegalStateException();
+    }
+
+    private static <T extends H3MBaseObject> T append(H3MMap map, Function<H3MMap, List<T>> getter, T object) {
+        getter.apply(map).add(object);
+        return object;
+    }
+
+    private static H3MScholar readScholar(ByteWrapper wrap) {
+        H3MScholar result = new H3MScholar();
+        result.setRewardType(wrap.readUnsigned());
+        result.setRewardValue(wrap.readUnsigned());
+        wrap.readUnsigned(6); // unknown
+        return result;
+    }
+
+    private static H3MSeerHut readSeerHut(ByteWrapper wrap, boolean isRoE) {
+        H3MSeerHut hut = new H3MSeerHut();
+        int ambiguous = wrap.readUnsigned(); // in ROE it's artifact request, otherwise see code below
+        hut.setRequest(isRoE ? new H3MArtifactsQuestRequest().setArtifacts(new int[]{ambiguous})
+                : parseQuestRequest(wrap, isRoE, ambiguous));
+        hut.setReward(parseReward(wrap, isRoE));
+        wrap.readUnsigned(2); // unknown1
+        return hut;
+    }
+
+    private static H3MResource readResource(ByteWrapper wrap, boolean isRoE) {
+        H3MResource result = new H3MResource();
+        result.setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, isRoE) : null);
+        result.setQuantity(wrap.readInt());
+        wrap.readUnsigned(4); // unknown1
+        return result;
+    }
+
+    private static H3MRandomDwelling readRandomDwelling(ByteWrapper wrap, H3MObjectType type) {
+        H3MRandomDwelling result = new H3MRandomDwelling().setOwner(wrap.readInt());
+        if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
+            result.setAbSodId(wrap.readInt());
+            if (result.getAbSodId() == 0) {
+                result.setAlignment(wrap.readUnsignedShort());
+            }
+        }
+        if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
+            result.setMinLevel(wrap.readUnsigned());
+            result.setMaxLevel(wrap.readUnsigned());
+        }
+        return result;
+    }
+
+    private H3MMapEvent readEvent(ByteWrapper wrap, boolean isRoE) {
+        H3MMapEvent result = new H3MMapEvent();
+        result.setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, isRoE) : null);
+        result.setReward(readCommonReward(wrap, isRoE));
+        result.setAppliesToPlayers(wrap.readBoolean());
+        result.setAppliesToComputers(wrap.readBoolean());
+        result.setCancelAfterVisit(wrap.readBoolean());
+        wrap.readUnsigned(4); // unknown1
+        return result;
+    }
+
+    private H3MGarrison readGarrison(ByteWrapper wrap, boolean isRoE) {
+        H3MGarrison result = new H3MGarrison();
+        result.setOwner(wrap.readInt());
+        result.setArmy(readArmy(wrap, isRoE));
+        result.setRemovable(!isRoE && wrap.readBoolean()); // TODO check for RoE
+        wrap.readUnsigned(8); // unknown1
+        return result;
+    }
+
+    private H3MMessage readMessage(ByteWrapper wrap) {
+        H3MMessage result = new H3MMessage();
+        result.setMessage(wrap.readString());
+        wrap.readUnsigned(4);
+        return result;
+    }
+
+    private H3MHero readPlaceholder(ByteWrapper wrap) {
+        H3MHero placeholder = new H3MHero().setOwner(wrap.readUnsigned()).setHeroType(wrap.readUnsignedOpt());
+        if (placeholder.getHeroType() == null) {
+            placeholder.setPowerRating(wrap.readUnsigned());
+        }
+        return placeholder;
     }
 
     private Coordinate readCoordinate(ByteWrapper wrap) {
         return new Coordinate(wrap.readUnsigned(), wrap.readUnsigned(), wrap.readUnsigned());
     }
 
-    private void parseAiTeams(ByteWrapper wrap) {
-        int teamsCount = wrap.readUnsigned(); // teamsCount
-        if (teamsCount != 0) {
-            wrap.readUnsigned(8);
+    private BaseLoseCondition parseLoseCondition(ByteWrapper wrap) {
+        Integer loseCond = wrap.readUnsignedOpt();
+        if (loseCond == null) {
+            return new BaseLoseCondition();
         }
+        H3MLoseType type = H3MLoseType.values()[loseCond];
+        return switch (type) {
+            case LOSE_TOWN, LOSE_HERO -> new LoseCoordinateCondition().setCoordinate(readCoordinate(wrap)).setType(type);
+            case TIME -> new TimeElapsedCondition().setDays(wrap.readUnsignedShort()).setType(type); // days
+        };
     }
 
-    private void parseLoseCondition(ByteWrapper wrap) {
-        int loseCond = wrap.readUnsigned();
-        if (loseCond == 0xFF) {
-            return;
+    private BaseWinCondition parseWinCondition(ByteWrapper wrap, boolean isRoE) {
+        Integer winCond = wrap.readUnsignedOpt();
+        if (winCond == null) {
+            return new BaseWinCondition();
         }
-        switch (loseCond) {
-            case 0: // lose town
-            case 1: // lose hero
-                readCoordinate(wrap);
-                break;
-            case 2: // time
-                wrap.readUnsignedShort(); // days
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+        boolean normalWin = wrap.readBoolean(); // allow normal win
+        boolean appliesToComputer = wrap.readBoolean(); // applies to computer;
+        H3MWinType type = H3MWinType.values()[winCond];
+        BaseWinCondition result = switch (type) {
+            case ACQUIRE_ARTIFACT -> new ArtifactCondition()
+                    .setArtifact(readArtifact(wrap, isRoE));
+            case ACCUMULATE_CREATURES -> new AccumulateCreatureCondition().setCreature(
+                    new H3MCreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
+                            .setQuantity(wrap.readInt()));  // can't use readCreature because quantity is int, not short
+            case ACCUMULATE_RESOURCES -> new AccumulateResourceCondition()
+                    .setResType(wrap.readUnsigned()) // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
+                    .setAmount(wrap.readInt());
+            case UPGRADE_TOWN -> new UpgradeTownCondition()
+                    .setCoordinate(readCoordinate(wrap))
+                    .setHall(wrap.readUnsigned())
+                    .setFort(wrap.readUnsigned());
+            case BUILD_GRAIL, DEFEAT_HERO, CAPTURE_TOWN, DEFEAT_MONSTER -> new CoordinateCondition()
+                    .setCoordinate(readCoordinate(wrap));
+            case FLAG_DWELLINGS, FLAG_MINES -> new BaseWinCondition();
+            case TRANSPORT_ARTIFACT -> new TransportArtifactCondition()
+                    .setArtType(wrap.readUnsigned())
+                    .setCoordinate(readCoordinate(wrap));
+        };
+        result.setType(type).setNormalWin(normalWin).setAppliesToComputer(appliesToComputer);
+        return result;
     }
 
-    private void parseWinCondition(ByteWrapper wrap, boolean isRoE) {
-        int winCond = wrap.readUnsigned();
-        if (winCond == 0xFF) {
-            return;
-        }
-        wrap.readUnsigned(); // allow normal win
-        wrap.readUnsigned(); // applies to computer;
-        switch (winCond) {
-            case 0: // acquire artifact
-                readArtifact(wrap, isRoE);
-                break;
-            case 1: // accumulate creatures
-                new H3MCreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
-                        .setQuantity(wrap.readInt()); // can't use readCreature
-                break;
-            case 2: // accumulate resources
-                wrap.readUnsigned(); // 0 - wood, 1 - mercury, 2 - ore, 3 - sulfur, 4 - crystal, 5 - gems, 6 - gold
-                wrap.readInt(); // amount
-                break;
-            case 8: // flag dwellings
-            case 9: // flag mines
-                break;
-            case 3: // upgrade town
-                readCoordinate(wrap);
-                wrap.readUnsigned(); // 0 - town, 1 - city, 2 - capitol
-                wrap.readUnsigned(); // 0 - fort, 1 - citadel, 2 - castle
-                break;
-            case 4: // build grail
-            case 5: // defeat hero
-            case 6: // capture town
-            case 7: // defeat monster
-                readCoordinate(wrap);
-                break;
-            case 10: // transport artifact
-                wrap.readUnsigned(); // type
-                readCoordinate(wrap);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    private H3MReward parseReward(ByteWrapper wrap, boolean isRoE) {
+    private static H3MReward parseReward(ByteWrapper wrap, boolean isRoE) {
         int rewardType = wrap.readUnsigned();
         switch (rewardType) {
             case 0: // none
@@ -423,22 +448,13 @@ public class H3MReader {
                 resources[wrap.readUnsigned()] = wrap.readInt();
                 return new H3MReward().setResources(resources);
             case 6: // primary skill
-                H3MPrimarySkills skills = new H3MPrimarySkills();
+                PrimarySkills skills = new PrimarySkills();
                 switch (wrap.readUnsigned()) {
-                    case 0:
-                        skills.setAttack(wrap.readUnsigned());
-                        break;
-                    case 1:
-                        skills.setDefense(wrap.readUnsigned());
-                        break;
-                    case 2:
-                        skills.setSpellPower(wrap.readUnsigned());
-                        break;
-                    case 3:
-                        skills.setKnowledge(wrap.readUnsigned());
-                        break;
-                    default: // TODO assumption, remove after check
-                        throw new IllegalArgumentException();
+                    case 0 -> skills.setAttack(wrap.readUnsigned());
+                    case 1 -> skills.setDefense(wrap.readUnsigned());
+                    case 2 -> skills.setSpellPower(wrap.readUnsigned());
+                    case 3 -> skills.setKnowledge(wrap.readUnsigned());
+                    default -> throw new IllegalArgumentException(); // TODO assumption, remove after check
                 }
                 return new H3MReward().setSkills(skills);
             case 7: // secondary skill
@@ -454,48 +470,28 @@ public class H3MReader {
         }
     }
 
-    private void parseQuestRequest(ByteWrapper wrap, boolean isROE, int questType) {
-        switch (questType) {
-            case 0: // none
-                break;
-            case 1: // experience
-                wrap.readInt();
-                break;
-            case 2: // primary skills
-                readPrimarySkills(wrap);
-                break;
-            case 3: // defeat hero
-                wrap.readInt();
-                break;
-            case 4: // defeat monster
-                wrap.readInt();
-                break;
-            case 5: // artifacts
-                readArtifacts(wrap, isROE);
-                break;
-            case 6: // creatures
-                readArmy(wrap, isROE, wrap.readUnsigned());
-                break;
-            case 7: // resources
-                readResources(wrap);
-                break;
-            case 8: // be hero
-                wrap.readUnsigned();
-                break;
-            case 9: // be player
-                wrap.readUnsigned();
-                break;
-            case 0xFF:
-                break;
-            default:
-                throw new IllegalArgumentException();
+    private static H3MBaseQuestRequest parseQuestRequest(ByteWrapper wrap, boolean isROE, Integer questType) {
+        if (questType == null) {
+            return new H3MBaseQuestRequest().setDeadline(wrap.readInt());
         }
-        wrap.readInt(); // deadline
-        if (questType != 0xFF) {
-            wrap.readString(); // proposal message
-            wrap.readString(); // progress message
-            wrap.readString(); // completion message
-        }
+        H3MQuestType type = H3MQuestType.values()[questType];
+        H3MBaseQuestRequest quest = switch (type) {
+            case NONE -> new H3MBaseQuestRequest();
+            case EXPERIENCE -> new H3MExperienceQuestRequest().setExperience(wrap.readInt());
+            case PRIMARY_SKILLS -> new H3MPrimarySkillsQuestRequest().setPrimarySkills(readPrimarySkills(wrap));
+            case DEFEAT_HERO -> new H3MHeroQuestRequest().setHero(wrap.readInt());
+            case DEFEAT_MONSTER -> new H3MDefeatMonsterQuestRequest().setId(wrap.readInt());
+            case ARTIFACTS -> new H3MArtifactsQuestRequest().setArtifacts(readArtifacts(wrap, isROE));
+            case CREATURES -> new H3MCreaturesQuestRequest().setCreatures(readArmy(wrap, isROE, wrap.readUnsigned()));
+            case RESOURCES -> new H3MResourcesQuestRequest().setResources(readResources(wrap));
+            case BE_HERO -> new H3MHeroQuestRequest().setHero(wrap.readUnsigned());
+            case BE_PLAYER -> new H3MPlayerQuestRequest().setPlayer(wrap.readUnsigned());
+        };
+        quest.setDeadline(wrap.readInt());
+        quest.setProposalMessage(wrap.readString());
+        quest.setProgressMessage(wrap.readString());
+        quest.setCompletionMessage(wrap.readString());
+        return quest;
     }
 
     private H3MMapMonster parseMonster(ByteWrapper wrap, boolean isRoE) {
@@ -510,10 +506,12 @@ public class H3MReader {
                 .setUnknown1(wrap.readUnsigned(2));
     }
 
-    private H3MHero parseHero(ByteWrapper wrap, boolean isRoE, boolean isSoD) {
-        H3MHero result = new H3MHero().setAbSodId(isRoE ? null : wrap.readInt())
+    private H3MHero parseHero(ByteWrapper wrap, H3MHeader header) {
+        boolean isRoE = header.isRoE();
+        boolean isSoD = header.isSoD();
+        H3MHero result = new H3MHero().setAbSodId(header.isRoE() ? null : wrap.readInt())
                 .setOwner(wrap.readUnsigned())
-                .setType(wrap.readUnsigned())
+                .setHeroType(wrap.readUnsigned())
                 .setName(wrap.readBoolean() ? wrap.readString() : null);
         if (isSoD) {
             result.setExperience(wrap.readBoolean() ? wrap.readInt() : null);
@@ -522,9 +520,9 @@ public class H3MReader {
         }
         result.setFace(wrap.readBoolean() ? wrap.readUnsigned() : null)
                 .setSecondarySkills(wrap.readBoolean() ? readSecondarySkills(wrap, wrap.readInt()) : null)
-                .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoE) : null)
+                .setCreatures(wrap.readBoolean() ? readArmy(wrap, header.isRoE()) : null)
                 .setFormation(wrap.readUnsigned())
-                .setHeroAtrifacts(wrap.readBoolean() ? parseHeroArtifacts(wrap, isRoE, isSoD) : null)
+                .setHeroAtrifacts(wrap.readBoolean() ? parseHeroArtifacts(wrap, header) : null)
                 .setPatrolRadius(wrap.readUnsigned())
                 .setBiography(!isRoE && wrap.readBoolean() ? wrap.readString() : null)
                 .setGender(!isRoE ? wrap.readUnsigned() : null)
@@ -535,11 +533,12 @@ public class H3MReader {
         return result;
     }
 
-    private int readArtifact(ByteWrapper wrap, boolean isRoE) {
+    private static int readArtifact(ByteWrapper wrap, boolean isRoE) {
         return isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort();
     }
 
-    private H3MHeroArtifacts parseHeroArtifacts(ByteWrapper wrap, boolean isRoE, boolean isSoD) {
+    private H3MHeroArtifacts parseHeroArtifacts(ByteWrapper wrap, H3MHeader header) {
+        boolean isRoE = header.isRoE();
         return new H3MHeroArtifacts().setHeadwear(readArtifact(wrap, isRoE))
                 .setCape(readArtifact(wrap, isRoE))
                 .setNecklace(readArtifact(wrap, isRoE))
@@ -558,7 +557,7 @@ public class H3MReader {
                 .setFirstAidTent(readArtifact(wrap, isRoE))
                 .setCatapult(readArtifact(wrap, isRoE))
                 .setSpellbook(readArtifact(wrap, isRoE))
-                .setMisc4(isSoD ? wrap.readUnsignedShort() : null)
+                .setMisc4(header.isSoD() ? wrap.readUnsignedShort() : null)
                 .setBackpack(isRoE ? wrap.readUnsigned(wrap.readUnsignedShort()) : wrap.readUnsignedShort(wrap.readUnsignedShort()));
     }
 
@@ -581,11 +580,12 @@ public class H3MReader {
         return result;
     }
 
-    private H3MMapTown readTown(ByteWrapper wrap, boolean isRoe, boolean isSoD) {
-        H3MMapTown town = new H3MMapTown().setAbSodId(isRoe ? null : wrap.readInt())
+    private H3MMapTown readTown(ByteWrapper wrap, H3MHeader header) {
+        boolean isRoE = header.isRoE();
+        H3MMapTown town = new H3MMapTown().setAbSodId(isRoE ? null : wrap.readInt())
                 .setOwner(wrap.readUnsignedOpt())
                 .setName(wrap.readBoolean() ? wrap.readString() : null)
-                .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoe) : null)
+                .setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoE) : null)
                 .setFormation(wrap.readUnsigned());
         if (wrap.readBoolean()) {
             town.setBuilt(BitSet.valueOf(wrap.readBytes(6)))
@@ -593,16 +593,12 @@ public class H3MReader {
         } else {
             town.setHasFort(wrap.readBoolean());
         }
-        town.setMustHaveSpells(isRoe ? null : wrap.readUnsigned(9))
+        town.setMustHaveSpells(isRoE ? null : wrap.readUnsigned(9))
                 .setMayHaveSpells(wrap.readUnsigned(9))
-                .setTownEvents(readTownEvents(wrap, isSoD))
-                .setAlignment(isSoD ? wrap.readUnsigned() : null)
+                .setTownEvents(readTownEvents(wrap, header.isSoD()))
+                .setAlignment(header.isSoD() ? wrap.readUnsigned() : null)
                 .setUnknown1(wrap.readUnsigned(3));
         return town;
-    }
-
-    private static String binary(int i) {
-        return Integer.toString(i, 2);
     }
 
     private H3MReward readCommonReward(ByteWrapper wrap, boolean isRoE) {
@@ -619,11 +615,12 @@ public class H3MReader {
                 .setUnknown(wrap.readUnsigned(8));
     }
 
-    private H3MCreatureSlot[] readCommonGuardian(ByteWrapper wrap, boolean isRoE) {
-        wrap.readString(); // message
-        H3MCreatureSlot[] creatures = wrap.readBoolean() ? readArmy(wrap, isRoE) : null;
+    private static H3MCommonGuardian readCommonGuardian(ByteWrapper wrap, boolean isRoE) {
+        H3MCommonGuardian result = new H3MCommonGuardian();
+        result.setMessage(wrap.readString()); // message
+        result.setCreatures(wrap.readBoolean() ? readArmy(wrap, isRoE) : null);
         wrap.readUnsigned(4); // unknown1
-        return creatures;
+        return result;
     }
 
     private H3MSecondarySkill[] readSecondarySkills(ByteWrapper wrap, int size) {
@@ -634,16 +631,16 @@ public class H3MReader {
         return result;
     }
 
-    private H3MSecondarySkill readSecondarySkill(ByteWrapper wrap) {
+    private static H3MSecondarySkill readSecondarySkill(ByteWrapper wrap) {
         return new H3MSecondarySkill().setType(wrap.readUnsigned()).setLevel(wrap.readUnsigned());
     }
 
-    private H3MCreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) {
+    private static H3MCreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) {
         return new H3MCreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
                 .setQuantity(wrap.readUnsignedShort());
     }
 
-    private H3MCreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE, int count) {
+    private static H3MCreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE, int count) {
         H3MCreatureSlot[] creatures = new H3MCreatureSlot[count];
         for (int j = 0; j < creatures.length; j++) {
             creatures[j] = readCreature(wrap, isRoE);
@@ -651,15 +648,15 @@ public class H3MReader {
         return creatures;
     }
 
-    private H3MCreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE) {
+    private static H3MCreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE) {
         return readArmy(wrap, isRoE, 7);
     }
 
-    private int[] readResources(ByteWrapper wrap) {
+    private static int[] readResources(ByteWrapper wrap) {
         return wrap.readInt(7);
     }
 
-    private int[] readArtifacts(ByteWrapper wrap, boolean isRoE) {
+    private static int[] readArtifacts(ByteWrapper wrap, boolean isRoE) {
         if (isRoE) {
             return wrap.readUnsigned(wrap.readUnsigned());
         } else {
@@ -667,8 +664,8 @@ public class H3MReader {
         }
     }
 
-    private H3MPrimarySkills readPrimarySkills(ByteWrapper wrap) {
-        return new H3MPrimarySkills().setAttack(wrap.readUnsigned())
+    private static PrimarySkills readPrimarySkills(ByteWrapper wrap) {
+        return new PrimarySkills().setAttack(wrap.readUnsigned())
                 .setDefense(wrap.readUnsigned())
                 .setSpellPower(wrap.readUnsigned())
                 .setKnowledge(wrap.readUnsigned());

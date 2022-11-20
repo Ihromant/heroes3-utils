@@ -1,13 +1,14 @@
-package ua.ihromant.sod.utils.entities;
+package ua.ihromant.sod.utils.entities.objects;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 
 @Getter
 @Setter
 @Accessors(chain = true)
-public class H3MMapMonster {
+public class H3MMapMonster extends H3MBaseObject {
     private Integer abSodId;
     private int quantity;
     private int disposition;

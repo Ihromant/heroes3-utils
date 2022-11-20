@@ -1,6 +1,6 @@
-package ua.ihromant.sod.utils;
+package ua.ihromant.sod.utils.entities;
 
-import static ua.ihromant.sod.utils.ObjectClassConstants.*;
+import static ua.ihromant.sod.utils.entities.H3MObjectClasses.*;
 
 public enum H3MObjectType {
     META_OBJECT_ABANDONED_MINE_ABSOD,

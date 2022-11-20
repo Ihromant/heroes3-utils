@@ -6,10 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import ua.ihromant.sod.utils.H3MObjectType;
 import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.map.BackgroundType;
-import ua.ihromant.sod.utils.map.H3MObjectGroup;
 
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -17,7 +15,6 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @Accessors(chain = true)
-@ToString
 public class H3MObjectAttribute {
     private String def;
     private int[] passable;

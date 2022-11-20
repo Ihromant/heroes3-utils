@@ -1,0 +1,15 @@
+package ua.ihromant.sod.utils.entities;
+
+public enum H3MWinType {
+    ACQUIRE_ARTIFACT,
+    ACCUMULATE_CREATURES,
+    ACCUMULATE_RESOURCES,
+    UPGRADE_TOWN,
+    BUILD_GRAIL,
+    DEFEAT_HERO,
+    CAPTURE_TOWN,
+    DEFEAT_MONSTER,
+    FLAG_DWELLINGS,
+    FLAG_MINES,
+    TRANSPORT_ARTIFACT
+}

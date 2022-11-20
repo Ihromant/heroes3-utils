@@ -1,4 +1,4 @@
-package ua.ihromant.sod.utils.entities;
+package ua.ihromant.sod.utils.entities.conditions;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,7 @@ import ua.ihromant.sod.utils.Coordinate;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class H3MStartingTown {
-    private boolean startingTownCreateHero;
-    private Integer startingTownType;
+public class TransportArtifactCondition extends BaseWinCondition {
+    private int artType;
     private Coordinate coordinate;
 }

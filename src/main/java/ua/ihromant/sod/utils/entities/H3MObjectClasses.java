@@ -1,6 +1,6 @@
-package ua.ihromant.sod.utils;
+package ua.ihromant.sod.utils.entities;
 
-public interface ObjectClassConstants {
+public interface H3MObjectClasses {
     int H3M_OA_CLASS_NO_OBJ = -1;
     int H3M_OA_CLASS_NONE_0 = 0;
     int H3M_OA_CLASS_DECORATIVE_TOWN = 1;

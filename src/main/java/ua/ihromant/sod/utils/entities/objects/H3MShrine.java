@@ -1,4 +1,4 @@
-package ua.ihromant.sod.utils.entities;
+package ua.ihromant.sod.utils.entities.objects;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,6 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AiRumor {
-    private String name;
-    private String desc;
+public class H3MShrine extends H3MBaseObject {
+    private int spell;
 }

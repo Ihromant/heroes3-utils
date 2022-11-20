@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class H3MPrimarySkills {
+public class PrimarySkills {
     private int attack;
     private int defense;
     private int spellPower;

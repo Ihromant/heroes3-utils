@@ -13,7 +13,7 @@ public class H3MReward {
     private int morale;
     private int luck;
     private int[] resources;
-    private H3MPrimarySkills skills;
+    private PrimarySkills skills;
     private H3MSecondarySkill[] secondarySkills;
     private int[] artifacts;
     private int[] spells;
