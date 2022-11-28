@@ -195,4 +195,20 @@ public class ImageMerger {
             ImageIO.write(res, "png", new File(f.getParent(), name.substring(0, name.indexOf('.')) + ".png"));
         }
     }
+
+    @Test
+    public void bmpToPng() throws IOException {
+        String name = "frend16.bmp";
+        BufferedImage img = ImageIO.read(new File("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common/", name));
+        BufferedImage res = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        int transparent = img.getRGB(0, 0);
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                if (img.getRGB(i, j) != transparent) {
+                    res.setRGB(i, j, img.getRGB(i, j));
+                }
+            }
+        }
+        ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/16x16", name.substring(0, name.indexOf('.')) + ".png"));
+    }
 }
