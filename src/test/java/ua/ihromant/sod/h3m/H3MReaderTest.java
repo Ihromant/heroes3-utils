@@ -17,6 +17,7 @@ public class H3MReaderTest {
         testFileName("GeneratedJC");
         testFileName("Metataxer");
         testFileName("Paragon");
+        testFileName("JaredHaret");
         testFileName("Viking");
         testFileName("Attestation");
         testFileName("TheWordOfGod");
@@ -35,5 +36,12 @@ public class H3MReaderTest {
 
     public static byte[] getUnzippedBytes(String fileName) throws IOException {
         return IOUtils.toByteArray(new GZIPInputStream(Objects.requireNonNull(H3MReaderTest.class.getResourceAsStream("/h3m/" + fileName + ".h3m"))));
+    }
+
+    @Test
+    public void debug() throws IOException {
+        //testFileName("ArmageddonsBlade");
+        //testFileName("Generated6lm");
+        testFileName("Paragon");
     }
 }

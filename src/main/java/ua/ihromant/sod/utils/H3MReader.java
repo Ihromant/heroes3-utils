@@ -102,20 +102,20 @@ public class H3MReader {
                     } else {
                         ai = false;
                         player.setStartingHeroType(startingHeroType)
-                                .setStartingHeroFace(wrap.readUnsigned())
+                                .setStartingHeroFace(wrap.readUnsignedOpt())
                                 .setStartingHeroName(wrap.readString());
                     }
                 } else {
                     ai = true;
                     player.setStartingHeroType(startingHeroType)
-                            .setStartingHeroFace(wrap.readUnsigned())
+                            .setStartingHeroFace(wrap.readUnsignedOpt())
                             .setStartingHeroName(wrap.readString());
                 }
             } else {
                 ai = startingHeroType != null;
                 if (!result.isRoE() || ai) {
                     player.setStartingHeroType(startingHeroType)
-                            .setStartingHeroFace(wrap.readUnsigned())
+                            .setStartingHeroFace(wrap.readUnsignedOpt())
                             .setStartingHeroName(wrap.readString());
                 }
             }
@@ -147,9 +147,9 @@ public class H3MReader {
             H3MHero[] customHeroes = new H3MHero[wrap.readUnsigned()];
             for (int i = 0; i < customHeroes.length; i++) {
                 customHeroes[i] = new H3MHero().setHeroType(wrap.readUnsigned())
-                        .setFace(wrap.readUnsigned())
+                        .setFace(wrap.readUnsignedOpt())
                         .setName(wrap.readString())
-                        .setAllowedPlayers(wrap.readUnsigned());
+                        .setAllowedPlayers(BitSet.valueOf(wrap.readBytes(1)));
             }
             result.setCustomHeroes(customHeroes);
         }

@@ -30,7 +30,7 @@ public class H3MHero extends H3MBaseObject {
     private Integer abSpell;
     private BitSet sodSpells;
     private PrimarySkills primarySkills;
-    private Integer allowedPlayers;
+    private BitSet allowedPlayers;
     private Integer powerRating;
     private int[] unknown2;
 }
