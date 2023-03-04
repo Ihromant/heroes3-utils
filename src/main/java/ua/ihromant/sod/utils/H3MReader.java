@@ -195,11 +195,11 @@ public class H3MReader {
             sodHeroes[i] = hero;
         }
         result.setSodHeroes(sodHeroes);
-        MapTile[][][] tiles = new MapTile[header.getSize()][header.getSize()][header.isUnderground() ? 2 : 1];
+        MapTile[][][] tiles = new MapTile[header.isUnderground() ? 2 : 1][header.getSize()][header.getSize()];
         for (int z = 0; z < (header.isUnderground() ? 2 : 1); z++) {
             for (int y = 0; y < header.getSize(); y++) {
                 for (int x = 0; x < header.getSize(); x++) {
-                    tiles[x][y][z] = new MapTile().setTerrainType(wrap.readUnsigned())
+                    tiles[z][y][x] = new MapTile().setTerrainType(wrap.readUnsigned())
                             .setTerrainSprite(wrap.readUnsigned())
                             .setRiverType(RiverType.values()[wrap.readUnsigned()])
                             .setRiverSprite(wrap.readUnsigned())
