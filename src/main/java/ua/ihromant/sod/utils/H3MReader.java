@@ -511,8 +511,8 @@ public class H3MReader {
         boolean isRoE = header.isRoE();
         boolean isSoD = header.isSoD();
         H3MHero result = new H3MHero().setAbSodId(header.isRoE() ? null : wrap.readInt())
-                .setOwner(wrap.readUnsigned())
-                .setHeroType(wrap.readUnsigned())
+                .setOwner(wrap.readUnsignedOpt())
+                .setHeroType(wrap.readUnsignedOpt())
                 .setName(wrap.readBoolean() ? wrap.readString() : null);
         if (isSoD) {
             result.setExperience(wrap.readBoolean() ? wrap.readInt() : null);
