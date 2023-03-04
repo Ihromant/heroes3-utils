@@ -8,6 +8,6 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class H3MCreatureSlot {
-    private int type;
+    private Integer type;
     private int quantity;
 }

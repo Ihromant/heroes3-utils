@@ -73,6 +73,11 @@ public class ByteWrapper {
         return str.getShort() & 0xFFFF;
     }
 
+    public Integer readUnsignedShortOpt() {
+        int result = readUnsignedShort();
+        return result == 0xFFFF ? null : result;
+    }
+
     public int[] readUnsignedShort(int size) {
         int[] shorts = new int[size];
         for (int i = 0; i < size; i++) {

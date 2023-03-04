@@ -68,6 +68,7 @@ import ua.ihromant.sod.utils.map.RoadType;
 import java.nio.BufferUnderflowException;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class H3MReader {
@@ -636,8 +637,8 @@ public class H3MReader {
     }
 
     private static H3MCreatureSlot readCreature(ByteWrapper wrap, boolean isRoE) {
-        return new H3MCreatureSlot().setType(isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort())
-                .setQuantity(wrap.readUnsignedShort());
+        return Optional.of(new H3MCreatureSlot().setType(isRoE ? wrap.readUnsignedOpt() : wrap.readUnsignedShortOpt())
+                .setQuantity(wrap.readUnsignedShort())).filter(sl -> sl.getType() != null).orElse(null);
     }
 
     private static H3MCreatureSlot[] readArmy(ByteWrapper wrap, boolean isRoE, int count) {
