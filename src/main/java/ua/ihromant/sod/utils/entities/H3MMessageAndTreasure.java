@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 public class H3MMessageAndTreasure {
     private String message;
     private int[] resources;
-    private int artifact;
+    private Integer artifact;
 }

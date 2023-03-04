@@ -534,8 +534,8 @@ public class H3MReader {
         return result;
     }
 
-    private static int readArtifact(ByteWrapper wrap, boolean isRoE) {
-        return isRoE ? wrap.readUnsigned() : wrap.readUnsignedShort();
+    private static Integer readArtifact(ByteWrapper wrap, boolean isRoE) {
+        return isRoE ? wrap.readUnsignedOpt() : wrap.readUnsignedShortOpt();
     }
 
     private H3MHeroArtifacts parseHeroArtifacts(ByteWrapper wrap, H3MHeader header) {
