@@ -558,7 +558,7 @@ public class H3MReader {
                 .setFirstAidTent(readArtifact(wrap, isRoE))
                 .setCatapult(readArtifact(wrap, isRoE))
                 .setSpellbook(readArtifact(wrap, isRoE))
-                .setMisc4(header.isSoD() ? wrap.readUnsignedShort() : null)
+                .setMisc4(header.isSoD() ? readArtifact(wrap, isRoE) : null)
                 .setBackpack(isRoE ? wrap.readUnsigned(wrap.readUnsignedShort()) : wrap.readUnsignedShort(wrap.readUnsignedShort()));
     }
 
