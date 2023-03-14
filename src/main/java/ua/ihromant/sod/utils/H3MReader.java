@@ -215,8 +215,8 @@ public class H3MReader {
             objectAttributes[i] = new H3MObjectAttribute().setDef(wrap.readString())
                     .setPassable(wrap.readUnsigned(6))
                     .setActive(wrap.readUnsigned(6))
-                    .setAllowedLandsapes(wrap.readUnsignedShort())
-                    .setLandscapeGroup(wrap.readUnsignedShort())
+                    .setAllowedLandscapes(BitSet.valueOf(wrap.readBytes(2)))
+                    .setLandscapeGroup(BitSet.valueOf(wrap.readBytes(2)))
                     .setObjectClass(wrap.readInt())
                     .setObjectNumber(wrap.readInt())
                     .setObjectGroup(H3MObjectGroup.values()[wrap.readUnsigned()])
@@ -244,7 +244,7 @@ public class H3MReader {
                 case META_OBJECT_EVENT -> append(result, H3MMap::getMapEvents, readEvent(wrap, header.isRoE()));
                 case META_OBJECT_GRAIL -> append(result, H3MMap::getGrails, new H3MGrail().setRadius(wrap.readInt()));
                 case META_OBJECT_DWELLING, META_OBJECT_DWELLING_ABSOD, META_OBJECT_LIGHTHOUSE, META_OBJECT_RESOURCE_GENERATOR, META_OBJECT_SHIPYARD, META_OBJECT_ABANDONED_MINE_ABSOD ->
-                        append(result, H3MMap::getOwnedObjects, new H3MOwnedObject().setOwner(wrap.readInt()));
+                        append(result, H3MMap::getOwnedObjects, new H3MOwnedObject().setOwner(Optional.of(wrap.readInt()).filter(o -> o != 0xFF).orElse(null)));
                 case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN, META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD, META_OBJECT_GENERIC_BOAT, META_OBJECT_GENERIC_PASSABLE_TERRAIN, META_OBJECT_GENERIC_PASSABLE_TERRAIN_SOD, META_OBJECT_GENERIC_VISITABLE, META_OBJECT_GENERIC_VISITABLE_ABSOD, META_OBJECT_GENERIC_TREASURE, META_OBJECT_MONOLITH_TWO_WAY, META_OBJECT_SUBTERRANEAN_GATE ->
                         append(result, H3MMap::getBaseObjects, new H3MBaseObject());
                 case META_OBJECT_TOWN, META_OBJECT_TOWN_ABSOD ->

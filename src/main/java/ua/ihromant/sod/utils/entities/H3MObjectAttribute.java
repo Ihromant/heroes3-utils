@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import ua.ihromant.sod.utils.bytes.Utils;
 import ua.ihromant.sod.utils.map.BackgroundType;
 
+import java.util.BitSet;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -19,8 +20,8 @@ public class H3MObjectAttribute {
     private String def;
     private int[] passable;
     private int[] active;
-    private int allowedLandsapes;
-    private int landscapeGroup;
+    private BitSet allowedLandscapes;
+    private BitSet landscapeGroup;
     private int objectClass;
     private int objectNumber;
     private H3MObjectGroup objectGroup;
@@ -32,7 +33,7 @@ public class H3MObjectAttribute {
     }
 
     public Stream<BackgroundType> backgrounds() {
-        return Utils.ones(landscapeGroup).mapToObj(i -> BackgroundType.values()[i]);
+        return landscapeGroup.stream().mapToObj(i -> BackgroundType.values()[i]);
     }
 
     public Stream<Shift> passableShifts() {
