@@ -6,11 +6,14 @@ import ua.ihromant.sod.utils.ObjectNumberConstants;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ImageMerger {
@@ -151,7 +154,7 @@ public class ImageMerger {
 
     @Test
     public void removeBorder() throws IOException {
-        File root = new File("/home/ihromant/Games/units/images-shadow/itpa");
+        File root = new File("/home/ihromant/workspace/ihromant.github.io/img/icons/48x32/bonus");
         for (File f : Objects.requireNonNull(root.listFiles())) {
             BufferedImage img = ImageIO.read(f);
             BufferedImage res = new BufferedImage(img.getWidth() - 2, img.getHeight() - 2, BufferedImage.TYPE_INT_ARGB);
@@ -160,7 +163,7 @@ public class ImageMerger {
                     res.setRGB(i, j, img.getRGB(i + 1, j + 1));
                 }
             }
-            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/castle", f.getName()));
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/bonus", f.getName()));
         }
     }
 
@@ -198,8 +201,8 @@ public class ImageMerger {
 
     @Test
     public void bmpToPng() throws IOException {
-        String name = "frend16.bmp";
-        BufferedImage img = ImageIO.read(new File("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common/", name));
+        String name = "checkbox.png";
+        BufferedImage img = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/icons/26x18", name));
         BufferedImage res = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
         int transparent = img.getRGB(0, 0);
         for (int i = 0; i < img.getWidth(); i++) {
@@ -209,6 +212,37 @@ public class ImageMerger {
                 }
             }
         }
-        ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/16x16", name.substring(0, name.indexOf('.')) + ".png"));
+        ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/26x18", name.substring(0, name.indexOf('.')) + "1.png"));
+    }
+
+    @Test
+    public void prepareForGraph() {
+        System.out.println(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/stat.txt"))).lines()
+                .map(l -> {
+                    String[] parts = l.split(" ");
+                    String[] dateParts = parts[0].split("-");
+                    return "[new Date(" + dateParts[0] + ", " + dateParts[1] + ", " + dateParts[2] + "), " + parts[1] + "]";
+                }).collect(Collectors.joining(", ", "[", "]")));
+    }
+
+    @Test
+    public void generateArtifacts() throws IOException {
+        for (int i = 1; i < ObjectNumberConstants.ARTIFACTS.length; i++) {
+            String name = ObjectNumberConstants.ARTIFACTS[i];
+            if (name == null) {
+                continue;
+            }
+            String root = "/home/ihromant/Games/units/images/artifact";
+            String art = "ava0" + (i < 10 ? "00" + i : i < 100 ? "0" + i : String.valueOf(i));
+            File dir = new File(root, art);
+            File[] files = Objects.requireNonNull(dir.listFiles());
+            String destFdr = "/home/ihromant/workspace/ihromant.github.io/img/map/artifacts";
+            String destNm = name.toLowerCase() + ".png";
+            if (files.length == 1) {
+                FileUtils.copyFile(files[0], new File(destFdr, destNm));
+            } else {
+                mergeImage(root, art, destFdr, destNm);
+            }
+        }
     }
 }

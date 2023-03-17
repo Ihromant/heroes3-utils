@@ -5,7 +5,7 @@ import ua.ihromant.sod.utils.map.SecondarySkill;
 import static ua.ihromant.sod.utils.map.SecondarySkill.*;
 
 public interface ObjectNumberConstants {
-    String[] ARTIFACTS = {null, null, null, "CATAPULT", "AMMO_CART", "BALLISTA", "FIRST_AID_TENT", "CENTAURS_AXE",
+    String[] ARTIFACTS = {"SPELL_BOOK", null, null, "CATAPULT", "AMMO_CART", "BALLISTA", "FIRST_AID_TENT", "CENTAURS_AXE",
             "BLACKSHARD_OF_THE_DEAD_KNIGHT", "GREATER_GNOLLS_FLAIL", "OGRES_CLUB_OF_HAVOC", "SWORD_OF_HELLFIRE",
             "TITANS_GLADIUS", "SHIELD_OF_THE_DWARVEN_LORDS", "SHIELD_OF_THE_YAWNING_DEAD", "BUCKLER_OF_THE_GNOLL_KING",
             "TARG_OF_THE_RAMPAGING_OGRE", "SHIELD_OF_THE_DAMNED", "SENTINELS_SHIELD", "HELM_OF_THE_ALABASTER_UNICORN",

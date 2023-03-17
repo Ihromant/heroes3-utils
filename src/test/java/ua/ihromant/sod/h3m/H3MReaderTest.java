@@ -42,6 +42,6 @@ public class H3MReaderTest {
     public void debug() throws IOException {
         //testFileName("ArmageddonsBlade");
         //testFileName("Generated6lm");
-        testFileName("Paragon");
+        testFileName("TestMap");
     }
 }
