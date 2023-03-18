@@ -3,6 +3,7 @@ package ua.ihromant.sod.utils;
 import ua.ihromant.sod.utils.bytes.ByteWrapper;
 import ua.ihromant.sod.utils.entities.Behavior;
 import ua.ihromant.sod.utils.entities.Control;
+import ua.ihromant.sod.utils.entities.Disposition;
 import ua.ihromant.sod.utils.entities.H3MCreatureSlot;
 import ua.ihromant.sod.utils.entities.H3MHeader;
 import ua.ihromant.sod.utils.entities.H3MHeroArtifacts;
@@ -498,7 +499,7 @@ public class H3MReader {
     private H3MMapMonster parseMonster(ByteWrapper wrap, boolean isRoE) {
         return new H3MMapMonster().setAbSodId(isRoE ? null : wrap.readInt())
                 .setQuantity(wrap.readUnsignedShort())
-                .setDisposition(wrap.readUnsigned())
+                .setDisposition(Disposition.values()[wrap.readUnsigned()])
                 .setMessTreasure(wrap.readBoolean() ? new H3MMessageAndTreasure().setMessage(wrap.readString())
                         .setResources(readResources(wrap))
                         .setArtifact(readArtifact(wrap, isRoE)) : null)

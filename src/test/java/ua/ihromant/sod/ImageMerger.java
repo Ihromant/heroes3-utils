@@ -83,6 +83,7 @@ public class ImageMerger {
                 xMax = xIdx;
             }
         }
+        System.out.println("x: " + (xMax + 1) + ", y: " + (yMax + 1));
         BufferedImage result = null;
         ImageMetadata meta = null;
         for (File img : Objects.requireNonNull(root.listFiles())) {
@@ -232,7 +233,7 @@ public class ImageMerger {
             if (name == null) {
                 continue;
             }
-            String root = "/home/ihromant/Games/units/images/artifact";
+            String root = "/home/ihromant/Games/units/images-shadow";
             String art = "ava0" + (i < 10 ? "00" + i : i < 100 ? "0" + i : String.valueOf(i));
             File dir = new File(root, art);
             File[] files = Objects.requireNonNull(dir.listFiles());
@@ -244,5 +245,12 @@ public class ImageMerger {
                 mergeImage(root, art, destFdr, destNm);
             }
         }
+    }
+
+    @Test
+    public void generateMapUnits() throws IOException {
+        String fdrName = "avwzomx0";
+        String dest = "ZOMBIE";
+        mergeImage("/home/ihromant/Games/units/images-shadow/", fdrName, "/home/ihromant/workspace/ihromant.github.io/img/map/neutrals", dest.toLowerCase());
     }
 }
