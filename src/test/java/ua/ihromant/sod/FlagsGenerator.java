@@ -125,6 +125,37 @@ public class FlagsGenerator {
         paintFlagData("hovel.png", 96, new Point(60, 35), FLAG_LEFT_DWELLING);
         paintFlagData("hydra_pond.png", 64, new Point(60, 50), FLAG_LEFT);
         paintFlagData("imp_crucible.png", 96, new Point(44, 66), IMP_CACHE_FLAG);
+        paintFlagData("kennels.png", 64, new Point(64, 50), FLAG_LEFT_DWELLING);
+        paintFlagData("labyrinth.png", 64, new Point(36, 35), FLAG_LEFT);
+        paintFlagData("lizard_den.png", 96, new Point(46, 70), FLAG_LEFT);
+        paintFlagData("mage_tower.png", 160, new Point(48, 136), FLAG_LEFT);
+        paintFlagData("magic_forest.png", 96, new Point(76, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("magic_lantern.png", 96, new Point(63, 36), FLAG_LEFT);
+        paintFlagData("manticore_lair.png", 64, new Point(24, 42), FLAG_LEFT);
+        paintFlagData("mausoleum.png", 96, new Point(63, 35), FLAG_LEFT);
+        paintFlagData("monastery.png", 96, new Point(48, 72), FLAG_LEFT);
+        paintFlagData("nomad_tent.png", 96, new Point(62, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("ogre_fort.png", 128, new Point(48, 112), FLAG_LEFT);
+        paintFlagData("orc_tower.png", 128, new Point(46, 116), FLAG_LEFT);
+        paintFlagData("parapet.png", 128, new Point(64, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("pillar_of_eyes.png", 96, new Point(68, 48), FLAG_LEFT);
+        paintFlagData("portal_of_glory.png", 64, new Point(90, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("pyre.png", 96, new Point(20, 19), FLAG_LEFT_DWELLING);
+        paintFlagData("rogue_cavern.png", 96, new Point(60, 56), FLAG_LEFT_DWELLING);
+        paintFlagData("serpent_fly_hive.png", 96, new Point(24, 20), FLAG_LEFT);
+        paintFlagData("sulfurous_lair.png", 96, new Point(40, 60), FLAG_LEFT);
+        paintFlagData("thatched_hut.png", 96, new Point(60, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("tomb_of_curses.png", 96, new Point(23, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("tomb_of_souls.png", 128, new Point(73, 44), FLAG_LEFT);
+        paintFlagData("training_grounds.png", 96, new Point(66, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("treetop_tower.png", 96, new Point(56, 73), FLAG_LEFT_DWELLING);
+        paintFlagData("troll_bridge.png", 96, new Point(64, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("unicorn_glade.png", 96, new Point(56, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("unicorn_glade_large.png", 96, new Point(24, 35), FLAG_LEFT);
+        paintFlagData("warren.png", 96, new Point(52, 66), FLAG_LEFT);
+        paintFlagData("wolf_pen.png", 96, new Point(44, 84), FLAG_LEFT);
+        paintFlagData("workshop.png", 96, new Point(40, 94), FLAG_LEFT_DWELLING);
+        paintFlagData("wyvern_nest.png", 96, new Point(56, 68), FLAG_LEFT);
     }
 
     private void paintFlagData(String fName, int height, Point from, int[][] flag) throws IOException {
