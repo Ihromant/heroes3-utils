@@ -20,6 +20,22 @@ public class FlagsGenerator {
             {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1}
     };
 
+    private static final int[][] FLAG_LEFT_DWELLING = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1}
+    };
+
+    private static final int[][] IMP_CACHE_FLAG = {
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+            {0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1}
+    };
+
     private static final int[][] FLAG_GEN_SAWMILL_SNOW_MISALIGNED = {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1},
             {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -50,7 +66,7 @@ public class FlagsGenerator {
         for (File f : Objects.requireNonNull(file.listFiles())) {
             BufferedImage img = ImageIO.read(f);
             int height = img.getHeight() > 1000 ? img.getHeight() / 16 : img.getHeight() > 500 ? img.getHeight() / 8 : img.getHeight();
-            GenFlagData gfg = determineGenCrd(f.getName(), img, height);
+            FlagData gfg = determineGenCrd(f.getName(), img, height);
             Point p = gfg.determineCrd(img);
             String name = f.getName().substring(0, f.getName().indexOf('.'));
             for (Kingdom k : Kingdom.values()) {
@@ -62,48 +78,111 @@ public class FlagsGenerator {
         }
     }
 
-    private GenFlagData determineGenCrd(String filename, BufferedImage img, int height) {
+    @Test
+    public void generateDwellingFlags() throws IOException {
+        paintFlagData("altar_of_air_alt.png", 96, new Point(50, 80), FLAG_LEFT_DWELLING);
+        paintFlagData("altar_of_earth_alt.png", 96, new Point(40, 66), FLAG_LEFT_DWELLING);
+        paintFlagData("altar_of_fire_alt.png", 96, new Point(36, 70), FLAG_LEFT_DWELLING);
+        paintFlagData("altar_of_thought.png", 96, new Point(60, 36), FLAG_LEFT_DWELLING);
+        paintFlagData("altar_of_water_alt.png", 96, new Point(26, 26), FLAG_LEFT_DWELLING);
+        paintFlagData("altar_of_wishes.png", 160, new Point(48, 130), FLAG_LEFT_DWELLING);
+        paintFlagData("archers_tower.png", 96, new Point(48, 92), FLAG_LEFT_DWELLING);
+        paintFlagData("barracks.png", 96, new Point(44, 90), FLAG_LEFT);
+        paintFlagData("basilisk_pit.png", 64, new Point(34, 52), FLAG_LEFT);
+        paintFlagData("behemoth_lair.png", 96, new Point(40, 76), FLAG_LEFT_DWELLING);
+        paintFlagData("boar_glen.png", 64, new Point(64, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("centaur_stables.png", 64, new Point(36, 60), FLAG_LEFT_DWELLING);
+        paintFlagData("chapel_of_stilled_voices.png", 96, new Point(46, 92), FLAG_LEFT);
+        paintFlagData("cliff_nest.png", 128, new Point(53, 114), FLAG_LEFT);
+        paintFlagData("cloud_temple.png", 96, new Point(36, 56), FLAG_LEFT);
+        paintFlagData("crystal_cave.png", 96, new Point(22, 36), FLAG_LEFT);
+        paintFlagData("cursed_temple.png", 64, new Point(40, 60), FLAG_LEFT);
+        paintFlagData("cyclops_cave.png", 96, new Point(46, 80), FLAG_LEFT_DWELLING);
+        paintFlagData("demon_gate.png", 96, new Point(50, 72), FLAG_LEFT_DWELLING);
+        paintFlagData("dendroid_arches.png", 96, new Point(54, 35), FLAG_LEFT);
+        paintFlagData("dragon_cave.png", 64, new Point(60, 35), FLAG_LEFT);
+        paintFlagData("dragon_cliffs.png", 128, new Point(50, 114), FLAG_LEFT_DWELLING);
+        paintFlagData("dragon_vault.png", 128, new Point(48, 105), FLAG_LEFT);
+        paintFlagData("dwarf_cottage.png", 96, new Point(44, 84), FLAG_LEFT_DWELLING);
+        paintFlagData("enchanted_spring.png", 128, new Point(66, 78), FLAG_LEFT);
+        paintFlagData("enchanters_hollow.png", 96, new Point(60, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("estate.png", 64, new Point(40, 35), FLAG_LEFT);
+        paintFlagData("fire_lake.png", 96, new Point(54, 70), FLAG_LEFT_DWELLING);
+        paintFlagData("forsaken_palace.png", 96, new Point(48, 90), FLAG_LEFT_DWELLING);
+        paintFlagData("frozen_cliffs.png", 96, new Point(30, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("gnoll_hut.png", 64, new Point(48, 54), FLAG_LEFT);
+        paintFlagData("goblin_barracks.png", 96, new Point(46, 70), FLAG_LEFT_DWELLING);
+        paintFlagData("golden_pavilion.png", 128, new Point(46, 80), FLAG_LEFT);
+        paintFlagData("gorgon_lair.png", 96, new Point(66, 35), FLAG_LEFT);
+        paintFlagData("graveyard.png", 64, new Point(63, 50), FLAG_LEFT);
+        paintFlagData("griffin_tower.png", 96, new Point(48, 95), FLAG_LEFT_DWELLING);
+        paintFlagData("guardhouse.png", 96, new Point(50, 82), FLAG_LEFT);
+        paintFlagData("hall_of_darkness.png", 128, new Point(50, 90), FLAG_LEFT);
+        paintFlagData("hall_of_sins.png", 64, new Point(63, 40), FLAG_LEFT_DWELLING);
+        paintFlagData("harpy_loft.png", 96, new Point(66, 35), FLAG_LEFT);
+        paintFlagData("hell_hole.png", 64, new Point(66, 40), FLAG_LEFT);
+        paintFlagData("homestead.png", 96, new Point(60, 60), FLAG_LEFT_DWELLING);
+        paintFlagData("hovel.png", 96, new Point(60, 35), FLAG_LEFT_DWELLING);
+        paintFlagData("hydra_pond.png", 64, new Point(60, 50), FLAG_LEFT);
+        paintFlagData("imp_crucible.png", 96, new Point(44, 66), IMP_CACHE_FLAG);
+    }
+
+    private void paintFlagData(String fName, int height, Point from, int[][] flag) throws IOException {
+        BufferedImage img = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/map/dwellings", fName));
+        FlagData data = new FlagData(height, from, flag);
+        Point p = data.determineCrd(img);
+        System.out.println(fName + " " + p);
+        String name = fName.substring(0, fName.indexOf('.'));
+        for (Kingdom k : Kingdom.values()) {
+            BufferedImage res = new BufferedImage(img.getWidth(), height, BufferedImage.TYPE_INT_ARGB);
+            paintFlag(res, p, data.flag, k);
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/map/dwelling_flags/"
+                    + name + "_" + k.name().toLowerCase() + ".png"));
+        }
+    }
+
+    private FlagData determineGenCrd(String filename, BufferedImage img, int height) {
         if (filename.startsWith("gold")) {
-            return new GenFlagData(height, new Point(64, 57), FLAG_LEFT);
+            return new FlagData(height, new Point(64, 57), FLAG_LEFT);
         }
         if (filename.equals("sawmill_snow.png")) {
-            return new GenFlagData(height, new Point(50, 60), FLAG_GEN_SAWMILL_SNOW_MISALIGNED);
+            return new FlagData(height, new Point(50, 60), FLAG_GEN_SAWMILL_SNOW_MISALIGNED);
         }
         if (filename.startsWith("sawmill")) {
-            return new GenFlagData(height, new Point(70, 34), FLAG_GEN_SAWMILL_MISALIGNED);
+            return new FlagData(height, new Point(70, 34), FLAG_GEN_SAWMILL_MISALIGNED);
         }
         if (filename.startsWith("sulfur")) {
-            return new GenFlagData(height, new Point(23, 37), FLAG_LEFT);
+            return new FlagData(height, new Point(23, 37), FLAG_LEFT);
         }
         if (filename.startsWith("ore")) {
-            return new GenFlagData(height, new Point(35, 37), FLAG_LEFT);
+            return new FlagData(height, new Point(35, 37), FLAG_LEFT);
         }
         if (filename.startsWith("alch")) {
-            return new GenFlagData(height, new Point(60, 73), FLAG_GEN_SAWMILL_MISALIGNED);
+            return new FlagData(height, new Point(60, 73), FLAG_GEN_SAWMILL_MISALIGNED);
         }
         if (filename.startsWith("gem")) {
-            return new GenFlagData(height, new Point(25, 37), FLAG_LEFT);
+            return new FlagData(height, new Point(25, 37), FLAG_LEFT);
         }
         if (List.of("crystal_cavern_dirt.png", "crystal_cavern_grass.png", "crystal_cavern_lava.png",
                 "crystal_cavern_subterranean.png").contains(filename)) {
-            return new GenFlagData(height, new Point(25, 37), FLAG_LEFT);
+            return new FlagData(height, new Point(25, 37), FLAG_LEFT);
         }
         if (filename.equals("crystal_cavern_snow.png")) {
-            return new GenFlagData(height, new Point(65, 84), FLAG_LEFT);
+            return new FlagData(height, new Point(65, 84), FLAG_LEFT);
         }
         if (filename.equals("crystal_cavern_sand.png")) {
-            return new GenFlagData(height, new Point(65, 92), FLAG_LEFT);
+            return new FlagData(height, new Point(65, 92), FLAG_LEFT);
         }
         if (filename.equals("crystal_cavern_swamp.png")) {
-            return new GenFlagData(height, new Point(69, 94), FLAG_LEFT);
+            return new FlagData(height, new Point(69, 94), FLAG_LEFT);
         }
         if (filename.startsWith("crys")) {
-            return new GenFlagData(height, new Point(56, 70), FLAG_LEFT);
+            return new FlagData(height, new Point(56, 70), FLAG_LEFT);
         }
         return null;
     }
 
-    private record GenFlagData(int height, Point shift, int[][] flag) {
+    private record FlagData(int height, Point shift, int[][] flag) {
         private Point determineCrd(BufferedImage img) {
             Point pos = determineFlagCrd(img, img.getWidth() - shift.x, height - shift.y, flag);
             return new Point(img.getWidth() - shift.x + pos.x, height - shift.y + pos.y);
