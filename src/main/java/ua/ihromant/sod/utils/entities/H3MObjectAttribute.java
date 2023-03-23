@@ -22,15 +22,11 @@ public class H3MObjectAttribute {
     private int[] active;
     private BitSet allowedLandscapes;
     private BitSet landscapeGroup;
-    private int objectClass;
+    private H3MObjectClass objectClass;
     private int objectNumber;
     private H3MObjectGroup objectGroup;
     private int above;
     private int[] unknown;
-
-    public H3MObjectType type() {
-        return H3MObjectType.objectClassToType(objectClass);
-    }
 
     public Stream<BackgroundType> backgrounds() {
         return landscapeGroup.stream().mapToObj(i -> BackgroundType.values()[i]);

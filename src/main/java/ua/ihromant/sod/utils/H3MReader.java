@@ -11,6 +11,7 @@ import ua.ihromant.sod.utils.entities.H3MLoseType;
 import ua.ihromant.sod.utils.entities.H3MMap;
 import ua.ihromant.sod.utils.entities.H3MMessageAndTreasure;
 import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
+import ua.ihromant.sod.utils.entities.H3MObjectClass;
 import ua.ihromant.sod.utils.entities.H3MObjectGroup;
 import ua.ihromant.sod.utils.entities.H3MObjectType;
 import ua.ihromant.sod.utils.entities.H3MPlayer;
@@ -218,7 +219,7 @@ public class H3MReader {
                     .setActive(wrap.readUnsigned(6))
                     .setAllowedLandscapes(BitSet.valueOf(wrap.readBytes(2)))
                     .setLandscapeGroup(BitSet.valueOf(wrap.readBytes(2)))
-                    .setObjectClass(wrap.readInt())
+                    .setObjectClass(H3MObjectClass.values()[wrap.readInt()])
                     .setObjectNumber(wrap.readInt())
                     .setObjectGroup(H3MObjectGroup.values()[wrap.readUnsigned()])
                     .setAbove(wrap.readUnsigned())
@@ -230,43 +231,43 @@ public class H3MReader {
             Coordinate coord = readCoordinate(wrap);
             H3MObjectAttribute attribute = objectAttributes[wrap.readInt()];
             wrap.readUnsigned(5); // unknown1
-            H3MObjectType type = attribute.type();
+            H3MObjectType type = attribute.getObjectClass().getType();
             H3MBaseObject object = switch (type) {
-                case META_OBJECT_PLACEHOLDER_HERO -> append(result, H3MMap::getPlaceholders, readPlaceholder(wrap));
-                case META_OBJECT_QUEST_GUARD ->
+                case PLACEHOLDER_HERO -> append(result, H3MMap::getPlaceholders, readPlaceholder(wrap));
+                case QUEST_GUARD ->
                         append(result, H3MMap::getQuestGuards, new H3MQuestGuard().setRequest(parseQuestRequest(wrap, header.isRoE(), wrap.readUnsignedOpt())));
-                case META_OBJECT_PANDORAS_BOX -> append(result, H3MMap::getPandoras, new H3MPandoraBox()
+                case PANDORAS_BOX -> append(result, H3MMap::getPandoras, new H3MPandoraBox()
                         .setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null)
                         .setReward(readCommonReward(wrap, header.isRoE())));
-                case META_OBJECT_SIGN, META_OBJECT_OCEAN_BOTTLE ->
+                case SIGN, OCEAN_BOTTLE ->
                         append(result, H3MMap::getMessages, readMessage(wrap));
-                case META_OBJECT_GARRISON, META_OBJECT_GARRISON_ABSOD ->
+                case GARRISON, GARRISON_ABSOD ->
                         append(result, H3MMap::getGarrisons, readGarrison(wrap, header.isRoE()));
-                case META_OBJECT_EVENT -> append(result, H3MMap::getMapEvents, readEvent(wrap, header.isRoE()));
-                case META_OBJECT_GRAIL -> append(result, H3MMap::getGrails, new H3MGrail().setRadius(wrap.readInt()));
-                case META_OBJECT_DWELLING, META_OBJECT_DWELLING_ABSOD, META_OBJECT_LIGHTHOUSE, META_OBJECT_RESOURCE_GENERATOR, META_OBJECT_SHIPYARD, META_OBJECT_ABANDONED_MINE_ABSOD ->
+                case EVENT -> append(result, H3MMap::getMapEvents, readEvent(wrap, header.isRoE()));
+                case GRAIL -> append(result, H3MMap::getGrails, new H3MGrail().setRadius(wrap.readInt()));
+                case DWELLING, DWELLING_ABSOD, LIGHTHOUSE, RESOURCE_GENERATOR, SHIPYARD, ABANDONED_MINE_ABSOD ->
                         append(result, H3MMap::getOwnedObjects, new H3MOwnedObject().setOwner(Optional.of(wrap.readInt()).filter(o -> o != 0xFF).orElse(null)));
-                case META_OBJECT_GENERIC_IMPASSABLE_TERRAIN, META_OBJECT_GENERIC_IMPASSABLE_TERRAIN_ABSOD, META_OBJECT_GENERIC_BOAT, META_OBJECT_GENERIC_PASSABLE_TERRAIN, META_OBJECT_GENERIC_PASSABLE_TERRAIN_SOD, META_OBJECT_GENERIC_VISITABLE, META_OBJECT_GENERIC_VISITABLE_ABSOD, META_OBJECT_GENERIC_TREASURE, META_OBJECT_MONOLITH_TWO_WAY, META_OBJECT_SUBTERRANEAN_GATE ->
+                case GENERIC_IMPASSABLE_TERRAIN, GENERIC_IMPASSABLE_TERRAIN_ABSOD, GENERIC_BOAT, GENERIC_PASSABLE_TERRAIN, GENERIC_PASSABLE_TERRAIN_SOD, GENERIC_VISITABLE, GENERIC_VISITABLE_ABSOD, GENERIC_TREASURE, MONOLITH_TWO_WAY, SUBTERRANEAN_GATE ->
                         append(result, H3MMap::getBaseObjects, new H3MBaseObject());
-                case META_OBJECT_TOWN, META_OBJECT_TOWN_ABSOD ->
+                case TOWN, TOWN_ABSOD ->
                         append(result, H3MMap::getTowns, readTown(wrap, header));
-                case META_OBJECT_RANDOM_DWELLING_ABSOD, META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD, META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD ->
+                case RANDOM_DWELLING_ABSOD, RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD, RANDOM_DWELLING_PRESET_LEVEL_ABSOD ->
                         append(result, H3MMap::getRandomDwellings, readRandomDwelling(wrap, type));
-                case META_OBJECT_HERO, META_OBJECT_HERO_AB, META_OBJECT_RANDOM_HERO, META_OBJECT_PRISON ->
+                case HERO, HERO_AB, RANDOM_HERO, PRISON ->
                         append(result, H3MMap::getMapHeroes, parseHero(wrap, header));
-                case META_OBJECT_MONSTER, META_OBJECT_MONSTER_ABSOD ->
+                case MONSTER, MONSTER_ABSOD ->
                         append(result, H3MMap::getMapMonsters, parseMonster(wrap, header.isRoE()));
-                case META_OBJECT_ARTIFACT, META_OBJECT_ARTIFACT_AB, META_OBJECT_ARTIFACT_SOD ->
+                case ARTIFACT, ARTIFACT_AB, ARTIFACT_SOD ->
                         append(result, H3MMap::getArtifacts, new H3MArtifact().setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null));
-                case META_OBJECT_SHRINE -> append(result, H3MMap::getShrines, new H3MShrine().setSpell(wrap.readInt()));
-                case META_OBJECT_SPELL_SCROLL -> append(result, H3MMap::getScrolls, new H3MSpellScroll()
+                case SHRINE -> append(result, H3MMap::getShrines, new H3MShrine().setSpell(wrap.readInt()));
+                case SPELL_SCROLL -> append(result, H3MMap::getScrolls, new H3MSpellScroll()
                         .setGuard(wrap.readBoolean() ? readCommonGuardian(wrap, header.isRoE()) : null)
                         .setSpell(wrap.readInt()));
-                case META_OBJECT_RESOURCE -> append(result, H3MMap::getResources, readResource(wrap, header.isRoE()));
-                case META_OBJECT_WITCH_HUT ->
+                case RESOURCE -> append(result, H3MMap::getResources, readResource(wrap, header.isRoE()));
+                case WITCH_HUT ->
                         append(result, H3MMap::getWitchHuts, new H3MWitchHut().setPotentialSkills(header.isRoE() ? null : BitSet.valueOf(wrap.readBytes(4))));
-                case META_OBJECT_SEERS_HUT -> append(result, H3MMap::getSeerHuts, readSeerHut(wrap, header.isRoE()));
-                case META_OBJECT_SCHOLAR -> append(result, H3MMap::getScholars, readScholar(wrap));
+                case SEERS_HUT -> append(result, H3MMap::getSeerHuts, readSeerHut(wrap, header.isRoE()));
+                case SCHOLAR -> append(result, H3MMap::getScholars, readScholar(wrap));
             };
             object.setType(type);
             object.setCoordinate(coord);
@@ -336,13 +337,13 @@ public class H3MReader {
 
     private static H3MRandomDwelling readRandomDwelling(ByteWrapper wrap, H3MObjectType type) {
         H3MRandomDwelling result = new H3MRandomDwelling().setOwner(wrap.readInt());
-        if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
+        if (type != H3MObjectType.RANDOM_DWELLING_PRESET_ALIGNMENT_ABSOD) {
             result.setAbSodId(wrap.readInt());
             if (result.getAbSodId() == 0) {
                 result.setAlignment(wrap.readUnsignedShort());
             }
         }
-        if (type != H3MObjectType.META_OBJECT_RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
+        if (type != H3MObjectType.RANDOM_DWELLING_PRESET_LEVEL_ABSOD) {
             result.setMinLevel(wrap.readUnsigned());
             result.setMaxLevel(wrap.readUnsigned());
         }
