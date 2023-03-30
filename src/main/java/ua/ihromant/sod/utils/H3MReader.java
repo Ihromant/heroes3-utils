@@ -227,7 +227,7 @@ public class H3MReader {
         result.setObjectAttributes(objectAttributes);
         int dataLength = wrap.readInt();
         for (int i = 0; i < dataLength; i++) {
-            Coordinate coord = readCoordinate(wrap);
+            Coordinate crd = readCoordinate(wrap);
             H3MObjectAttribute attribute = objectAttributes[wrap.readInt()];
             wrap.readUnsigned(5); // unknown1
             H3MObjectType type = attribute.getObjectClass().getType();
@@ -269,7 +269,7 @@ public class H3MReader {
                 case SCHOLAR -> append(result, H3MMap::getScholars, readScholar(wrap));
             };
             object.setType(type);
-            object.setCoordinate(coord);
+            object.setCoordinate(crd);
             object.setAttribute(attribute);
         }
         H3MTimeEvent[] timeEvents = new H3MTimeEvent[wrap.readInt()];
@@ -318,9 +318,9 @@ public class H3MReader {
 
     private static H3MSeerHut readSeerHut(ByteWrapper wrap, boolean isRoE) {
         H3MSeerHut hut = new H3MSeerHut();
-        int ambiguous = wrap.readUnsigned(); // in ROE it's artifact request, otherwise see code below
+        int ambiguous = wrap.readUnsigned(); // in RoE it's artifact request, otherwise see code below
         hut.setRequest(isRoE ? new H3MArtifactsQuestRequest().setArtifacts(new int[]{ambiguous})
-                : parseQuestRequest(wrap, isRoE, ambiguous));
+                : parseQuestRequest(wrap, false, ambiguous));
         hut.setReward(parseReward(wrap, isRoE));
         wrap.readUnsigned(2); // unknown1
         return hut;
