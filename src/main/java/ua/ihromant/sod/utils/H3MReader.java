@@ -104,8 +104,7 @@ public class H3MReader {
                         ai = true;
                     } else {
                         ai = false;
-                        player.setStartingHeroType(startingHeroType)
-                                .setStartingHeroFace(wrap.readUnsignedOpt())
+                        player.setStartingHeroFace(wrap.readUnsignedOpt())
                                 .setStartingHeroName(wrap.readString());
                     }
                 } else {
@@ -435,22 +434,18 @@ public class H3MReader {
 
     private static H3MReward parseReward(ByteWrapper wrap, boolean isRoE) {
         int rewardType = wrap.readUnsigned();
-        switch (rewardType) {
-            case 0: // none
-                return new H3MReward();
-            case 1: // experience
-                return new H3MReward().setExperience(wrap.readInt());
-            case 2: // spell points
-                return new H3MReward().setSpellPoints(wrap.readInt());
-            case 3: // morale
-                return new H3MReward().setMorale(wrap.readUnsigned());
-            case 4: // luck
-                return new H3MReward().setLuck(wrap.readUnsigned());
-            case 5: // resource
+        return switch (rewardType) {
+            case 0 -> new H3MReward(); // none
+            case 1 -> new H3MReward().setExperience(wrap.readInt()); // experience
+            case 2 -> new H3MReward().setSpellPoints(wrap.readInt()); // spell points
+            case 3 -> new H3MReward().setMorale(wrap.readUnsigned()); // morale
+            case 4 -> new H3MReward().setLuck(wrap.readUnsigned()); // luck
+            case 5 -> { // resource
                 int[] resources = new int[7];
                 resources[wrap.readUnsigned()] = wrap.readInt();
-                return new H3MReward().setResources(resources);
-            case 6: // primary skill
+                yield new H3MReward().setResources(resources);
+            }
+            case 6 -> { // primary skill
                 PrimarySkills skills = new PrimarySkills();
                 switch (wrap.readUnsigned()) {
                     case 0 -> skills.setAttack(wrap.readUnsigned());
@@ -459,18 +454,14 @@ public class H3MReader {
                     case 3 -> skills.setKnowledge(wrap.readUnsigned());
                     default -> throw new IllegalArgumentException(); // TODO assumption, remove after check
                 }
-                return new H3MReward().setSkills(skills);
-            case 7: // secondary skill
-                return new H3MReward().setSecondarySkills(new H3MSecondarySkill[]{readSecondarySkill(wrap)});
-            case 8: // artifact
-                return new H3MReward().setArtifacts(new int[]{readArtifact(wrap, isRoE)});
-            case 9: // spell
-                return new H3MReward().setSpells(new int[]{wrap.readUnsigned()});
-            case 10:
-                return new H3MReward().setCreatures(new H3MCreatureSlot[]{readCreature(wrap, isRoE)});
-            default:
-                throw new IllegalArgumentException();
-        }
+                yield new H3MReward().setSkills(skills);
+            }
+            case 7 -> new H3MReward().setSecondarySkills(new H3MSecondarySkill[]{readSecondarySkill(wrap)}); // secondary skill
+            case 8 -> new H3MReward().setArtifacts(new int[]{readArtifact(wrap, isRoE)}); // artifact
+            case 9 -> new H3MReward().setSpells(new int[]{wrap.readUnsigned()}); // spell
+            case 10 -> new H3MReward().setCreatures(new H3MCreatureSlot[]{readCreature(wrap, isRoE)}); // stack
+            default -> throw new IllegalArgumentException();
+        };
     }
 
     private static H3MBaseQuestRequest parseQuestRequest(ByteWrapper wrap, boolean isROE, Integer questType) {
