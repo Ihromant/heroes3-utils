@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -155,7 +156,7 @@ public class ImageMerger {
 
     @Test
     public void removeBorder() throws IOException {
-        File root = new File("/home/ihromant/workspace/ihromant.github.io/img/icons/48x32/bonus");
+        File root = new File("/home/ihromant/workspace/ihromant.github.io/img/icons/48x32");
         for (File f : Objects.requireNonNull(root.listFiles())) {
             BufferedImage img = ImageIO.read(f);
             BufferedImage res = new BufferedImage(img.getWidth() - 2, img.getHeight() - 2, BufferedImage.TYPE_INT_ARGB);
@@ -164,7 +165,7 @@ public class ImageMerger {
                     res.setRGB(i, j, img.getRGB(i + 1, j + 1));
                 }
             }
-            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/bonus", f.getName()));
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/hero", f.getName()));
         }
     }
 
@@ -252,5 +253,26 @@ public class ImageMerger {
         String fdrName = "avwzomx0";
         String dest = "ZOMBIE";
         mergeImage("/home/ihromant/Games/units/images-shadow/", fdrName, "/home/ihromant/workspace/ihromant.github.io/img/map/neutrals", dest.toLowerCase());
+    }
+
+    private static final Map<String, String> renames = Map.of(
+            "move_bottom.png", "move_south.png",
+            "move_bottom_right.png", "move_south_east.png",
+            "move_right.png", "move_east.png",
+            "move_top.png", "move_north.png",
+            "move_top_right.png", "move_north_east.png"
+    );
+
+    @Test
+    public void rename() throws IOException {
+        File folder = new File("/home/ihromant/workspace/ihromant.github.io/img/map/heroes");
+        for (File child : Objects.requireNonNull(folder.listFiles())) {
+            for (File img : Objects.requireNonNull(child.listFiles())) {
+                String renameTo = renames.get(img.getName());
+                if (renameTo != null) {
+                    FileUtils.moveFile(img, new File(img.getParentFile(), renameTo));
+                }
+            }
+        }
     }
 }
