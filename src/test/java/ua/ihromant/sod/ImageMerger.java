@@ -10,6 +10,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -219,13 +222,26 @@ public class ImageMerger {
 
     @Test
     public void prepareForGraph() {
-        System.out.println(new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/stat.txt"))).lines()
+        List<DataPart> list = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/stat.txt")))).lines()
                 .map(l -> {
                     String[] parts = l.split(" ");
-                    String[] dateParts = parts[0].split("-");
-                    return "[new Date(" + dateParts[0] + ", " + dateParts[1] + ", " + dateParts[2] + "), " + parts[1] + "]";
-                }).collect(Collectors.joining(", ", "[", "]")));
+                    return new DataPart(LocalDate.parse(parts[0]), Integer.parseInt(parts[1]));
+                }).toList();
+        System.out.println(list.stream()
+                .map(dp -> "[new Date(" + dp.date().getYear() + ", " + dp.date().getMonthValue() + ", " + dp.date().getDayOfMonth() + "), " + dp.loc() + "]")
+                .collect(Collectors.joining(", ", "[", "]")));
+        List<DataPart> speed = new ArrayList<>();
+        for (int i = 0; i < list.size() - 1; i++) {
+            DataPart prev = list.get(i);
+            DataPart next = list.get(i + 1);
+            speed.add(new DataPart(prev.date(), (next.loc() - prev.loc()) / (int) ChronoUnit.DAYS.between(prev.date(), next.date())));
+        }
+        System.out.println(speed.stream()
+                .map(dp -> "[new Date(" + dp.date().getYear() + ", " + dp.date().getMonthValue() + ", " + dp.date().getDayOfMonth() + "), " + dp.loc() + "]")
+                .collect(Collectors.joining(", ", "[", "]")));
     }
+
+    private record DataPart(LocalDate date, int loc) {}
 
     @Test
     public void generateArtifacts() throws IOException {
