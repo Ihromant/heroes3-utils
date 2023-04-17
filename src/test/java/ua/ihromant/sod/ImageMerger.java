@@ -234,7 +234,14 @@ public class ImageMerger {
         for (int i = 0; i < list.size() - 1; i++) {
             DataPart prev = list.get(i);
             DataPart next = list.get(i + 1);
-            speed.add(new DataPart(prev.date(), (next.loc() - prev.loc()) / (int) ChronoUnit.DAYS.between(prev.date(), next.date())));
+            int sp = (next.loc() - prev.loc()) / (int) ChronoUnit.DAYS.between(prev.date(), next.date());
+            if (sp > 500) {
+                sp = 500;
+            }
+            if (sp < -500) {
+                sp = -500;
+            }
+            speed.add(new DataPart(prev.date(), sp));
         }
         System.out.println(speed.stream()
                 .map(dp -> "[new Date(" + dp.date().getYear() + ", " + dp.date().getMonthValue() + ", " + dp.date().getDayOfMonth() + "), " + dp.loc() + "]")
