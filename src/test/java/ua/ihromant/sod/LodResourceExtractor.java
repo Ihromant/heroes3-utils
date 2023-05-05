@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -86,10 +87,15 @@ public class LodResourceExtractor {
 
     @Test
     public void testReadDef() throws IOException {
-        String fileName = "bckpck.def";
-        Path path = Path.of("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common", fileName);
-        byte[] bytes = Files.readAllBytes(path);
-        readDef(bytes, fileName);
+        File folder = new File("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common/Fix.Cosmetic");
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
+            String name = file.getName();
+            if (!name.endsWith(".def")) {
+                continue;
+            }
+            byte[] bytes = FileUtils.readFileToByteArray(file);
+            readDef(bytes, name);
+        }
     }
 
     public void readDef(byte[] bytes, String fileName) throws IOException {
