@@ -22,10 +22,38 @@ public class ImagePositionFinder {
     private static final int BACK_WIDTH = 800;
     private static final int BACK_HEIGHT = 374;
     private static final int TEST_COUNT = 256;
-    private static final int TRUTH_PERCENTAGE = 25;
+    private int truthPercentage;
     @Test
     public void determine() throws AWTException, IOException {
+        truthPercentage = 25;
         printImageData("tbcsback", "tbcsmag3");
+    }
+
+    @Test
+    public void determineImages() throws IOException {
+        truthPercentage = 38;
+        BufferedImage src = ImageIO.read(new File("/home/ihromant/Games/units/images/zinterface/comopbck.png"));
+        BufferedImage toFind = ImageIO.read(new File("/home/ihromant/Games/units/images-shadow/syslb/00_07.png"));
+        List<Point> dest = determineImage(src, toFind);
+        if (dest.size() == 1) {
+            System.out.println(dest.get(0).getX() + "," + dest.get(0).getY());
+        } else {
+            System.out.println(dest.size() + " " + dest);
+        }
+    }
+
+    @Test
+    public void cutImages() throws IOException {
+        BufferedImage src = ImageIO.read(new File("/home/ihromant/Games/units/images/zinterface/comopbck.png"));
+        BufferedImage dest = new BufferedImage(18, 36, BufferedImage.TYPE_INT_ARGB);
+        for (int k = 0; k < 10; k++) {
+            for (int i = 0; i < dest.getWidth(); i++) {
+                for (int j = 0; j < dest.getHeight(); j++) {
+                    dest.setRGB(i, j, src.getRGB(29 + i + k * 19, src.getHeight() - 26 - dest.getHeight() + j));
+                }
+            }
+            ImageIO.write(dest, "png", new File("/tmp/images/00_0" + k + ".png"));
+        }
     }
 
     private void printImageData(String castleBack, String bFolder) throws AWTException, IOException {
@@ -45,11 +73,19 @@ public class ImagePositionFinder {
         }
     }
 
+    private List<Point> determineImage(BufferedImage src, BufferedImage toFind) {
+        Map<Point, Integer> points = readNonTransparent(toFind);
+        return IntStream.range(0, src.getWidth() - toFind.getWidth()).boxed().flatMap(i ->
+                IntStream.range(0, src.getHeight() - toFind.getHeight()).filter(j -> points.entrySet().stream().limit(TEST_COUNT)
+                        .filter(e -> e.getValue() == src.getRGB(i + e.getKey().getX(), j + e.getKey().getY()))
+                        .count() * 100 / TEST_COUNT > truthPercentage).mapToObj(j -> new Point(i, j))).collect(Collectors.toList());
+    }
+
     private List<Point> determineImage(BufferedImage src, Map<Point, Integer> building, int width, int height, Point offset) {
         return IntStream.rangeClosed(0, BACK_WIDTH - width).boxed().flatMap(i ->
                 IntStream.rangeClosed(0, BACK_HEIGHT - height).filter(j -> building.entrySet().stream().limit(TEST_COUNT)
                         .filter(e -> e.getValue() == src.getRGB(i + e.getKey().getX() + offset.getX(), j + e.getKey().getY() + offset.getY()))
-                        .count() * 100 / TEST_COUNT > TRUTH_PERCENTAGE).mapToObj(j -> new Point(i, j))).collect(Collectors.toList());
+                        .count() * 100 / TEST_COUNT > truthPercentage).mapToObj(j -> new Point(i, j))).collect(Collectors.toList());
     }
 
     private static Map<Point, Integer> readNonTransparent(BufferedImage img) {

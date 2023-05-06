@@ -158,6 +158,21 @@ public class ImageMerger {
     }
 
     @Test
+    public void mergeSliders() throws IOException {
+        String unpressed = "/home/ihromant/Games/units/images/radio/syslb_unpressed";
+        String pressed = "/home/ihromant/Games/units/images/radio/syslb";
+        for (int i = 0; i < 10; i++) {
+            BufferedImage unp = ImageIO.read(new File(unpressed, "00_0" + i + ".png"));
+            BufferedImage pr = ImageIO.read(new File(pressed, "00_0" + i + ".png"));
+            BufferedImage result = new BufferedImage(unp.getWidth(), unp.getHeight() * 4, BufferedImage.TYPE_INT_ARGB);
+            result.getGraphics().drawImage(unp, 0, 0, null);
+            result.getGraphics().drawImage(unp, 0, unp.getHeight(), null);
+            result.getGraphics().drawImage(pr, 0, pr.getHeight() * 3, null);
+            ImageIO.write(result, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/buttons/18x36", "volume" + i + ".png"));
+        }
+    }
+
+    @Test
     public void removeBorder() throws IOException {
         File root = new File("/home/ihromant/workspace/ihromant.github.io/img/icons/48x32");
         for (File f : Objects.requireNonNull(root.listFiles())) {
@@ -273,9 +288,9 @@ public class ImageMerger {
 
     @Test
     public void generateMapUnits() throws IOException {
-        String fdrName = "avwzomx0";
-        String dest = "ZOMBIE";
-        mergeImage("/home/ihromant/Games/units/images-shadow/", fdrName, "/home/ihromant/workspace/ihromant.github.io/img/map/neutrals", dest.toLowerCase());
+        String fdrName = "icm007q";
+        String dest = "battle_defend";
+        mergeImage("/home/ihromant/Games/units/hd-images/", fdrName, "/home/ihromant/workspace/ihromant.github.io/img/buttons/44x36", dest.toLowerCase());
     }
 
     private static final Map<String, String> renames = Map.of(
