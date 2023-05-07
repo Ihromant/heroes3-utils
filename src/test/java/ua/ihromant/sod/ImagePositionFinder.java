@@ -31,9 +31,9 @@ public class ImagePositionFinder {
 
     @Test
     public void determineImages() throws IOException {
-        truthPercentage = 38;
-        BufferedImage src = ImageIO.read(new File("/home/ihromant/Games/units/images/zinterface/comopbck.png"));
-        BufferedImage toFind = ImageIO.read(new File("/home/ihromant/Games/units/images-shadow/syslb/00_07.png"));
+        truthPercentage = 90;
+        BufferedImage src = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/background/spell_book.png"));
+        BufferedImage toFind = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/icons/spell_book/cancel.png"));
         List<Point> dest = determineImage(src, toFind);
         if (dest.size() == 1) {
             System.out.println(dest.get(0).getX() + "," + dest.get(0).getY());

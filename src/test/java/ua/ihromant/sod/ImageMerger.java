@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ImageMerger {
@@ -188,6 +189,35 @@ public class ImageMerger {
     }
 
     @Test
+    public void removeBorder1() throws IOException {
+        BufferedImage img = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/background/SpelBk2.png"));
+        BufferedImage res = new BufferedImage(img.getWidth() - 6, img.getHeight() - 27, BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < res.getWidth(); i++) {
+            for (int j = 0; j < res.getHeight(); j++) {
+                res.setRGB(i, j, img.getRGB(i + 3, j + 3));
+            }
+        }
+        ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/background/spell_book.png"));
+    }
+
+    @Test
+    public void generateBookmarks() throws IOException {
+        File folder = new File("/home/ihromant/Games/units/images/radio/speltab/");
+        BufferedImage[] result = IntStream.range(0, 5).mapToObj(i -> new BufferedImage(83, 59 * 4, BufferedImage.TYPE_INT_ARGB)).toArray(BufferedImage[]::new);
+        for (int i = 0; i < 5; i++) {
+            File file = new File(folder, "00_0" + i + ".png");
+            BufferedImage img = ImageIO.read(file);
+            int notActive = (i + 1) % 5;
+            result[notActive].getGraphics().drawImage(img, 0, 0, 83, 58, 0, 59 * notActive, 83, 59 * notActive + 58, null);
+            result[notActive].getGraphics().drawImage(img, 0, 59, 83, 59 + 58, 0, 59 * notActive, 83, 59 * notActive + 58, null);
+            result[i].getGraphics().drawImage(img, 0, 59 * 3, 83, 59 * 3 + 58, 0, 59 * i, 83, 59 * i + 58, null);
+        }
+        for (int i = 0; i < 5; i++) {
+            ImageIO.write(result[i], "png", new File("/home/ihromant/workspace/ihromant.github.io/img/buttons/83x59", "00_0" + i + ".png"));
+        }
+    }
+
+    @Test
     public void transferCreatureIcons() throws IOException {
         File root = new File("/home/ihromant/Games/units/images-shadow/cprsmall");
         for (File f : Objects.requireNonNull(root.listFiles())) {
@@ -205,18 +235,27 @@ public class ImageMerger {
     @Test
     public void reconvertImages() throws IOException {
         for (File f : Objects.requireNonNull(new File("/home/ihromant/Games/units/images/hdicons").listFiles())) {
-            BufferedImage img = ImageIO.read(f);
-            String name = f.getName();
-            BufferedImage res = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            for (int i = 0; i < img.getWidth(); i++) {
-                for (int j = 0; j < img.getHeight(); j++) {
-                    if (img.getRGB(i, j) != TRANSPARENT) {
-                        res.setRGB(i, j, img.getRGB(i, j));
-                    }
+            reconvertImage(f);
+        }
+    }
+
+    @Test
+    public void reconvertImage() throws IOException {
+        reconvertImage(new File("/home/ihromant/Games/Heroes III Complete/_HD3_Data/Common/SpelBk2.bmp"));
+    }
+
+    private static void reconvertImage(File f) throws IOException {
+        BufferedImage img = ImageIO.read(f);
+        String name = f.getName();
+        BufferedImage res = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < img.getWidth(); i++) {
+            for (int j = 0; j < img.getHeight(); j++) {
+                if (img.getRGB(i, j) != TRANSPARENT) {
+                    res.setRGB(i, j, img.getRGB(i, j));
                 }
             }
-            ImageIO.write(res, "png", new File(f.getParent(), name.substring(0, name.indexOf('.')) + ".png"));
         }
+        ImageIO.write(res, "png", new File(f.getParent(), name.substring(0, name.indexOf('.')) + ".png"));
     }
 
     @Test
