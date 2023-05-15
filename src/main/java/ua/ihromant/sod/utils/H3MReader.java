@@ -24,6 +24,7 @@ import ua.ihromant.sod.utils.entities.H3MTownEvent;
 import ua.ihromant.sod.utils.entities.H3MWinType;
 import ua.ihromant.sod.utils.entities.MapTile;
 import ua.ihromant.sod.utils.entities.PrimarySkills;
+import ua.ihromant.sod.utils.entities.ScholarRewardType;
 import ua.ihromant.sod.utils.entities.conditions.AccumulateCreatureCondition;
 import ua.ihromant.sod.utils.entities.conditions.AccumulateResourceCondition;
 import ua.ihromant.sod.utils.entities.conditions.ArtifactCondition;
@@ -310,7 +311,7 @@ public class H3MReader {
 
     private static H3MScholar readScholar(ByteWrapper wrap) {
         H3MScholar result = new H3MScholar();
-        result.setRewardType(wrap.readUnsigned());
+        result.setRewardType(Optional.ofNullable(wrap.readUnsignedOpt()).map(i -> ScholarRewardType.values()[i]).orElse(null));
         result.setRewardValue(wrap.readUnsigned());
         wrap.readUnsigned(6); // unknown
         return result;
