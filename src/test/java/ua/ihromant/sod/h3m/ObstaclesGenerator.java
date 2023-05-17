@@ -3,16 +3,18 @@ package ua.ihromant.sod.h3m;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.ImageMerger;
 import ua.ihromant.sod.ImageMetadata;
+import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.BackgroundType;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ObstaclesGenerator {
     @Test
     public void generateObstacle() throws IOException {
-        generateObstacle("3020100031211101", "avllk2u0", BackgroundType.subterranean);
+        generateObstacle("1000312111013222", "avlglly0", BackgroundType.rough);
     }
 
     private static void generateObstacle(String passableName, String def, BackgroundType... backgroundTypes) throws IOException {
@@ -32,6 +34,38 @@ public class ObstaclesGenerator {
                     + "(SELECT id FROM terrain WHERE full_name = '" + backgroundTypes[i] + "'))";
         }).collect(Collectors.joining(",\n", "", ";\n")));
     }
+
+    @Test
+    public void generateShiftsSql() {
+        generateShiftsSql("1000312111013222");
+    }
+
+    private static void generateShiftsSql(String name) {
+        System.out.println("insert into map_obstacle (");
+        System.out.println("id, full_name");
+        System.out.println(") values");
+        System.out.println("((SELECT MAX(id) + 1 FROM map_obstacle),'" + name + "'" + ");");
+
+        if ("none".equals(name)) {
+            System.out.println();
+            return;
+        }
+        System.out.println("insert into map_obstacle_direction (");
+        System.out.println("id, obstacle_id, dx, dy");
+        System.out.println(") values");
+        List<H3MObjectAttribute.Shift> shifts = generateShifts(name);
+        System.out.println(IntStream.range(0, shifts.size()).mapToObj(i -> {
+            return "((SELECT MAX(id) + " + (i + 1) + " FROM map_obstacle_direction),"
+                    + "(SELECT id FROM map_obstacle WHERE full_name = '" + name + "'),"
+                    + shifts.get(i).getDx() + "," + shifts.get(i).getDy() + ")";
+        }).collect(Collectors.joining(",\n", "", ";\n")));
+    }
+
+    private static List<H3MObjectAttribute.Shift> generateShifts(String name) {
+        return IntStream.range(0, name.length() / 2).mapToObj(i -> name.substring(2 * i, 2 * i + 2))
+                .map(c -> new H3MObjectAttribute.Shift(-Integer.parseInt(c.substring(0, 1)), -Integer.parseInt(c.substring(1)))).collect(Collectors.toList());
+    }
+
 //    @Test
 //    public void generateObstacles() throws IOException {
 //        Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
