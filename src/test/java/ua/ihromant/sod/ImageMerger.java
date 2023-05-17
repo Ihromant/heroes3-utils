@@ -55,8 +55,8 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoplfa", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "left_arr");
-        mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoprta", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "right_arr");
+        mergeImage("/home/ihromant/Games/units/images-shadow/", "avxschl0", "/home/ihromant/workspace/ihromant.github.io/img/map", "scholar");
+        //mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoprta", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "right_arr");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "icancel", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x30", "icancel");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "icm005", "/home/ihromant/workspace/ihromant.github.io/img/buttons/x36", "battle_cast");
@@ -88,7 +88,7 @@ public class ImageMerger {
                 xMax = xIdx;
             }
         }
-        System.out.println("x: " + (xMax + 1) + ", y: " + (yMax + 1));
+        //System.out.println("x: " + (xMax + 1) + ", y: " + (yMax + 1));
         BufferedImage result = null;
         ImageMetadata meta = null;
         for (File img : Objects.requireNonNull(root.listFiles())) {

@@ -3,27 +3,35 @@ package ua.ihromant.sod.h3m;
 import org.junit.jupiter.api.Test;
 import ua.ihromant.sod.ImageMerger;
 import ua.ihromant.sod.ImageMetadata;
-import ua.ihromant.sod.utils.H3MReader;
-import ua.ihromant.sod.utils.ObjectNumberConstants;
-import ua.ihromant.sod.utils.bytes.ByteWrapper;
-import ua.ihromant.sod.utils.bytes.Utils;
-import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.BackgroundType;
-import ua.ihromant.sod.utils.map.ResourceType;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ObstaclesGenerator {
+    @Test
+    public void generateObstacle() throws IOException {
+        generateObstacle("3020100031211101", "avllk2u0", BackgroundType.subterranean);
+    }
+
+    private static void generateObstacle(String passableName, String def, BackgroundType... backgroundTypes) throws IOException {
+        System.out.println("insert into map_impassable (");
+        System.out.println("id, full_name, obstacle_id, pict_width, pict_height, pict_count");
+        System.out.println(") values");
+        ImageMetadata meta = ImageMerger.mergeImage("/home/ihromant/Games/units/images-shadow/", "/home/ihromant/workspace/ihromant.github.io/img/map/impassable", def);
+        System.out.println("((SELECT MAX(id) + 1 FROM map_impassable),'" + def
+                + "',(select id from map_obstacle where full_name = '" + passableName + "'),"
+                + (meta.getImageWidth() / 32) + "," + (meta.getImageHeight() / 32) + "," + meta.getImagesCount() + ");");
+        System.out.println("insert into impassable_to_terrain (");
+        System.out.println("id, impassable_id, terrain_id");
+        System.out.println(") values");
+        System.out.println(IntStream.range(0, backgroundTypes.length).mapToObj(i -> {
+            return "((SELECT MAX(id) + " + (i + 1) + " FROM impassable_to_terrain),"
+                    + "(SELECT id FROM map_impassable WHERE full_name = '" + def + "'),"
+                    + "(SELECT id FROM terrain WHERE full_name = '" + backgroundTypes[i] + "'))";
+        }).collect(Collectors.joining(",\n", "", ";\n")));
+    }
 //    @Test
 //    public void generateObstacles() throws IOException {
 //        Map<String, H3MObjectAttribute> obstacles = new HashMap<>();
