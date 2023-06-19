@@ -55,7 +55,7 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images-shadow/", "avxschl0", "/home/ihromant/workspace/ihromant.github.io/img/map", "scholar");
+        mergeImage("/home/ihromant/Games/units/images/aabuttons/", "icn6432", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x32", "cancel_hire");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoprta", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "right_arr");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "icancel", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x30", "icancel");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
@@ -185,6 +185,17 @@ public class ImageMerger {
                 }
             }
             ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/icons/46x30/hero", f.getName()));
+        }
+    }
+
+    @Test
+    public void moveImages() throws IOException {
+        File root = new File("/home/ihromant/workspace/ihromant.github.io/img/map/town_flags");
+        for (File f : Objects.requireNonNull(root.listFiles())) {
+            BufferedImage img = ImageIO.read(f);
+            BufferedImage res = new BufferedImage(192, 192, BufferedImage.TYPE_INT_ARGB);
+            res.getGraphics().drawImage(img, 64, 160, null);
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/map/town_flags", f.getName()));
         }
     }
 

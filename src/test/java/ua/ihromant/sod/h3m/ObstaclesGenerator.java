@@ -7,6 +7,11 @@ import ua.ihromant.sod.utils.entities.H3MObjectAttribute;
 import ua.ihromant.sod.utils.map.BackgroundType;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,7 +19,7 @@ import java.util.stream.IntStream;
 public class ObstaclesGenerator {
     @Test
     public void generateObstacle() throws IOException {
-        generateObstacle("1000312111013222", "avlglly0", BackgroundType.rough);
+        generateObstacle("60504030201061514131211101524232221202", "avllk1u0", BackgroundType.subterranean);
     }
 
     private static void generateObstacle(String passableName, String def, BackgroundType... backgroundTypes) throws IOException {
@@ -37,7 +42,7 @@ public class ObstaclesGenerator {
 
     @Test
     public void generateShiftsSql() {
-        generateShiftsSql("1000312111013222");
+        generateShiftsSql("60504030201061514131211101524232221202");
     }
 
     private static void generateShiftsSql(String name) {
@@ -64,6 +69,25 @@ public class ObstaclesGenerator {
     private static List<H3MObjectAttribute.Shift> generateShifts(String name) {
         return IntStream.range(0, name.length() / 2).mapToObj(i -> name.substring(2 * i, 2 * i + 2))
                 .map(c -> new H3MObjectAttribute.Shift(-Integer.parseInt(c.substring(0, 1)), -Integer.parseInt(c.substring(1)))).collect(Collectors.toList());
+    }
+
+    private static final String part = "id, full_name, obstacle_id, ";
+
+    @Test
+    public void addType() throws URISyntaxException, IOException {
+        Files.lines(Path.of(new URI("file:///home/ihromant/workspace/sod/local-api/src/main/resources/13mapimpassable.xml"))).forEach(l -> {
+            if (l.contains(part)) {
+                int idx = l.indexOf(part) + part.length();
+                System.out.println(l.substring(0, idx) + "type, " + l.substring(idx));
+            } else if (l.contains("FROM map_impassable)")) {
+                int brIdx = l.indexOf('\'');
+                int comma1 = l.indexOf(',', brIdx);
+                int comma2 = l.indexOf(',', comma1 + 1);
+                System.out.println(l.substring(0, comma2) + ",(select id from object_type where full_name = 'impassable')" + l.substring(comma2));
+            } else {
+                System.out.println(l);
+            }
+        });
     }
 
 //    @Test
