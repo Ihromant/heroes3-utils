@@ -55,7 +55,7 @@ public class ImageMerger {
 
     @Test
     public void mergeImage() throws IOException {
-        mergeImage("/home/ihromant/Games/units/images/aabuttons/", "tptav02", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x32", "rogue");
+        mergeImage("/home/ihromant/Games/units/images/aabuttons", "iok6432", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x32", "ok64x32");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "adoprta", "/home/ihromant/workspace/ihromant.github.io/img/buttons/11x24/", "right_arr");
         //mergeImage("/home/ihromant/Games/units/images/aabuttons", "icancel", "/home/ihromant/workspace/ihromant.github.io/img/buttons/64x30", "icancel");
         //mergeImage("/home/ihromant/Games/units/images-shadow/", "hsbtns9", "/home/ihromant/workspace/ihromant.github.io/img/buttons/52x36", "split_troops");
@@ -310,7 +310,7 @@ public class ImageMerger {
             speed.add(new DataPart(prev.date(), sp));
         }
         System.out.println(speed.stream()
-                .map(dp -> "[new Date(" + dp.date().getYear() + ", " + dp.date().getMonthValue() + ", " + dp.date().getDayOfMonth() + "), " + dp.loc() + "]")
+                .map(dp -> "[new Date(" + dp.date().getYear() + ", " + (dp.date().getMonthValue() - 1) + ", " + dp.date().getDayOfMonth() + "), " + dp.loc() + "]")
                 .collect(Collectors.joining(", ", "[", "]")));
     }
 
