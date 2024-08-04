@@ -221,6 +221,20 @@ public class FlagsGenerator {
     }
 
     @Test
+    public void findGarrisonFlags() throws IOException {
+        BufferedImage img = ImageIO.read(new File("/home/ihromant/workspace/ihromant.github.io/img/map/garrison/gar_ver.png"));
+        Point left = determineFlagCrd(img, 38, 2, FLAG_LEFT);
+        Point right = determineFlagCrd(img, 26, 59, FLAG_LEFT);
+        for (Kingdom k : Kingdom.values()) {
+            BufferedImage res = new BufferedImage(64, 128, BufferedImage.TYPE_INT_ARGB);
+            paintFlag(res, left.add(38, 3), FLAG_LEFT, k);
+            paintFlag(res, right.add(26, 59), FLAG_LEFT, k);
+            ImageIO.write(res, "png", new File("/home/ihromant/workspace/ihromant.github.io/img/map/garrison_flags/"
+                    + "gar_ver_" + k.name().toLowerCase() + ".png"));
+        }
+    }
+
+    @Test
     public void generateCastleFlags() throws IOException {
         //BufferedImage img = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/conflux_town.png")));
         for (Castle castle : Castle.values()) {
